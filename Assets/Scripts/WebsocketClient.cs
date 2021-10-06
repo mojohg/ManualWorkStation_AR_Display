@@ -10,6 +10,7 @@ public class WebsocketClient : MonoBehaviour
     void Start()
     {
         ws = new WebSocket("ws://localhost:8080");
+        // ws = new WebSocket("ws://0.0.0.0:8080");
         ws.Connect();
         ws.OnMessage += (sender, e) =>
         {

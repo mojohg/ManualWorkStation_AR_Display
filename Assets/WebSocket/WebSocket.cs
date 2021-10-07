@@ -657,6 +657,7 @@ namespace NativeWebSocket
 
                         if (result.MessageType == WebSocketMessageType.Text)
                         {
+                            Debug.Log("Text received");
                             m_MessageListMutex.WaitOne();
                             m_MessageList.Add(ms.ToArray());
                             m_MessageListMutex.ReleaseMutex();
@@ -669,12 +670,14 @@ namespace NativeWebSocket
                         }
                         else if (result.MessageType == WebSocketMessageType.Binary)
                         {
+                            Debug.Log("Binary received");
                             m_MessageListMutex.WaitOne();
                             m_MessageList.Add(ms.ToArray());
                             m_MessageListMutex.ReleaseMutex();
                         }
                         else if (result.MessageType == WebSocketMessageType.Close)
                         {
+                            Debug.Log("Client closed by MessageType from message: " + result);
                             await Close();
                             closeCode = WebSocketHelpers.ParseCloseCodeEnum((int)result.CloseStatus);
                             break;

@@ -100,7 +100,6 @@ sysinfo.txt
 *.unitypackage
 
 
-
 # Crashlytics generated file
 crashlytics-build.properties
 
@@ -109,4 +108,5 @@ actions.json
 bindings*.json
 unityProject.vrmanifest
 /Assets/ImportedPackages/*
-*.fbx
+/CAD_Models
+*.FBX

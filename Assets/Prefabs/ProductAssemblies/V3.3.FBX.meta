@@ -1,0 +1,355 @@
+fileFormatVersion: 2
+guid: 7cee758cc9e693a439fb3092cc0d12d7
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: item_0062356_Verbinder_D30:1
+    100002: item_0062356_Verbinder_D30:2
+    100004: item_0062356_Verbinder_D30_1:1
+    100006: item_0062356_Verbinder_D30_1:1 1
+    100008: item_0062356_Verbinder_D30_2:1
+    100010: item_0062356_Verbinder_D30_2:1 1
+    100012: item_0062356_Verbinder_D30_3:1
+    100014: item_0062356_Verbinder_D30_3:1 1
+    100016: item_0062828_Profilrohr_D30_L=110:1
+    100018: item_0062828_Profilrohr_D30_L=110:2
+    100020: item_0062828_Profilrohr_D30_L=40:1
+    100022: item_0062828_Profilrohr_D30_L=60:1
+    100024: item_0062828_Profilrohr_D30_L=60:2
+    100026: item_0062994_Parallelverbinder_D30:1
+    100028: item_0062994_Parallelverbinder_D30:2
+    100030: item_0062994_Parallelverbinder_D30_1:1
+    100032: item_0062994_Parallelverbinder_D30_1:1 1
+    100034: item_0062994_Parallelverbinder_D30_2:1
+    100036: item_0062994_Parallelverbinder_D30_2:1 1
+    100038: item_0062994_Parallelverbinder_D30_3:1
+    100040: item_0062994_Parallelverbinder_D30_3:1 1
+    100042: item_0063060_Winkelverbinder_D30_W=150:1
+    100044: item_0063060_Winkelverbinder_D30_W=150:2
+    100046: item_0063060_Winkelverbinder_D30_W=150_1:1
+    100048: item_0063060_Winkelverbinder_D30_W=150_1:1 1
+    100050: item_0063060_Winkelverbinder_D30_W=150_2:1
+    100052: item_0063060_Winkelverbinder_D30_W=150_2:1 1
+    100054: item_0063060_Winkelverbinder_D30_W=150_3:1
+    100056: item_0063060_Winkelverbinder_D30_W=150_3:1 1
+    100058: item_0063060_Winkelverbinder_D30_W=150_4:1
+    100060: item_0063060_Winkelverbinder_D30_W=150_4:1 1
+    100062: item_0063061_Rohradapter_D30_1:1
+    100064: item_0063061_Rohradapter_D30_2:1
+    100066: item_0063704_Abdeckkappe_Rohr_D30_ESD:1
+    100068: item_0063704_Abdeckkappe_Rohr_D30_ESD:2
+    100070: item_0063787_Verbinder_D30-45_:1
+    100072: item_0063787_Verbinder_D30-45_:2
+    100074: item_0063787_Verbinder_D30-45__1:1
+    100076: item_0063787_Verbinder_D30-45__1:1 1
+    100078: item_0063787_Verbinder_D30-45__2:1
+    100080: item_0063787_Verbinder_D30-45__2:1 1
+    100082: item_0063787_Verbinder_D30-45__3:1
+    100084: item_0063787_Verbinder_D30-45__3:1 1
+    100086: item_0064322_Profilrohr_D30_L=200:1
+    100088: item_0064396_Rohrendkappe_D30:1
+    100090: item_0064396_Rohrendkappe_D30:2
+    100092: item_0064396_Rohrendkappe_D30:3
+    100094: item_0064396_Rohrendkappe_D30:4
+    100096: item_0064685_Kugelverbinder_D30_W=90_RW=0:1
+    100098: item_0064685_Kugelverbinder_D30_W=90_RW=0_1:1
+    100100: item_0064685_Kugelverbinder_D30_W=90_RW=0_2:1
+    100102: item_0064685_Kugelverbinder_D30_W=90_RW=0_3:1
+    100104: item_0064685_Kugelverbinder_D30_W=90_RW=0_4:1
+    100106: item_0064685_Kugelverbinder_D30_W=90_RW=0_5:1
+    100108: item_0064685_Kugelverbinder_D30_W=90_RW=0_6:1
+    100110: item_0064685_Kugelverbinder_D30_W=90_RW=0_7:1
+    100112: item_0064685_Kugelverbinder_D30_W=90_RW=0_8:1
+    100114: item_0067516_Gewindeeinsatz_Profilrohr_D30_M6_Al:1
+    100116: //RootNode
+    400000: item_0062356_Verbinder_D30:1
+    400002: item_0062356_Verbinder_D30:2
+    400004: item_0062356_Verbinder_D30_1:1
+    400006: item_0062356_Verbinder_D30_1:1 1
+    400008: item_0062356_Verbinder_D30_2:1
+    400010: item_0062356_Verbinder_D30_2:1 1
+    400012: item_0062356_Verbinder_D30_3:1
+    400014: item_0062356_Verbinder_D30_3:1 1
+    400016: item_0062828_Profilrohr_D30_L=110:1
+    400018: item_0062828_Profilrohr_D30_L=110:2
+    400020: item_0062828_Profilrohr_D30_L=40:1
+    400022: item_0062828_Profilrohr_D30_L=60:1
+    400024: item_0062828_Profilrohr_D30_L=60:2
+    400026: item_0062994_Parallelverbinder_D30:1
+    400028: item_0062994_Parallelverbinder_D30:2
+    400030: item_0062994_Parallelverbinder_D30_1:1
+    400032: item_0062994_Parallelverbinder_D30_1:1 1
+    400034: item_0062994_Parallelverbinder_D30_2:1
+    400036: item_0062994_Parallelverbinder_D30_2:1 1
+    400038: item_0062994_Parallelverbinder_D30_3:1
+    400040: item_0062994_Parallelverbinder_D30_3:1 1
+    400042: item_0063060_Winkelverbinder_D30_W=150:1
+    400044: item_0063060_Winkelverbinder_D30_W=150:2
+    400046: item_0063060_Winkelverbinder_D30_W=150_1:1
+    400048: item_0063060_Winkelverbinder_D30_W=150_1:1 1
+    400050: item_0063060_Winkelverbinder_D30_W=150_2:1
+    400052: item_0063060_Winkelverbinder_D30_W=150_2:1 1
+    400054: item_0063060_Winkelverbinder_D30_W=150_3:1
+    400056: item_0063060_Winkelverbinder_D30_W=150_3:1 1
+    400058: item_0063060_Winkelverbinder_D30_W=150_4:1
+    400060: item_0063060_Winkelverbinder_D30_W=150_4:1 1
+    400062: item_0063061_Rohradapter_D30_1:1
+    400064: item_0063061_Rohradapter_D30_2:1
+    400066: item_0063704_Abdeckkappe_Rohr_D30_ESD:1
+    400068: item_0063704_Abdeckkappe_Rohr_D30_ESD:2
+    400070: item_0063787_Verbinder_D30-45_:1
+    400072: item_0063787_Verbinder_D30-45_:2
+    400074: item_0063787_Verbinder_D30-45__1:1
+    400076: item_0063787_Verbinder_D30-45__1:1 1
+    400078: item_0063787_Verbinder_D30-45__2:1
+    400080: item_0063787_Verbinder_D30-45__2:1 1
+    400082: item_0063787_Verbinder_D30-45__3:1
+    400084: item_0063787_Verbinder_D30-45__3:1 1
+    400086: item_0064322_Profilrohr_D30_L=200:1
+    400088: item_0064396_Rohrendkappe_D30:1
+    400090: item_0064396_Rohrendkappe_D30:2
+    400092: item_0064396_Rohrendkappe_D30:3
+    400094: item_0064396_Rohrendkappe_D30:4
+    400096: item_0064685_Kugelverbinder_D30_W=90_RW=0:1
+    400098: item_0064685_Kugelverbinder_D30_W=90_RW=0_1:1
+    400100: item_0064685_Kugelverbinder_D30_W=90_RW=0_2:1
+    400102: item_0064685_Kugelverbinder_D30_W=90_RW=0_3:1
+    400104: item_0064685_Kugelverbinder_D30_W=90_RW=0_4:1
+    400106: item_0064685_Kugelverbinder_D30_W=90_RW=0_5:1
+    400108: item_0064685_Kugelverbinder_D30_W=90_RW=0_6:1
+    400110: item_0064685_Kugelverbinder_D30_W=90_RW=0_7:1
+    400112: item_0064685_Kugelverbinder_D30_W=90_RW=0_8:1
+    400114: item_0067516_Gewindeeinsatz_Profilrohr_D30_M6_Al:1
+    400116: //RootNode
+    2100000: No Name
+    2100002: 217,214,219
+    2100004: Schwarz
+    2300000: item_0062356_Verbinder_D30_1:1
+    2300002: item_0062356_Verbinder_D30_1:1 1
+    2300004: item_0062356_Verbinder_D30_2:1
+    2300006: item_0062356_Verbinder_D30_2:1 1
+    2300008: item_0062356_Verbinder_D30_3:1
+    2300010: item_0062356_Verbinder_D30_3:1 1
+    2300012: item_0062828_Profilrohr_D30_L=110:1
+    2300014: item_0062828_Profilrohr_D30_L=110:2
+    2300016: item_0062828_Profilrohr_D30_L=40:1
+    2300018: item_0062828_Profilrohr_D30_L=60:1
+    2300020: item_0062828_Profilrohr_D30_L=60:2
+    2300022: item_0062994_Parallelverbinder_D30_1:1
+    2300024: item_0062994_Parallelverbinder_D30_1:1 1
+    2300026: item_0062994_Parallelverbinder_D30_2:1
+    2300028: item_0062994_Parallelverbinder_D30_2:1 1
+    2300030: item_0062994_Parallelverbinder_D30_3:1
+    2300032: item_0062994_Parallelverbinder_D30_3:1 1
+    2300034: item_0063060_Winkelverbinder_D30_W=150_1:1
+    2300036: item_0063060_Winkelverbinder_D30_W=150_1:1 1
+    2300038: item_0063060_Winkelverbinder_D30_W=150_2:1
+    2300040: item_0063060_Winkelverbinder_D30_W=150_2:1 1
+    2300042: item_0063060_Winkelverbinder_D30_W=150_3:1
+    2300044: item_0063060_Winkelverbinder_D30_W=150_3:1 1
+    2300046: item_0063060_Winkelverbinder_D30_W=150_4:1
+    2300048: item_0063060_Winkelverbinder_D30_W=150_4:1 1
+    2300050: item_0063061_Rohradapter_D30_1:1
+    2300052: item_0063061_Rohradapter_D30_2:1
+    2300054: item_0063704_Abdeckkappe_Rohr_D30_ESD:1
+    2300056: item_0063704_Abdeckkappe_Rohr_D30_ESD:2
+    2300058: item_0063787_Verbinder_D30-45__1:1
+    2300060: item_0063787_Verbinder_D30-45__1:1 1
+    2300062: item_0063787_Verbinder_D30-45__2:1
+    2300064: item_0063787_Verbinder_D30-45__2:1 1
+    2300066: item_0063787_Verbinder_D30-45__3:1
+    2300068: item_0063787_Verbinder_D30-45__3:1 1
+    2300070: item_0064322_Profilrohr_D30_L=200:1
+    2300072: item_0064396_Rohrendkappe_D30:1
+    2300074: item_0064396_Rohrendkappe_D30:2
+    2300076: item_0064396_Rohrendkappe_D30:3
+    2300078: item_0064396_Rohrendkappe_D30:4
+    2300080: item_0064685_Kugelverbinder_D30_W=90_RW=0_1:1
+    2300082: item_0064685_Kugelverbinder_D30_W=90_RW=0_2:1
+    2300084: item_0064685_Kugelverbinder_D30_W=90_RW=0_3:1
+    2300086: item_0064685_Kugelverbinder_D30_W=90_RW=0_4:1
+    2300088: item_0064685_Kugelverbinder_D30_W=90_RW=0_5:1
+    2300090: item_0064685_Kugelverbinder_D30_W=90_RW=0_6:1
+    2300092: item_0064685_Kugelverbinder_D30_W=90_RW=0_7:1
+    2300094: item_0064685_Kugelverbinder_D30_W=90_RW=0_8:1
+    2300096: item_0067516_Gewindeeinsatz_Profilrohr_D30_M6_Al:1
+    3300000: item_0062356_Verbinder_D30_1:1
+    3300002: item_0062356_Verbinder_D30_1:1 1
+    3300004: item_0062356_Verbinder_D30_2:1
+    3300006: item_0062356_Verbinder_D30_2:1 1
+    3300008: item_0062356_Verbinder_D30_3:1
+    3300010: item_0062356_Verbinder_D30_3:1 1
+    3300012: item_0062828_Profilrohr_D30_L=110:1
+    3300014: item_0062828_Profilrohr_D30_L=110:2
+    3300016: item_0062828_Profilrohr_D30_L=40:1
+    3300018: item_0062828_Profilrohr_D30_L=60:1
+    3300020: item_0062828_Profilrohr_D30_L=60:2
+    3300022: item_0062994_Parallelverbinder_D30_1:1
+    3300024: item_0062994_Parallelverbinder_D30_1:1 1
+    3300026: item_0062994_Parallelverbinder_D30_2:1
+    3300028: item_0062994_Parallelverbinder_D30_2:1 1
+    3300030: item_0062994_Parallelverbinder_D30_3:1
+    3300032: item_0062994_Parallelverbinder_D30_3:1 1
+    3300034: item_0063060_Winkelverbinder_D30_W=150_1:1
+    3300036: item_0063060_Winkelverbinder_D30_W=150_1:1 1
+    3300038: item_0063060_Winkelverbinder_D30_W=150_2:1
+    3300040: item_0063060_Winkelverbinder_D30_W=150_2:1 1
+    3300042: item_0063060_Winkelverbinder_D30_W=150_3:1
+    3300044: item_0063060_Winkelverbinder_D30_W=150_3:1 1
+    3300046: item_0063060_Winkelverbinder_D30_W=150_4:1
+    3300048: item_0063060_Winkelverbinder_D30_W=150_4:1 1
+    3300050: item_0063061_Rohradapter_D30_1:1
+    3300052: item_0063061_Rohradapter_D30_2:1
+    3300054: item_0063704_Abdeckkappe_Rohr_D30_ESD:1
+    3300056: item_0063704_Abdeckkappe_Rohr_D30_ESD:2
+    3300058: item_0063787_Verbinder_D30-45__1:1
+    3300060: item_0063787_Verbinder_D30-45__1:1 1
+    3300062: item_0063787_Verbinder_D30-45__2:1
+    3300064: item_0063787_Verbinder_D30-45__2:1 1
+    3300066: item_0063787_Verbinder_D30-45__3:1
+    3300068: item_0063787_Verbinder_D30-45__3:1 1
+    3300070: item_0064322_Profilrohr_D30_L=200:1
+    3300072: item_0064396_Rohrendkappe_D30:1
+    3300074: item_0064396_Rohrendkappe_D30:2
+    3300076: item_0064396_Rohrendkappe_D30:3
+    3300078: item_0064396_Rohrendkappe_D30:4
+    3300080: item_0064685_Kugelverbinder_D30_W=90_RW=0_1:1
+    3300082: item_0064685_Kugelverbinder_D30_W=90_RW=0_2:1
+    3300084: item_0064685_Kugelverbinder_D30_W=90_RW=0_3:1
+    3300086: item_0064685_Kugelverbinder_D30_W=90_RW=0_4:1
+    3300088: item_0064685_Kugelverbinder_D30_W=90_RW=0_5:1
+    3300090: item_0064685_Kugelverbinder_D30_W=90_RW=0_6:1
+    3300092: item_0064685_Kugelverbinder_D30_W=90_RW=0_7:1
+    3300094: item_0064685_Kugelverbinder_D30_W=90_RW=0_8:1
+    3300096: item_0067516_Gewindeeinsatz_Profilrohr_D30_M6_Al:1
+    4300000: item_0064322_Profilrohr_D30_L=200:1
+    4300002: item_0064685_Kugelverbinder_D30_W=90_RW=0_1:1
+    4300004: item_0064685_Kugelverbinder_D30_W=90_RW=0_2:1
+    4300006: item_0064685_Kugelverbinder_D30_W=90_RW=0_3:1
+    4300008: item_0064685_Kugelverbinder_D30_W=90_RW=0_4:1
+    4300010: item_0064685_Kugelverbinder_D30_W=90_RW=0_5:1
+    4300012: item_0064685_Kugelverbinder_D30_W=90_RW=0_6:1
+    4300014: item_0064685_Kugelverbinder_D30_W=90_RW=0_7:1
+    4300016: item_0064685_Kugelverbinder_D30_W=90_RW=0_8:1
+    4300018: item_0063061_Rohradapter_D30_1:1
+    4300020: item_0063061_Rohradapter_D30_2:1
+    4300022: item_0062828_Profilrohr_D30_L=40:1
+    4300024: item_0062994_Parallelverbinder_D30_1:1
+    4300026: item_0062994_Parallelverbinder_D30_2:1
+    4300028: item_0062994_Parallelverbinder_D30_3:1
+    4300030: item_0062994_Parallelverbinder_D30_1:1
+    4300032: item_0062994_Parallelverbinder_D30_2:1
+    4300034: item_0062994_Parallelverbinder_D30_3:1
+    4300036: item_0063060_Winkelverbinder_D30_W=150_1:1
+    4300038: item_0063060_Winkelverbinder_D30_W=150_2:1
+    4300040: item_0063060_Winkelverbinder_D30_W=150_3:1
+    4300042: item_0063060_Winkelverbinder_D30_W=150_4:1
+    4300044: item_0063060_Winkelverbinder_D30_W=150_1:1
+    4300046: item_0063060_Winkelverbinder_D30_W=150_2:1
+    4300048: item_0063060_Winkelverbinder_D30_W=150_3:1
+    4300050: item_0063060_Winkelverbinder_D30_W=150_4:1
+    4300052: item_0063787_Verbinder_D30-45__1:1
+    4300054: item_0063787_Verbinder_D30-45__2:1
+    4300056: item_0063787_Verbinder_D30-45__3:1
+    4300058: item_0063787_Verbinder_D30-45__1:1
+    4300060: item_0063787_Verbinder_D30-45__2:1
+    4300062: item_0063787_Verbinder_D30-45__3:1
+    4300064: item_0067516_Gewindeeinsatz_Profilrohr_D30_M6_Al:1
+    4300066: item_0062356_Verbinder_D30_1:1
+    4300068: item_0062356_Verbinder_D30_2:1
+    4300070: item_0062356_Verbinder_D30_3:1
+    4300072: item_0062356_Verbinder_D30_1:1
+    4300074: item_0062356_Verbinder_D30_2:1
+    4300076: item_0062356_Verbinder_D30_3:1
+    4300078: item_0063704_Abdeckkappe_Rohr_D30_ESD:1
+    4300080: item_0063704_Abdeckkappe_Rohr_D30_ESD:2
+    4300082: item_0062828_Profilrohr_D30_L=60:1
+    4300084: item_0062828_Profilrohr_D30_L=60:2
+    4300086: item_0062828_Profilrohr_D30_L=110:1
+    4300088: item_0064396_Rohrendkappe_D30:1
+    4300090: item_0062828_Profilrohr_D30_L=110:2
+    4300092: item_0064396_Rohrendkappe_D30:2
+    4300094: item_0064396_Rohrendkappe_D30:3
+    4300096: item_0064396_Rohrendkappe_D30:4
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

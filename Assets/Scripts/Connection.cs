@@ -62,7 +62,6 @@ public class Connection : MonoBehaviour
         }
         else if (message.Contains("new_instructions"))  //Reset support for next work step
         {
-            order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
             this.GetComponent<MessageHandler>().NewInstructions();
             SendWebSocketMessage("ACK-new_instructions");
         }
@@ -81,7 +80,7 @@ public class Connection : MonoBehaviour
         else if (message.Contains("number_points"))  //Set number of points
         {
             order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
-            this.GetComponent<MessageHandler>().InitializePoints(order_properties.number_steps);
+            this.GetComponent<MessageHandler>().InitializePoints(order_properties.number_points);
             SendWebSocketMessage("ACK-number_points");
         }
         else

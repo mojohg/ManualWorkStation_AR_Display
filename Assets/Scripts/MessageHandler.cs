@@ -54,6 +54,8 @@ public class MessageHandler : MonoBehaviour
     private GameObject current_point_display;
     private GameObject max_point_display;
     private int max_points;
+    private List<GameObject> uncompleted_steps = new List<GameObject>();
+    private GameObject prefab_bar;
 
     void Start()
     {
@@ -66,12 +68,16 @@ public class MessageHandler : MonoBehaviour
         //levelup = GameObject.Find("LevelUp");
         //feedback_system = GameObject.Find("UserFeedback_Canvas");
 
+        // Find GO
         assemblies = GameObject.Find("Assemblies");
         product_turns = GameObject.Find("ProductTurns");
         product_holder = GameObject.Find("ProductHolder");
         feedback_canvas = GameObject.Find("Canvas");
         current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
         max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
+
+        // Load prefabs
+        prefab_bar = (GameObject)Resources.Load("Prefabs/UI/bar", typeof(GameObject));
     }
 
     public void InitializeVersion(string version_name)
@@ -144,12 +150,15 @@ public class MessageHandler : MonoBehaviour
     public void InitializeSteps(int number_steps)  // TODO
     {
         Debug.Log("InitializeSteps: " + number_steps.ToString());
-        /*GameObject canvas = GameObject.Find("UserFeedback_Canvas");
-        if (canvas != null)
+        GameObject progressBar = feedback_canvas.transform.Find("StepDisplay").gameObject;
+        GameObject new_bar;
+
+        for (int i = 0; i < number_steps; i++)
         {
-            canvas.GetComponent<User_UI_Feedback>().ShowNumberSteps(number_steps);
-            // Debug.Log("Total number of steps: " + number_steps);
-        }*/
+            new_bar = Instantiate(prefab_bar, progressBar.transform);
+            new_bar.name = "Bar_" + i;
+            uncompleted_steps.Add(new_bar);
+        }
     }
 
     public void InitializePoints (int number_points)
@@ -415,6 +424,12 @@ public class MessageHandler : MonoBehaviour
         {
             current_point_display.GetComponent<Text>().color = Color.yellow;
         }
+    }
+
+    public void FinishStep()
+    {
+        uncompleted_steps[0].GetComponent<Image>().color = Color.green;
+        uncompleted_steps.RemoveAt(0);
     }
 
     public IEnumerator FinishJob()  // TODO

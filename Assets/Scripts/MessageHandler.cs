@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Threading;
@@ -15,6 +16,7 @@ public class MessageHandler : MonoBehaviour
     private GameObject assemblies;
     private GameObject product_turns;
     private GameObject product_holder;
+    private GameObject feedback_canvas;
     //public GameObject training_finished;
 
     //public int current_knowledge_level;    
@@ -48,6 +50,11 @@ public class MessageHandler : MonoBehaviour
     //private CommunicationClass message = new CommunicationClass();
     //private AudioSource source_wrong;
 
+    // UI
+    private GameObject current_point_display;
+    private GameObject max_point_display;
+    private int max_points;
+
     void Start()
     {
         //assembly_info_material_1 = (Material)Resources.Load("InformationMaterial1", typeof(Material));
@@ -62,10 +69,12 @@ public class MessageHandler : MonoBehaviour
         assemblies = GameObject.Find("Assemblies");
         product_turns = GameObject.Find("ProductTurns");
         product_holder = GameObject.Find("ProductHolder");
-
+        feedback_canvas = GameObject.Find("Canvas");
+        current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
+        max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
     }
 
-    public void InitializeVersion(string version_name)  // TODO
+    public void InitializeVersion(string version_name)
     {
         Debug.Log("Load product version " + version_name);
         product_versions = assemblies.GetComponent<AssemblyOrganisation>().main_items_list;
@@ -143,14 +152,12 @@ public class MessageHandler : MonoBehaviour
         }*/
     }
 
-    public void InitializePoints (int number_points)  // TODO
+    public void InitializePoints (int number_points)
     {
-        Debug.Log("InitializePoints: " + number_points.ToString());
-        /*GameObject canvas = GameObject.Find("UserFeedback_Canvas");
-        if (canvas != null)
-        {
-            canvas.GetComponent<User_UI_Feedback>().SetMaxPoints(number_points);
-        }*/
+        max_points = number_points;
+        Debug.Log("InitializePoints: " + max_points.ToString());
+        max_point_display.GetComponent<Text>().text = max_points.ToString();
+        ShowPoints(0);
     }
 
     public void NewInstructions ()
@@ -389,6 +396,25 @@ public class MessageHandler : MonoBehaviour
                 }
                 break;
         }*/
+    }
+
+    public void ShowPoints(int current_points)
+    {
+        current_point_display.GetComponent<Text>().text = current_points.ToString();
+        float ratio = current_points / max_points;
+
+        if (ratio > 0.8f)
+        {
+            current_point_display.GetComponent<Text>().color = Color.green;
+        }
+        else if (ratio > 0.4f)
+        {
+            current_point_display.GetComponent<Text>().color = Color.cyan;
+        }
+        else
+        {
+            current_point_display.GetComponent<Text>().color = Color.yellow;
+        }
     }
 
     public IEnumerator FinishJob()  // TODO

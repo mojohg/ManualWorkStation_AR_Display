@@ -10,6 +10,9 @@ public class Connection : MonoBehaviour
 
     private CommunicationClass message = new CommunicationClass();
     private OrderProperties order_properties = new OrderProperties();
+    private bool connected = false;
+    private bool retry = true;
+    private IEnumerator coroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +23,11 @@ public class Connection : MonoBehaviour
         websocket.OnOpen += () =>
         {
             Debug.Log("Connection open!");
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }            
+            connected = true;
         };
 
         websocket.OnMessage += (bytes) =>
@@ -40,7 +48,8 @@ public class Connection : MonoBehaviour
 
         websocket.OnClose += (e) =>
         {
-            Debug.Log("Connection closed with error - " + e);
+            Debug.Log("Connection closed - " + e);
+            connected = false;
         };
 
         // InvokeRepeating("SendHeartbeat", 0.0f, 0.3f);  // Heartbeat at every 0.3s
@@ -52,6 +61,24 @@ public class Connection : MonoBehaviour
         #if !UNITY_WEBGL || UNITY_EDITOR
                 websocket.DispatchMessageQueue();
         #endif
+
+        if (connected != true)
+        {
+            if (retry == true)
+            {
+                Debug.Log("No connection -> retry after 5s");
+                coroutine = RetryConnectionCoroutine();
+                StartCoroutine(coroutine);
+                retry = false;
+            }
+        }
+    }
+
+    IEnumerator RetryConnectionCoroutine()
+    {
+        yield return new WaitForSeconds(5);
+        EstablishConnection();
+        retry = true;
     }
 
     void ExecuteCommand(string message)

@@ -216,7 +216,7 @@ public class MessageHandler : MonoBehaviour
         }*/
     }
 
-    public void PickBox(int box_level, int box_number, string led_color, int knowledge_level, int default_time)  // TODO
+    public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)  // TODO
     {
         /*current_knowledge_level = knowledge_level;
 
@@ -275,7 +275,7 @@ public class MessageHandler : MonoBehaviour
         }*/
     }
 
-    public void PickTool(int tool_level, int tool_number, string led_color, int knowledge_level, int default_time)  // TODO
+    public void PickTool(int tool_name,string led_color, int knowledge_level, int default_time)  // TODO
     {
         /*current_knowledge_level = knowledge_level;
 

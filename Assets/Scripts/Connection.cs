@@ -8,7 +8,8 @@ public class Connection : MonoBehaviour
 {
     WebSocket websocket;
 
-    private CommunicationClass message = new CommunicationClass();
+    private ObjectInstruction object_instruction = new ObjectInstruction();
+    private ToolInstruction tool_instruction = new ToolInstruction();
     private OrderProperties order_properties = new OrderProperties();
     private bool connected = false;
     private bool retry = true;
@@ -26,6 +27,7 @@ public class Connection : MonoBehaviour
             if (coroutine != null)
             {
                 StopCoroutine(coroutine);
+                retry = true;  // reset variable for next connection loss
             }            
             connected = true;
         };
@@ -66,10 +68,10 @@ public class Connection : MonoBehaviour
         {
             if (retry == true)
             {
+                retry = false;
                 Debug.Log("No connection -> retry after 5s");
                 coroutine = RetryConnectionCoroutine();
                 StartCoroutine(coroutine);
-                retry = false;
             }
         }
     }
@@ -109,6 +111,26 @@ public class Connection : MonoBehaviour
             order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
             this.GetComponent<MessageHandler>().InitializePoints(order_properties.number_points);
             SendWebSocketMessage("ACK-number_points");
+        }
+        else if (message.Contains("item_name"))  //Show item
+        {
+            object_instruction = JsonConvert.DeserializeObject<ObjectInstruction>(message);
+            this.GetComponent<MessageHandler>().PickObject(
+                object_instruction.item_name,
+                object_instruction.color,
+                object_instruction.knowledge_level,
+                object_instruction.default_time
+                );
+        }
+        else if (message.Contains("tool_name"))  //Show item
+        {
+            tool_instruction = JsonConvert.DeserializeObject<ToolInstruction>(message);
+            this.GetComponent<MessageHandler>().PickObject(
+                tool_instruction.tool_name,
+                tool_instruction.color,
+                tool_instruction.knowledge_level,
+                tool_instruction.default_time
+                );
         }
         else
         {

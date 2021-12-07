@@ -51,18 +51,22 @@ public class ReturnData
 [System.Serializable]
 public class ItemData
 {
+    public string name = "";               // Part_A
     public int level = 0;               //[1,4]
     public int number = 0;               //box range [1,8]
     public string led_color = "";         //green, yellow, red, reset
 }
 
-[System.Serializable]
-public class StorageInformation
-{
-    public BoxProperties box = new BoxProperties();
-    public ToolProperties toolholder = new ToolProperties();
-}
+//[System.Serializable]
+//public class StorageInformation
+//{
+//    public BoxProperties box = new BoxProperties();
+//    public ToolProperties toolholder = new ToolProperties();
+//}
 
+
+
+// *********************************** Messages from the Server ***********************************************************
 
 [System.Serializable]
 public class BoxProperties
@@ -86,6 +90,22 @@ public class OrderProperties
     public string version = "";
     public int number_steps = 0;
     public int number_points = 0;
+}
+
+public class ObjectInstruction
+{
+    public string item_name = "";
+    public string color = "";
+    public int knowledge_level = 1;
+    public int default_time = 0;
+}
+
+public class ToolInstruction
+{
+    public string tool_name = "";
+    public string color = "";
+    public int knowledge_level = 1;
+    public int default_time = 0;
 }
 
 [System.Serializable]

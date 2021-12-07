@@ -17,12 +17,40 @@ public class ObjectInteractions : MonoBehaviour {
     private Material current_material;
     private Shader standardShader;
 
+    private Material mat_red;
+    private Material mat_green;
+    private Material mat_blue;
+
     void Start()
     {
         client = GameObject.Find("Client");
         arrow_prefab = (GameObject)Resources.Load("Prefabs/General/Arrow_1", typeof(GameObject));
         standardShader = Shader.Find("Standard");
         StoreCurrentProperties();
+
+        mat_red = (Material)Resources.Load("Materials/Red", typeof(Material));
+        mat_green = (Material)Resources.Load("Materials/Green", typeof(Material));
+        mat_blue = (Material)Resources.Load("Materials/Blue", typeof(Material));
+    }
+
+    public void ChangeRGB(string color)
+    {
+        if (this.GetComponent<MeshRenderer>() != null)
+        {
+            if (color == "red")
+            {
+                this.GetComponent<MeshRenderer>().material = mat_red;
+            }
+            else if (color == "green")
+            {
+                this.GetComponent<MeshRenderer>().material = mat_green;
+            }
+            else if (color == "blue")
+            {
+                this.GetComponent<MeshRenderer>().material = mat_blue;
+            }
+
+        }
     }
 
     public void ChangeMaterial(Material material)

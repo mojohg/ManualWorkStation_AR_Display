@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5691829316491421290
+--- !u!1 &5022876668083043899
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5691829316491421285}
-  - component: {fileID: 5691829316491421287}
-  - component: {fileID: 5691829316491421284}
+  - component: {fileID: 5022876668083043900}
+  - component: {fileID: 5022876668083043902}
+  - component: {fileID: 5022876668083043901}
   m_Layer: 0
-  m_Name: item_0062828_Profilrohr_D30_L=110_1
+  m_Name: item_0063704_Abdeckkappe_Rohr_D30_ESD_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5691829316491421285
+--- !u!4 &5022876668083043900
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5691829316491421290}
-  m_LocalRotation: {x: 0.66479987, y: 0.13166024, z: -0.5643873, w: 0.47135302}
-  m_LocalPosition: {x: 0.058286753, y: 0.056777015, z: -0.025345176}
+  m_GameObject: {fileID: 5022876668083043899}
+  m_LocalRotation: {x: -0, y: -0.70710677, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.127, y: -0.0037139175, z: 0.09078966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5691829316491421287
+--- !u!33 &5022876668083043902
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5691829316491421290}
-  m_Mesh: {fileID: 4300086, guid: 7cee758cc9e693a439fb3092cc0d12d7, type: 3}
---- !u!23 &5691829316491421284
+  m_GameObject: {fileID: 5022876668083043899}
+  m_Mesh: {fileID: 4300078, guid: 7cee758cc9e693a439fb3092cc0d12d7, type: 3}
+--- !u!23 &5022876668083043901
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5691829316491421290}
+  m_GameObject: {fileID: 5022876668083043899}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1

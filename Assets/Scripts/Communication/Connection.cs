@@ -8,8 +8,7 @@ public class Connection : MonoBehaviour
 {
     WebSocket websocket;
 
-    private ObjectInstruction object_instruction = new ObjectInstruction();
-    private ToolInstruction tool_instruction = new ToolInstruction();
+    private UserInstruction instruction = new UserInstruction();
     private OrderProperties order_properties = new OrderProperties();
     private bool connected = false;
     private bool retry = true;
@@ -112,25 +111,36 @@ public class Connection : MonoBehaviour
             this.GetComponent<MessageHandler>().InitializePoints(order_properties.number_points);
             SendWebSocketMessage("ACK-number_points");
         }
-        else if (message.Contains("item_name"))  //Show item
+        else if (message.Contains("action_type"))  //Show instruction
         {
-            object_instruction = JsonConvert.DeserializeObject<ObjectInstruction>(message);
-            this.GetComponent<MessageHandler>().PickObject(
-                object_instruction.item_name,
-                object_instruction.color,
-                object_instruction.knowledge_level,
-                object_instruction.default_time
+            instruction = JsonConvert.DeserializeObject<UserInstruction>(message);
+            if (instruction.action_type == "pickItem")
+            {
+                this.GetComponent<MessageHandler>().PickObject(
+                instruction.item_name,
+                instruction.color,
+                instruction.knowledge_level,
+                instruction.default_time
                 );
-        }
-        else if (message.Contains("tool_name"))  //Show item
-        {
-            tool_instruction = JsonConvert.DeserializeObject<ToolInstruction>(message);
-            this.GetComponent<MessageHandler>().PickObject(
-                tool_instruction.tool_name,
-                tool_instruction.color,
-                tool_instruction.knowledge_level,
-                tool_instruction.default_time
-                );
+            }
+            else if (instruction.action_type == "pickTool")
+            {
+                this.GetComponent<MessageHandler>().PickTool(
+                    instruction.item_name,
+                    instruction.color,
+                    instruction.knowledge_level,
+                    instruction.default_time
+                    );
+            }
+            else if (instruction.action_type == "placeItem")
+            {
+                this.GetComponent<MessageHandler>().ShowAssemblyPosition(
+                    instruction.item_name,
+                    instruction.action_name,
+                    instruction.knowledge_level,
+                    instruction.default_time
+                    );
+            }
         }
         else
         {

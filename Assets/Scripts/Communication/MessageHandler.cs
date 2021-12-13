@@ -39,12 +39,12 @@ public class MessageHandler : MonoBehaviour
     //private List<GameObject> tools = new List<GameObject>();
     private List<GameObject> holder_versions;
     private List<GameObject> product_versions;
-    //private List<GameObject> assembly_items;
+    private List<GameObject> assembly_items;
     private List<GameObject> turn_versions;
     private List<GameObject> turn_operations;
-    //private List<GameObject> active_items = new List<GameObject>();
+    private List<GameObject> active_items = new List<GameObject>();
     //private List<GameObject> training_pages = new List<GameObject>();
-    //private Material assembly_info_material_1;
+    private Material assembly_info_material_1;
     //private Material assembly_info_material_2;
     //private Material finished_info_material;
     //private Material toolpoint_material;
@@ -62,7 +62,7 @@ public class MessageHandler : MonoBehaviour
 
     void Start()
     {
-        //assembly_info_material_1 = (Material)Resources.Load("InformationMaterial1", typeof(Material));
+        assembly_info_material_1 = (Material)Resources.Load("Materials/InformationMaterial1", typeof(Material));
         //assembly_info_material_2 = (Material)Resources.Load("InformationMaterial2", typeof(Material));
         //toolpoint_material = (Material)Resources.Load("InformationMaterialToolpoints", typeof(Material));
         //finished_info_material = (Material)Resources.Load("LedGreen", typeof(Material));
@@ -117,7 +117,11 @@ public class MessageHandler : MonoBehaviour
                     if (product.name == current_version)
                     {
                         product.SetActive(true);
-                        //assembly_items = product.GetComponent<AssemblyOrganisation>().main_items_list;
+                        assembly_items = product.GetComponent<AssemblyOrganisation>().main_items_list;  // Find GO of assembly
+                        foreach (GameObject item in assembly_items)
+                        {
+                            item.SetActive(false);  // Deactivate GO that they are not visible
+                        }
                         active_product_version = product;
                     }
                     else
@@ -255,7 +259,7 @@ public class MessageHandler : MonoBehaviour
         }
     }
 
-    public void PickTool(int tool_name,string led_color, int knowledge_level, int default_time)  // TODO
+    public void PickTool(string tool_name,string led_color, int knowledge_level, int default_time)  // TODO
     {
         /*current_knowledge_level = knowledge_level;
 
@@ -317,6 +321,20 @@ public class MessageHandler : MonoBehaviour
         {
             ShowToolLeds(tool_level, tool_number, led_color, knowledge_level, default_time);
         }*/
+    }
+
+    public void ShowAssemblyPosition(string item_name, string action_name, int knowledge_level, int default_time)  // TODO: Level System
+    {
+        foreach (GameObject item in assembly_items)
+        {
+            if (item.name == item_name)
+            {
+                item.SetActive(true);
+                active_items.Add(item);
+                ShowObjectPosition(item, assembly_info_material_1);
+                break;
+            }
+        }
     }
 
     public void ShowInstructions(int knowledge_level, GameObject obj)  // TODO
@@ -436,35 +454,20 @@ public class MessageHandler : MonoBehaviour
         return null;
     }
 
-    private void ShowObjectPosition(GameObject current_object, Material material)  // TODO
+    private void ShowObjectPosition(GameObject current_object, Material material)
     {
-        /*if (current_object.GetComponent<ToolObject>() != null)
+        if (current_object.GetComponent<ObjectInteractions>() != null)
         {
-            foreach (GameObject point in current_object.GetComponent<ToolObject>().tool_objects_highlight)  // Highlight toolpoints
-            {
-                if (point.GetComponent<ObjectInteractions>() != null)
-                {
-                    point.GetComponent<ObjectInteractions>().ChangeMaterial(toolpoint_material);
-                    active_items.Add(point);
-                }                
-            }
-            if (current_object.GetComponent<ObjectInteractions>() != null)  // Highlight item which interacts with tool (e.g. screw)
-            {
-                current_object.GetComponent<ObjectInteractions>().ChangeMaterial(toolpoint_material);
-            }
+            current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
+            active_items.Add(current_object);
         }
-        else  // Highlight object
+        else
         {
-            if (current_object.GetComponent<ObjectInteractions>() != null)
-            {
-                current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
-                active_items.Add(current_object);
-            }
-            else
-            {
-                Debug.LogWarning("ObjectInteractions in Gameobject " + current_object.name + " not found");
-            } 
-        } */
+            Debug.LogWarning("ObjectInteractions in Gameobject " + current_object.name + " not found  --> add it");
+            current_object.AddComponent<ObjectInteractions>();
+            current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
+            active_items.Add(current_object);
+        } 
     }
 
     public void ResetWorkplace() // TODO
@@ -473,6 +476,11 @@ public class MessageHandler : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        foreach (GameObject item in active_items)
+        {
+            item.SetActive(false);
+        }
+        active_items.Clear();
 
         // Reset assemblies
         /*foreach (Transform obj in active_product_version.transform)  

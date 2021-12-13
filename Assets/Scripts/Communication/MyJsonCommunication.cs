@@ -92,17 +92,11 @@ public class OrderProperties
     public int number_points = 0;
 }
 
-public class ObjectInstruction
+public class UserInstruction
 {
+    public string action_type = "";
     public string item_name = "";
-    public string color = "";
-    public int knowledge_level = 1;
-    public int default_time = 0;
-}
-
-public class ToolInstruction
-{
-    public string tool_name = "";
+    public string action_name = "";
     public string color = "";
     public int knowledge_level = 1;
     public int default_time = 0;

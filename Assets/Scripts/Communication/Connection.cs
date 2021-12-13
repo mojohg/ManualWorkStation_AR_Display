@@ -137,10 +137,24 @@ public class Connection : MonoBehaviour
             {
                 this.GetComponent<MessageHandler>().ShowAssemblyPosition(
                     instruction.item_name,
-                    instruction.action_name,
                     instruction.knowledge_level,
                     instruction.default_time
                     );
+            }
+            else if (instruction.action_type == "useItemTool")
+            {
+                this.GetComponent<MessageHandler>().ShowAssemblyPosition(
+                    instruction.item_name,
+                    instruction.knowledge_level,
+                    instruction.default_time
+                    );
+                this.GetComponent<MessageHandler>().ShowToolUsage(
+                    instruction.action_name
+                    );
+            }
+            else
+            {
+                Debug.Log("Unknown user action: " + instruction.action_type);
             }
         }
         else

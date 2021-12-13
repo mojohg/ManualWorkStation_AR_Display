@@ -316,7 +316,7 @@ public class MessageHandler : MonoBehaviour
         }*/
     }
 
-    public void ShowAssemblyPosition(string item_name, string action_name, int knowledge_level, int default_time)  // TODO: Level System
+    public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time)  // TODO: Level System
     {
         Debug.Log("Show assembly instruction for " + item_name);
         current_action_display.GetComponent<Text>().text = "Assemble";
@@ -330,6 +330,12 @@ public class MessageHandler : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void ShowToolUsage(string action_name)  // TODO: Add animations
+    {
+        Debug.Log("Show tool usage instruction for " + action_name);
+        current_action_display.GetComponent<Text>().text = "Assemble with tool";
     }
 
     public void ShowInstructions(int knowledge_level, GameObject obj)  // TODO

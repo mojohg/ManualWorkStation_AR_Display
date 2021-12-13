@@ -17,7 +17,6 @@ public class MessageHandler : MonoBehaviour
     private GameObject product_turns;
     private GameObject product_holder;
     private GameObject feedback_canvas;
-    private GameObject object_presentation;
     //public GameObject training_finished;
 
     public int current_knowledge_level;
@@ -55,10 +54,13 @@ public class MessageHandler : MonoBehaviour
 
     // UI
     private GameObject current_point_display;
+    private GameObject current_action_display;
     private GameObject max_point_display;
     private int max_points;
     private List<GameObject> uncompleted_steps = new List<GameObject>();
     private GameObject prefab_bar;
+    private GameObject object_presentation;
+    private GameObject assembly_presentation;
 
     void Start()
     {
@@ -77,8 +79,10 @@ public class MessageHandler : MonoBehaviour
         product_holder = GameObject.Find("ProductHolder");
         feedback_canvas = GameObject.Find("Canvas");
         object_presentation = GameObject.Find("NextObjects");
+        assembly_presentation = GameObject.Find("TotalAssembly");
         current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
         max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
+        current_action_display = feedback_canvas.transform.Find("ActionInfo").gameObject;
 
         // Load prefabs
         prefab_bar = (GameObject)Resources.Load("Prefabs/UI/bar", typeof(GameObject));
@@ -88,6 +92,8 @@ public class MessageHandler : MonoBehaviour
     {
         current_version = version_name;
         Debug.Log("Load product version " + current_version);
+        current_action_display.GetComponent<Text>().text = current_version;
+
         product_versions = assemblies.GetComponent<AssemblyOrganisation>().main_items_list;
         holder_versions = product_holder.GetComponent<AssemblyOrganisation>().main_items_list;
         turn_versions = product_turns.GetComponent<AssemblyOrganisation>().main_items_list;
@@ -113,22 +119,34 @@ public class MessageHandler : MonoBehaviour
         try // Load product cad
         {
             foreach (GameObject product in product_versions)
+            {
+                if (product.name == current_version)
                 {
-                    if (product.name == current_version)
+                    product.SetActive(true);
+
+                    try  // Show product
                     {
-                        product.SetActive(true);
-                        assembly_items = product.GetComponent<AssemblyOrganisation>().main_items_list;  // Find GO of assembly
-                        foreach (GameObject item in assembly_items)
-                        {
-                            item.SetActive(false);  // Deactivate GO that they are not visible
-                        }
-                        active_product_version = product;
+                        GameObject product_copy = Instantiate(product, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
+                        product_copy.transform.localPosition = new Vector3(0, 0, 0);
+                        product_copy.transform.localScale = 0.5f * product_copy.transform.localScale;
                     }
-                    else
+                    catch
                     {
-                        product.SetActive(false);
+                        Debug.LogWarning("Product version could not be displayed " + current_version);
                     }
+
+                    assembly_items = product.GetComponent<AssemblyOrganisation>().main_items_list;  // Find GO of assembly
+                    foreach (GameObject item in assembly_items)
+                    {
+                        item.SetActive(false);  // Deactivate GO that they are not visible
+                    }
+                    active_product_version = product;
                 }
+                else
+                {
+                    product.SetActive(false);
+                }
+            }
         }
         catch
         {
@@ -229,25 +247,17 @@ public class MessageHandler : MonoBehaviour
     public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)  // TODO: Level System
     {
         Debug.Log("Show pick instruction for " + item_name);
+        current_action_display.GetComponent<Text>().text = "Pick Item";
         current_knowledge_level = knowledge_level;
 
-        // Find prefab
+        // Find and show prefab
         GameObject item_prefab = FindPrefab("Prefabs/Parts/" + current_version + "/" + item_name, item_name);
         if (item_prefab == null)
         {
             Debug.LogWarning("Prefab for " + item_name + " not found");
             return;
         }
-
-        // Show object at specified position
-        GameObject displayed_item = Instantiate(item_prefab, new Vector3(0, 0, 0), Quaternion.identity);
-        displayed_item.transform.parent = object_presentation.transform;
-        displayed_item.transform.localPosition = new Vector3(0, 0, 0);
-        displayed_item.transform.localScale = new Vector3(1, 1, 1);
-        if (displayed_item.GetComponent<ObjectInteractions>() == null)
-        {
-            displayed_item.AddComponent<ObjectInteractions>();
-        }
+        ShowPickPrefab(item_prefab);
 
         if (led_color == "red")  // Wrong pick
         {
@@ -259,47 +269,30 @@ public class MessageHandler : MonoBehaviour
         }
     }
 
-    public void PickTool(string tool_name,string led_color, int knowledge_level, int default_time)  // TODO
+    public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)  // TODO Level System & Wrong Pick
     {
-        /*current_knowledge_level = knowledge_level;
+        Debug.Log("Show pick instruction for " + tool_name);
+        current_action_display.GetComponent<Text>().text = "Pick Tool";
+        current_knowledge_level = knowledge_level;
 
-        tool_holder_name = "Tool_" + tool_level + "_" + tool_number;
-        GameObject tool_holder = GameObject.Find(tool_holder_name);
-        if (tool_holder == null)
+        // Find prefab
+        GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
+        if (tool_prefab == null)
         {
-            Debug.LogWarning(tool_holder_name + " not found");
+            Debug.LogWarning("Prefab for " + tool_name + " not found");
             return;
         }
-        GameObject tool = tool_holder.transform.GetChild(0).gameObject;
-        if (tool == null)
-        {
-            Debug.LogWarning(" Tool not found");
-            return;
-        }
-        if (tool.GetComponent<ObjectInteractions>() == null)
-        {
-            tool.AddComponent<ObjectInteractions>();
-        }
 
-        if(current_knowledge_level == 0)
+        if (led_color == "red")  // Wrong pick
         {
-            IEnumerable<GameObject> pages = training_pages.Where(obj => obj.name == "PickTool");
-            foreach (GameObject page in pages)
-            {
-                page.SetActive(true);
-            }
-            left_controller.GetComponent<HighlightController>().HighlightTrigger();
-            right_controller.GetComponent<HighlightController>().HighlightTrigger();
-            tool.GetComponent<ObjectInteractions>().ShowObjectBoundaries(Color.green, 1.06f);
+            source_wrong.Play();
+            // TODO: Show tool with cross
+
         }
-        else if (current_knowledge_level == 1)
+        else if (led_color == "green")  // Correct pick
         {
-            tool.GetComponent<ObjectInteractions>().ShowObjectBoundaries(Color.green, 1.06f);
+            ShowPickPrefab(tool_prefab);
         }
-        else
-        {
-            ShowToolLeds(tool_level, tool_number, led_color, knowledge_level, default_time);
-        }*/
     }
 
     public void ReturnTool(int tool_level, int tool_number, string led_color, int knowledge_level, int default_time)  // TODO
@@ -325,6 +318,8 @@ public class MessageHandler : MonoBehaviour
 
     public void ShowAssemblyPosition(string item_name, string action_name, int knowledge_level, int default_time)  // TODO: Level System
     {
+        Debug.Log("Show assembly instruction for " + item_name);
+        current_action_display.GetComponent<Text>().text = "Assemble";
         foreach (GameObject item in assembly_items)
         {
             if (item.name == item_name)
@@ -470,7 +465,7 @@ public class MessageHandler : MonoBehaviour
         } 
     }
 
-    public void ResetWorkplace() // TODO
+    public void ResetWorkplace()
     {
         foreach (Transform child in object_presentation.transform)
         {
@@ -481,26 +476,6 @@ public class MessageHandler : MonoBehaviour
             item.SetActive(false);
         }
         active_items.Clear();
-
-        // Reset assemblies
-        /*foreach (Transform obj in active_product_version.transform)  
-        {
-            obj.gameObject.SetActive(false);
-        }
-
-        // Reset shader for all objects
-        if (active_items != null)
-        {
-            foreach (GameObject obj in active_items)
-            {
-                obj.GetComponent<ObjectInteractions>().ChangeMaterial(invisible_material);
-            }
-        }
-        active_items = new List<GameObject>();
-        
-        ResetTrainingPages();
-        ResetStorage();
-        ResetLeds();*/
     }
 
     public GameObject FindGameobject(string name, List<GameObject> gameobject_list)
@@ -514,6 +489,27 @@ public class MessageHandler : MonoBehaviour
         }
         Debug.LogWarning("Gameobject " + name + " not found");
         return null;
+    }
+
+    private void ShowPickPrefab(GameObject prefab)
+    {
+        foreach (Transform child in object_presentation.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        int number_pick_options = object_presentation.transform.childCount;
+        Vector3 offset = new Vector3(0, 0.5f, 0);
+
+        // Show object at specified position
+        GameObject displayed_item = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+        Vector3 original_scale = displayed_item.transform.localScale;
+        displayed_item.transform.parent = object_presentation.transform;
+        displayed_item.transform.localPosition = new Vector3(0, 0, 0) + number_pick_options * offset;
+        displayed_item.transform.localScale = original_scale;
+        if (displayed_item.GetComponent<ObjectInteractions>() == null)
+        {
+            displayed_item.AddComponent<ObjectInteractions>();
+        }
     }
 
     private GameObject FindPrefab(string path_name, string prefab_name)

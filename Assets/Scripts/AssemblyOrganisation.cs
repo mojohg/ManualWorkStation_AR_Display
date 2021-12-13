@@ -25,7 +25,7 @@ public class AssemblyOrganisation : MonoBehaviour
             foreach (Transform child in this.transform)
             {
                 main_items_list.Add(child.gameObject);
-                child.gameObject.SetActive(false);
+                // child.gameObject.SetActive(false);
             }
         }
     }

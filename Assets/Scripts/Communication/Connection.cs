@@ -84,6 +84,7 @@ public class Connection : MonoBehaviour
 
     void ExecuteCommand(string message)
     {
+        Debug.Log(message);
         if ( message == "Connected") 
         {
             SendWebSocketMessage("ACK-Connected");

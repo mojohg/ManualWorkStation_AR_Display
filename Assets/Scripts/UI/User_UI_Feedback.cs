@@ -16,6 +16,7 @@ public class User_UI_Feedback : MonoBehaviour
 
     private GameObject popup_point;
     private GameObject popup_parent;
+    private GameObject progressBar;
 
 
     void Awake()
@@ -30,9 +31,9 @@ public class User_UI_Feedback : MonoBehaviour
 	{
         prefab_bar = (GameObject)Resources.Load("Prefabs/UI/bar", typeof(GameObject));
         point_display = FindUiElement("PointDisplay", ui_elements);
+        progressBar = FindUiElement("StepDisplay", ui_elements);
         popup_point = Resources.Load("Prefabs/General/PointPopup", typeof(GameObject)) as GameObject;
         popup_parent = GameObject.Find("PointPopupParent");
-        //TestUI();
     }
 
     private void TestUI()
@@ -103,7 +104,6 @@ public class User_UI_Feedback : MonoBehaviour
 
 	public void ShowNumberSteps(int number)
     {
-        GameObject progressBar = FindUiElement("FinishedSteps", ui_elements);
         GameObject new_bar;
 
         for (int i = 0; i < number; i++)
@@ -160,5 +160,10 @@ public class User_UI_Feedback : MonoBehaviour
         GameObject go = Instantiate(popup_point, popup_parent.transform.position, Quaternion.identity, popup_parent.transform);
         Color col = new Color(color_r, color_g, color_b);
         go.GetComponent<UI_Popup>().Setup(message, col);
+    }
+
+    public void DisplayLevelup()
+    {
+
     }
 }

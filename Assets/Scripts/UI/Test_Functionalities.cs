@@ -18,7 +18,7 @@ public class Test_Functionalities : MonoBehaviour {
 
     Regex pattern = new Regex(@"^\w+$");
 
-    public GameObject user_canvas;
+    public GameObject feedback_canvas;
     public GameObject popup;
 
     void OnEnable()
@@ -38,7 +38,7 @@ public class Test_Functionalities : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             show_ui = !show_ui;
         }
@@ -55,37 +55,52 @@ public class Test_Functionalities : MonoBehaviour {
 
             // Add elements
 
-            if (GUI.Button(new Rect(box_x0 + margins, 40, box_width - 2 * margins, 20), "Load progress bar"))
+            if (GUI.Button(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), "Load progress bar"))
             {
-                client.GetComponent<MessageHandler>().InitializeSteps(10);
+                feedback_canvas.GetComponent<User_UI_Feedback>().ShowNumberSteps(10);
             }
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * 0, box_width - 2 * margins, 20), "LevelUp"))
+            int i = 0;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Finish step"))
             {
-                if (user_canvas == null)
+                feedback_canvas.GetComponent<User_UI_Feedback>().FinishStep();
+            }
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "LevelUp"))
+            {
+                if (feedback_canvas == null)
                 {
-                    user_canvas = GameObject.Find("Canvas");
+                    feedback_canvas = GameObject.Find("Canvas");
                 }
                 if (popup == null)
                 {
                     popup = GameObject.Find("PointPopupParent");
                 }
 
-                if (user_canvas != null && popup != null)
+                if (feedback_canvas != null && popup != null)
                 {
-                    user_canvas.GetComponent<User_UI_Feedback>().DisplayPointPopup("-2", 1f, 0f, 0f);
+                    feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPointPopup("-2", 1f, 0f, 0f);
                 }
             }
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * 1, box_width - 2 * margins, 20), "Point Info"))
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Point Info"))
             {
-                
+                feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPointPopup("Yeah +2", 0, 255, 0);
             }
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * 2, box_width - 2 * margins, 20), "Training finished"))
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Training finished"))
             {
-                
+
             }
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * 3, box_width - 2 * margins, 20), "Assembly feedback"))
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Assembly feedback"))
             {
-                
+
+            }
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Reset Scene"))
+            {
+                Scene scene = SceneManager.GetActiveScene(); 
+                SceneManager.LoadScene(scene.name);
             }
         }        
     }

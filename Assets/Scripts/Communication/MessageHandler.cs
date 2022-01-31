@@ -77,15 +77,12 @@ public class MessageHandler : MonoBehaviour
         assemblies = GameObject.Find("Assemblies");
         product_turns = GameObject.Find("ProductTurns");
         product_holder = GameObject.Find("ProductHolder");
-        feedback_canvas = GameObject.Find("Canvas");
+        feedback_canvas = GameObject.Find("FeedbackCanvas");
         object_presentation = GameObject.Find("NextObjects");
         assembly_presentation = GameObject.Find("TotalAssembly");
         current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
         max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
         current_action_display = feedback_canvas.transform.Find("ActionInfo").gameObject;
-
-        // Load prefabs
-        prefab_bar = (GameObject)Resources.Load("Prefabs/UI/bar", typeof(GameObject));
     }
 
     public void InitializeVersion(string version_name)
@@ -177,15 +174,7 @@ public class MessageHandler : MonoBehaviour
     public void InitializeSteps(int number_steps)  // TODO
     {
         Debug.Log("InitializeSteps: " + number_steps.ToString());
-        GameObject progressBar = feedback_canvas.transform.Find("StepDisplay").gameObject;
-        GameObject new_bar;
-
-        for (int i = 0; i < number_steps; i++)
-        {
-            new_bar = Instantiate(prefab_bar, progressBar.transform);
-            new_bar.name = "Bar_" + i;
-            uncompleted_steps.Add(new_bar);
-        }
+        feedback_canvas.GetComponent<User_UI_Feedback>().ShowNumberSteps(number_steps);
     }
 
     public void InitializePoints (int number_points)
@@ -205,11 +194,7 @@ public class MessageHandler : MonoBehaviour
     public void ParsePerformanceMessage(PerformanceProperties message)  // TODO
     {
         Debug.Log("ParsePerformanceMessage");
-        /*if(message.total_level == 4)
-        {
-            training_finished.GetComponent<User_TrainingFinished>().ShowFinished();
-            return;
-        }
+        /*
         if(feedback_system == null)
         {
             feedback_system = GameObject.Find("UserFeedback_Canvas");

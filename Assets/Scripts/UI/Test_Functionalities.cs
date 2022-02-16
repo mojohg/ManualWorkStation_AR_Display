@@ -74,14 +74,14 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
             }
             i++;
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Point Info"))
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Point Popup"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup("Yeah +2", 0, 255, 0);
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Training finished"))
             {
-
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayTrainingFinished();
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Assembly feedback"))

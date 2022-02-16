@@ -22,13 +22,18 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject progressBar;
     private GameObject point_display;
     private GameObject levelup;
+    private GameObject training_finished;
+
 
 
     void Awake()
     {
 		foreach (Transform element in this.transform)
         {
-			ui_elements.Add(element.gameObject);
+            if (element.name != "LevelUpText" && element.name != "TrainingFinishedText")
+            {
+                ui_elements.Add(element.gameObject);
+            }
         }
     }
 
@@ -41,6 +46,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         progressBar = FindUiElement("StepDisplay", ui_elements);
         popup_parent = GameObject.Find("PopupParent");
         levelup = GameObject.Find("LevelUp");
+        training_finished = GameObject.Find("TrainingFinished");
     }
 
     public void SetMaxPoints(int max_points)
@@ -160,6 +166,22 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void DisplayLevelup()
     {
-        levelup.GetComponent<UI_Levelup>().ShowLevelUp();
+        levelup.GetComponent<UI_Confetti>().ShowConfetti();
+    }
+
+    public void DisplayTrainingFinished()
+    {
+        training_finished.GetComponent<UI_Confetti>().ShowConfetti();
+        
+        GameObject.Find("Assemblies").SetActive(false);
+        this.DisableFeedbackElements();
+    }
+
+    private void DisableFeedbackElements()
+    {
+        foreach (GameObject element in ui_elements)
+        {
+            element.SetActive(false);
+        }
     }
 }

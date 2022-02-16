@@ -52,6 +52,10 @@ public class Test_Functionalities : MonoBehaviour {
             box_x0 = Screen.width - box_width - margins;
             box_height = Screen.height - 2 * margins;
             GUI.Box(new Rect(box_x0, margins, box_width, box_height), "Test");
+            if (feedback_canvas == null)
+            {
+                feedback_canvas = GameObject.Find("Canvas");
+            }
 
             // Add elements
 
@@ -65,26 +69,19 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<User_UI_Feedback>().FinishStep();
             }
             i++;
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "LevelUp"))
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "LevelUp"))  // TODO
             {
-                if (feedback_canvas == null)
-                {
-                    feedback_canvas = GameObject.Find("Canvas");
-                }
-                if (popup == null)
-                {
-                    popup = GameObject.Find("PointPopupParent");
-                }
+                //if (popup == null)
+                //{
+                //    popup = GameObject.Find("PointPopupParent");  // ToDo
+                //}
 
-                if (feedback_canvas != null && popup != null)
-                {
-                    feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPointPopup("-2", 1f, 0f, 0f);
-                }
+                // feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPointPopup("-2", 1f, 0f, 0f);   // ToDo
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Point Info"))
             {
-                feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPointPopup("Yeah +2", 0, 255, 0);
+                feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPopup("Yeah +2", 0, 255, 0);
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Training finished"))

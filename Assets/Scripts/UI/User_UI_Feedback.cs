@@ -155,7 +155,7 @@ public class User_UI_Feedback : MonoBehaviour
         return null;
     }
 
-    public void DisplayPointPopup(string message, float color_r, float color_g, float color_b)
+    public void DisplayPopup(string message, float color_r, float color_g, float color_b)
     {
         GameObject go = Instantiate(popup_point, popup_parent.transform.position, Quaternion.identity, popup_parent.transform);
         Color col = new Color(color_r, color_g, color_b);

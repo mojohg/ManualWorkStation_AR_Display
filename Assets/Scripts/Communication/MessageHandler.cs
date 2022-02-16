@@ -174,7 +174,7 @@ public class MessageHandler : MonoBehaviour
     public void InitializeSteps(int number_steps)  // TODO
     {
         Debug.Log("InitializeSteps: " + number_steps.ToString());
-        feedback_canvas.GetComponent<User_UI_Feedback>().ShowNumberSteps(number_steps);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps);
     }
 
     public void InitializePoints (int number_points)

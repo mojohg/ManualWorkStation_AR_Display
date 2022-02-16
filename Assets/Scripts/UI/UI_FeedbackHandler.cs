@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class User_UI_Feedback : MonoBehaviour 
+public class UI_FeedbackHandler : MonoBehaviour 
 {
     public Sprite level_1_sprite;
     public Sprite level_2_sprite;
     public Sprite level_3_sprite;
     public List<GameObject> ui_elements;
     public List<GameObject> uncompleted_steps;
-    private GameObject prefab_bar;    
-    private GameObject point_display;
     private float max_number_points;
 
-    private GameObject popup_point;
+    // Prefabs
+    private GameObject prefab_popup;
+    private GameObject prefab_levelup;
+    private GameObject prefab_bar;
+
+    // Elements in scene
     private GameObject popup_parent;
     private GameObject progressBar;
+    private GameObject point_display;
+    private GameObject levelup;
 
 
     void Awake()
@@ -30,21 +35,12 @@ public class User_UI_Feedback : MonoBehaviour
 	void Start () 
 	{
         prefab_bar = (GameObject)Resources.Load("Prefabs/UI/bar", typeof(GameObject));
+        prefab_popup = Resources.Load("Prefabs/General/Popup", typeof(GameObject)) as GameObject;
+        prefab_levelup = Resources.Load("Prefabs/General/Levelup", typeof(GameObject)) as GameObject;
         point_display = FindUiElement("PointDisplay", ui_elements);
         progressBar = FindUiElement("StepDisplay", ui_elements);
-        popup_point = Resources.Load("Prefabs/General/PointPopup", typeof(GameObject)) as GameObject;
-        popup_parent = GameObject.Find("PointPopupParent");
-    }
-
-    private void TestUI()
-    {
-        ShowPerformance(0.85f, 0.3f, 0.8f);
-        ShowNumberSteps(20);
-        FinishStep();
-        FinishStep();
-        ShowLevel(3);
-        SetMaxPoints(20);
-        ShowPoints(10);
+        popup_parent = GameObject.Find("PopupParent");
+        levelup = GameObject.Find("LevelUp");
     }
 
     public void SetMaxPoints(int max_points)
@@ -157,13 +153,13 @@ public class User_UI_Feedback : MonoBehaviour
 
     public void DisplayPopup(string message, float color_r, float color_g, float color_b)
     {
-        GameObject go = Instantiate(popup_point, popup_parent.transform.position, Quaternion.identity, popup_parent.transform);
+        GameObject go = Instantiate(prefab_popup, popup_parent.transform.position, Quaternion.identity, popup_parent.transform);
         Color col = new Color(color_r, color_g, color_b);
         go.GetComponent<UI_Popup>().Setup(message, col);
     }
 
     public void DisplayLevelup()
     {
-
+        levelup.GetComponent<UI_Levelup>().ShowLevelUp();
     }
 }

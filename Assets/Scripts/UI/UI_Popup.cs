@@ -20,7 +20,6 @@ public class UI_Popup : MonoBehaviour {
     public void Setup(string message, Color col)
     {
         textMesh = this.GetComponent<TextMeshPro>();
-        cameraTransform = Camera.main.transform;
         textMesh.color = col;
         textColor = textMesh.color;
         textMesh.SetText(message);
@@ -28,10 +27,7 @@ public class UI_Popup : MonoBehaviour {
 
     private void PopUpUpdate()
     {
-        //this.transform.LookAt(cameraTransform.position + new Vector3(0, 180, 0));  // Look towards player
-
         this.transform.eulerAngles = new Vector3(90,-90,0);
-
 
         transform.position += new Vector3(0f, moveYSpeed * Time.deltaTime, 0f);
 

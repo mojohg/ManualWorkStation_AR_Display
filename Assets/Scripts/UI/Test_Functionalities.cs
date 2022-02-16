@@ -61,27 +61,22 @@ public class Test_Functionalities : MonoBehaviour {
 
             if (GUI.Button(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), "Load progress bar"))
             {
-                feedback_canvas.GetComponent<User_UI_Feedback>().ShowNumberSteps(10);
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(10);
             }
             int i = 0;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Finish step"))
             {
-                feedback_canvas.GetComponent<User_UI_Feedback>().FinishStep();
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
             }
             i++;
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "LevelUp"))  // TODO
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "LevelUp"))
             {
-                //if (popup == null)
-                //{
-                //    popup = GameObject.Find("PointPopupParent");  // ToDo
-                //}
-
-                // feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPointPopup("-2", 1f, 0f, 0f);   // ToDo
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Point Info"))
             {
-                feedback_canvas.GetComponent<User_UI_Feedback>().DisplayPopup("Yeah +2", 0, 255, 0);
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup("Yeah +2", 0, 255, 0);
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Training finished"))

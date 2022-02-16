@@ -14,9 +14,9 @@ public class Test_Functionalities : MonoBehaviour {
     private int box_height;
     private int box_x0;
 
-    private GameObject client;
-
-    Regex pattern = new Regex(@"^\w+$");
+    private int sellevel = 0;
+    private int prev_sellevel = 0;
+    private string[] levels = new string[] { "Level 0", "Level 1", "Level 2", "Level 3", "Level 4" };
 
     public GameObject feedback_canvas;
     public GameObject popup;
@@ -33,7 +33,6 @@ public class Test_Functionalities : MonoBehaviour {
 
     void Start()
     {
-        client = GameObject.Find("Client");
     }
 
     void Update()
@@ -51,19 +50,28 @@ public class Test_Functionalities : MonoBehaviour {
             // Make a background box
             box_x0 = Screen.width - box_width - margins;
             box_height = Screen.height - 2 * margins;
-            GUI.Box(new Rect(box_x0, margins, box_width, box_height), "Test");
+            GUI.Box(new Rect(box_x0, margins, box_width, box_height), "Test feedback elements");
             if (feedback_canvas == null)
             {
                 feedback_canvas = GameObject.Find("Canvas");
             }
 
             // Add elements
-
             if (GUI.Button(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), "Load progress bar"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(10);
             }
             int i = 0;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Set max points"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().SetMaxPoints(100);
+            }
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Show current points"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(50);
+            }
+            i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Finish step"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
@@ -84,16 +92,35 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayTrainingFinished();
             }
             i++;
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Assembly feedback"))
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Correct action"))
             {
-
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyCorrectAction();
             }
             i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Wrong action"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
+            }
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Reset notifications"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
+            }
+            i++;
+            sellevel = GUI.SelectionGrid(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 40), sellevel, levels, 3);
+            i += 2;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Reset Scene"))
             {
                 Scene scene = SceneManager.GetActiveScene(); 
                 SceneManager.LoadScene(scene.name);
             }
-        }        
+
+            // Execute logic of non-button elements
+            if (sellevel != prev_sellevel)
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(sellevel);
+                prev_sellevel = sellevel;
+            }
+        }
     }
 }

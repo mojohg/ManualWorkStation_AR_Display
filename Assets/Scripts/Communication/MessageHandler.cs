@@ -467,6 +467,7 @@ public class MessageHandler : MonoBehaviour
             item.SetActive(false);
         }
         active_items.Clear();
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
     }
 
     public GameObject FindGameobject(string name, List<GameObject> gameobject_list)

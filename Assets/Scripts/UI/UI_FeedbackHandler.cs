@@ -5,16 +5,18 @@ using UnityEngine.UI;
 
 public class UI_FeedbackHandler : MonoBehaviour 
 {
+    public Sprite level_0_sprite;
     public Sprite level_1_sprite;
     public Sprite level_2_sprite;
     public Sprite level_3_sprite;
+    public Sprite level_4_sprite;
     public List<GameObject> ui_elements;
+    public List<GameObject> ui_notifications;
     public List<GameObject> uncompleted_steps;
     private float max_number_points;
 
     // Prefabs
     private GameObject prefab_popup;
-    private GameObject prefab_levelup;
     private GameObject prefab_bar;
 
     // Elements in scene
@@ -23,7 +25,10 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject point_display;
     private GameObject levelup;
     private GameObject training_finished;
-
+    private GameObject wrong_action;
+    private GameObject correct_action;
+    private GameObject error_plane;
+    private GameObject current_level;
 
 
     void Awake()
@@ -39,25 +44,35 @@ public class UI_FeedbackHandler : MonoBehaviour
 
 	void Start () 
 	{
+        // Load prefabs
         prefab_bar = (GameObject)Resources.Load("Prefabs/UI/bar", typeof(GameObject));
-        prefab_popup = Resources.Load("Prefabs/General/Popup", typeof(GameObject)) as GameObject;
-        prefab_levelup = Resources.Load("Prefabs/General/Levelup", typeof(GameObject)) as GameObject;
+        prefab_popup = Resources.Load("Prefabs/UI/Popup", typeof(GameObject)) as GameObject;
+        
+        // Find elements in scene
         point_display = FindUiElement("PointDisplay", ui_elements);
         progressBar = FindUiElement("StepDisplay", ui_elements);
+        current_level = FindUiElement("CurrentLevel", ui_elements);
         popup_parent = GameObject.Find("PopupParent");
         levelup = GameObject.Find("LevelUp");
         training_finished = GameObject.Find("TrainingFinished");
+        wrong_action = GameObject.Find("WrongAction");
+        error_plane = GameObject.Find("ErrorPlane");
+        correct_action = GameObject.Find("CorrectAction");
+
+        // Disable unnecessary elements
+        ui_notifications.Add(error_plane);
+        error_plane.SetActive(false);
     }
 
     public void SetMaxPoints(int max_points)
     {
         max_number_points = max_points;
-        point_display.transform.Find("Maximum").GetComponent<Text>().text = "/ " + max_points.ToString();
+        point_display.transform.Find("MaxPoints").GetComponent<Text>().text = max_points.ToString();
     }
 
     public void ShowPoints(int current_points)
     {
-        point_display.transform.Find("Current").GetComponent<Text>().text = current_points.ToString();        
+        point_display.transform.Find("CurrentPoints").GetComponent<Text>().text = current_points.ToString();        
         float ratio = current_points / max_number_points;
 
         if (ratio > 0.8f)
@@ -76,31 +91,33 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void ShowLevel(int level)
     {
-        GameObject status = FindUiElement("Status", ui_elements);
+        GameObject levelname = current_level.transform.Find("LevelName").gameObject;
+        GameObject levelimage = current_level.transform.Find("LevelImage").gameObject;
+        
         if (level == 0)
         {
-            status.transform.Find("LevelName").GetComponent<Text>().text = "Introduction";
-            status.GetComponent<Image>().sprite = level_1_sprite;
+            levelname.GetComponent<Text>().text = "Introduction";
+            levelimage.GetComponent<Image>().sprite = level_0_sprite;
         }
         if (level == 1)
         {
-            status.transform.Find("LevelName").GetComponent<Text>().text = "Beginner";
-            status.GetComponent<Image>().sprite = level_1_sprite;
+            levelname.GetComponent<Text>().text = "Beginner";
+            levelimage.GetComponent<Image>().sprite = level_1_sprite;
         }
         else if ( level == 2)
         {
-            status.transform.Find("LevelName").GetComponent<Text>().text = "Advanced";
-            status.GetComponent<Image>().sprite = level_2_sprite;
+            levelname.GetComponent<Text>().text = "Advanced";
+            levelimage.GetComponent<Image>().sprite = level_2_sprite;
         }
         else if (level == 3)
-        {            
-            status.transform.Find("LevelName").GetComponent<Text>().text = "Expert";
-            status.GetComponent<Image>().sprite = level_3_sprite;
+        {
+            levelname.GetComponent<Text>().text = "Very Advanced";
+            levelimage.GetComponent<Image>().sprite = level_3_sprite;
         }
         else if (level == 4)
         {
-            status.transform.Find("LevelName").GetComponent<Text>().text = "Expert";
-            status.GetComponent<Image>().sprite = level_3_sprite;
+            levelname.GetComponent<Text>().text = "Expert";
+            levelimage.GetComponent<Image>().sprite = level_4_sprite;
         }
     }
 
@@ -142,20 +159,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         {
             slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = Color.red;
         }
-    }
-
-    public GameObject FindUiElement(string name, List<GameObject> gameobject_list)
-    {
-        foreach (GameObject obj in gameobject_list)
-        {
-            if (obj.name == name)
-            {
-                return obj;
-            }
-        }
-        Debug.LogWarning("Gameobject " + name + " not found");
-        return null;
-    }
+    }  // Todo
 
     public void DisplayPopup(string message, float color_r, float color_g, float color_b)
     {
@@ -177,11 +181,43 @@ public class UI_FeedbackHandler : MonoBehaviour
         this.DisableFeedbackElements();
     }
 
+    public void NotifyCorrectAction()
+    {
+        correct_action.GetComponent<AudioSource>().Play();        
+    }
+
+    public void NotifyWrongAction()
+    {
+        wrong_action.GetComponent<AudioSource>().Play();
+        error_plane.SetActive(true);
+    }
+
     private void DisableFeedbackElements()
     {
         foreach (GameObject element in ui_elements)
         {
             element.SetActive(false);
         }
+    }
+
+    public void ResetNotifications()
+    {
+        foreach(GameObject notification in ui_notifications)
+        {
+            notification.SetActive(false);
+        }
+    }
+
+    public GameObject FindUiElement(string name, List<GameObject> gameobject_list)
+    {
+        foreach (GameObject obj in gameobject_list)
+        {
+            if (obj.name == name)
+            {
+                return obj;
+            }
+        }
+        Debug.LogWarning("Gameobject " + name + " not found");
+        return null;
     }
 }

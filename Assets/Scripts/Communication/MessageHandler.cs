@@ -49,8 +49,6 @@ public class MessageHandler : MonoBehaviour
     //private Material toolpoint_material;
     //private Material invisible_material;
     //private CommunicationClass message = new CommunicationClass();
-    
-    private AudioSource source_wrong;
 
     // UI
     private GameObject current_point_display;
@@ -69,7 +67,6 @@ public class MessageHandler : MonoBehaviour
         //toolpoint_material = (Material)Resources.Load("InformationMaterialToolpoints", typeof(Material));
         //finished_info_material = (Material)Resources.Load("LedGreen", typeof(Material));
         //invisible_material = (Material)Resources.Load("Transparent", typeof(Material));
-        source_wrong = this.transform.Find("Audio_Wrong").GetComponent<AudioSource>();
         //levelup = GameObject.Find("LevelUp");
         //feedback_system = GameObject.Find("UserFeedback_Canvas");
 
@@ -246,7 +243,7 @@ public class MessageHandler : MonoBehaviour
 
         if (led_color == "red")  // Wrong pick
         {
-            source_wrong.Play();
+            // source_wrong.Play();  ToDo: Use element from feedback GO
 
         }
         else if (led_color == "green")  // Correct pick
@@ -270,7 +267,7 @@ public class MessageHandler : MonoBehaviour
 
         if (led_color == "red")  // Wrong pick
         {
-            source_wrong.Play();
+            // source_wrong.Play();  ToDo: Use element from feedback GO
             // TODO: Show tool with cross
 
         }

@@ -30,6 +30,8 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject error_plane;
     private GameObject current_level;
     private GameObject timer;
+    private GameObject quality_display;
+    private GameObject time_display;
 
 
     void Awake()
@@ -51,6 +53,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         
         // Find elements in scene
         point_display = FindUiElement("PointDisplay", ui_elements);
+        quality_display = FindUiElement("QualityDisplay", ui_elements);
         progressBar = FindUiElement("StepDisplay", ui_elements);
         current_level = FindUiElement("CurrentLevel", ui_elements);
         popup_parent = GameObject.Find("PopupParent");
@@ -60,6 +63,8 @@ public class UI_FeedbackHandler : MonoBehaviour
         error_plane = GameObject.Find("ErrorPlane");
         correct_action = GameObject.Find("CorrectAction");
         timer = GameObject.Find("Timer");
+        quality_display = GameObject.Find("QualityDisplay");
+        time_display = GameObject.Find("TimeDisplay");
 
         // Disable unnecessary elements
         ui_notifications.Add(error_plane);
@@ -146,27 +151,25 @@ public class UI_FeedbackHandler : MonoBehaviour
         timer.GetComponent<UI_Timer>().StartTimer(duration_seconds);
     }
 
-    public void ShowPerformance(float performance, float performance_lower_limit, float performance_upper_limit)
+    public void InitializeQualityRate(float max_value, float threshold_yellow, float threshold_red)
     {
-        GameObject slider = FindUiElement("Performance", ui_elements);
-        if(slider == null)
-        {
-            return;
-        }
-        slider.GetComponent<Slider>().value = performance;
-        if (performance > performance_upper_limit)
-        {
-            slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = Color.green;
-        }
-        else if (performance > performance_lower_limit)
-        {
-            slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = Color.yellow;
-        }
-        else
-        {
-            slider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = Color.red;
-        }
-    }  // Todo
+        quality_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(max_value, threshold_yellow, threshold_red);
+    }
+
+    public void ShowQualityRate(float quality_rate)
+    {        
+        quality_display.GetComponent<UI_CircularDisplay>().UpdateCircularDisplay(quality_rate);
+    }
+
+    public void InitializeTimeRate(float max_value, float threshold_yellow, float threshold_red)
+    {
+        time_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(max_value, threshold_yellow, threshold_red);
+    }
+
+    public void ShowTimeRate(float quality_rate)
+    {
+        time_display.GetComponent<UI_CircularDisplay>().UpdateCircularDisplay(quality_rate);
+    }
 
     public void DisplayPopup(string message, float color_r, float color_g, float color_b)
     {

@@ -72,6 +72,18 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(50);
             }
             i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Show quality rate"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().InitializeQualityRate(100.0f, 80.0f, 60.0f);
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(70.0f);
+            }
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Show time rate"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().InitializeTimeRate(100.0f, 80.0f, 60.0f);
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(50.0f);
+            }
+            i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Finish step"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();

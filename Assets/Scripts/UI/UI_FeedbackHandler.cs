@@ -29,6 +29,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject correct_action;
     private GameObject error_plane;
     private GameObject current_level;
+    private GameObject timer;
 
 
     void Awake()
@@ -58,6 +59,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         wrong_action = GameObject.Find("WrongAction");
         error_plane = GameObject.Find("ErrorPlane");
         correct_action = GameObject.Find("CorrectAction");
+        timer = GameObject.Find("Timer");
 
         // Disable unnecessary elements
         ui_notifications.Add(error_plane);
@@ -137,6 +139,11 @@ public class UI_FeedbackHandler : MonoBehaviour
     {
         uncompleted_steps[0].GetComponent<Image>().color = Color.green;
         uncompleted_steps.RemoveAt(0);
+    }
+
+    public void StartTimer(int duration_seconds)
+    {
+        timer.GetComponent<UI_Timer>().StartTimer(duration_seconds);
     }
 
     public void ShowPerformance(float performance, float performance_lower_limit, float performance_upper_limit)

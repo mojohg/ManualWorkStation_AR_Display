@@ -85,12 +85,14 @@ public class Setup_Camera : MonoBehaviour {
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Zoom in"))
             {
-                main_camera.transform.position += - transform.up * speed;
+                //main_camera.transform.position += - transform.up * speed;
+                main_camera.GetComponent<Camera>().orthographicSize -= 0.1f;
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Zoom out"))
             {
-                main_camera.transform.position += transform.up * speed;
+                //main_camera.transform.position += transform.up * speed;
+                main_camera.GetComponent<Camera>().orthographicSize += 0.1f;
             }
             i++;
                         

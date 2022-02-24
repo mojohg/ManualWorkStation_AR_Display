@@ -115,7 +115,7 @@ public class Test_Functionalities : MonoBehaviour {
             }
             i++; if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Start timer"))
             {
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(3);
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(5);
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Reset notifications"))

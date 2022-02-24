@@ -9,29 +9,31 @@ public class UI_Timer : MonoBehaviour
     public Image uiFill;
     public Text uiText;
 
-    private int remainingDuration;
+    private int remainingDuration;  // in milliseconds
 
     private void Start()
     {
     }
 
-    public void StartTimer(int duration)
+    public void StartTimer(int duration_sec)
     {
         ResetTimer();
-        remainingDuration = duration;
-        StartCoroutine(UpdateTimer(duration));
+        remainingDuration = duration_sec * 1000;
+        Debug.Log("Set timer: " + remainingDuration.ToString());
+        StartCoroutine(UpdateTimer(remainingDuration));
     }
 
     private IEnumerator UpdateTimer(int duration)
     {
-        while(remainingDuration >= 0)
+        while (remainingDuration >= 0)
         {
-            uiText.text = $"{remainingDuration / 60:00}:{remainingDuration % 60:00}";
+            Debug.Log("Count: " + remainingDuration.ToString());
+            //uiText.text = $"{remaining_sec / 60:00}:{remaining_sec % 60:00}";
+            uiText.text = $"{remainingDuration / 1000:00}:{remainingDuration % 1000:00}";
             uiFill.fillAmount = Mathf.InverseLerp(0, duration, remainingDuration);
-            remainingDuration--;
-            yield return new WaitForSeconds(1f);
+            remainingDuration = remainingDuration - 10;
+            yield return new WaitForSeconds(0.010f);
         }
-        Debug.Log("Timer ended");
         OnEnd();
     }
 

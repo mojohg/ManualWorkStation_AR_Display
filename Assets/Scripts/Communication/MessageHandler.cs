@@ -45,7 +45,7 @@ public class MessageHandler : MonoBehaviour
     private List<GameObject> active_items = new List<GameObject>();
     //private List<GameObject> training_pages = new List<GameObject>();
     private Material assembly_info_material_1;
-    //private Material assembly_info_material_2;
+    private Material assembly_info_material_2;
     //private Material finished_info_material;
     //private Material toolpoint_material;
     //private Material invisible_material;
@@ -71,7 +71,7 @@ public class MessageHandler : MonoBehaviour
     void Start()
     {
         assembly_info_material_1 = (Material)Resources.Load("Materials/InformationMaterial1", typeof(Material));
-        //assembly_info_material_2 = (Material)Resources.Load("InformationMaterial2", typeof(Material));
+        assembly_info_material_2 = (Material)Resources.Load("InformationMaterial2", typeof(Material));
         //toolpoint_material = (Material)Resources.Load("InformationMaterialToolpoints", typeof(Material));
         //finished_info_material = (Material)Resources.Load("LedGreen", typeof(Material));
         //invisible_material = (Material)Resources.Load("Transparent", typeof(Material));
@@ -331,11 +331,23 @@ public class MessageHandler : MonoBehaviour
         ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards:false);
     }
 
-    public void ShowToolUsage(string action_name)  // TODO: Add animations
+    public void ShowToolUsage(string action_name, int knowledge_level, int default_time)  // TODO: Add animations
     {
         Debug.Log("Show tool usage instruction for " + action_name);
         total_assembly_miniature.SetActive(true);
         current_action_display.GetComponent<Text>().text = "Assemble with tool";
+
+        // Highlight toolpoint
+        foreach (GameObject item in assembly_items)
+        {
+            if (item.name == action_name)
+            {
+                item.SetActive(true);
+                active_items.Add(item);
+                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards: true);
+                break;
+            }
+        }
     }
 
     public void ShowInstructions(int knowledge_level, GameObject obj)  // TODO

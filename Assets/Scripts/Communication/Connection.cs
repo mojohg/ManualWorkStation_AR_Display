@@ -149,7 +149,9 @@ public class Connection : MonoBehaviour
                     instruction.default_time
                     );
                 this.GetComponent<MessageHandler>().ShowToolUsage(
-                    instruction.action_name
+                    instruction.action_name,
+                    instruction.knowledge_level,
+                    instruction.default_time
                     );
             }
             else

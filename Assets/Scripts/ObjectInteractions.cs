@@ -14,14 +14,34 @@ public class ObjectInteractions : MonoBehaviour {
     [HideInInspector] public GameObject arrow;
     private GameObject arrow_prefab;
     private int rotation_help_limit = 40;
-    private Material initial_material;
+    public Material initial_material;
     private Material current_material;
     private Shader standardShader;
 
     private Material mat_red;
     private Material mat_green;
     private Material mat_blue;
+    private Material mat_grey;
 
+    void Awake()
+    {
+        mat_grey = (Material)Resources.Load("Materials/StandardGrey", typeof(Material));
+
+        if (this.GetComponent<Renderer>() != null)  // Store own material
+        {
+            initial_material = this.GetComponent<MeshRenderer>().material;
+        }
+        else if (this.transform.childCount > 0)  // Use material of first child
+        {
+            initial_material = this.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        }
+        else  // Use standard material
+        {
+            initial_material = mat_grey;
+        }
+    }
+
+    
     void Start()
     {
         client = GameObject.Find("Client");
@@ -29,14 +49,9 @@ public class ObjectInteractions : MonoBehaviour {
         standardShader = Shader.Find("Standard");
         StoreCurrentProperties();
 
-        if (this.GetComponent<Renderer>() != null)
-        {
-            initial_material = this.GetComponent<MeshRenderer>().material;
-        }
-
         mat_red = (Material)Resources.Load("Materials/Red", typeof(Material));
         mat_green = (Material)Resources.Load("Materials/Green", typeof(Material));
-        mat_blue = (Material)Resources.Load("Materials/Blue", typeof(Material));
+        mat_blue = (Material)Resources.Load("Materials/Blue", typeof(Material));        
     }
 
     public void ChangeRGB(string color)

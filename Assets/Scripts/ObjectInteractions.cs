@@ -14,6 +14,7 @@ public class ObjectInteractions : MonoBehaviour {
     [HideInInspector] public GameObject arrow;
     private GameObject arrow_prefab;
     private int rotation_help_limit = 40;
+    private Material initial_material;
     private Material current_material;
     private Shader standardShader;
 
@@ -27,6 +28,11 @@ public class ObjectInteractions : MonoBehaviour {
         arrow_prefab = (GameObject)Resources.Load("Prefabs/General/Arrow_1", typeof(GameObject));
         standardShader = Shader.Find("Standard");
         StoreCurrentProperties();
+
+        if (this.GetComponent<Renderer>() != null)
+        {
+            initial_material = this.GetComponent<MeshRenderer>().material;
+        }
 
         mat_red = (Material)Resources.Load("Materials/Red", typeof(Material));
         mat_green = (Material)Resources.Load("Materials/Green", typeof(Material));
@@ -96,6 +102,11 @@ public class ObjectInteractions : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void ResetMaterial()
+    {
+        ChangeMaterial(initial_material);
     }
 
     public void ShowObjectBoundaries(Vector4 outline_color, float outline_width)

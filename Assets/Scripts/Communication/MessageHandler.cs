@@ -21,6 +21,7 @@ public class MessageHandler : MonoBehaviour
 
     public int current_knowledge_level;
     public string current_version;
+    private string current_producttype;
 
     //private string box_name;
     //private string tool_holder_name;
@@ -60,6 +61,13 @@ public class MessageHandler : MonoBehaviour
     private GameObject object_presentation;
     private GameObject assembly_presentation;
 
+    // UI: Miniature assembly
+    private GameObject total_assembly_miniature;
+    private List<GameObject> optically_changed_parts = new List<GameObject>();
+
+    // Properties of Assemblies
+    private float sizing_factor_v3 = 1.5f;
+
     void Start()
     {
         assembly_info_material_1 = (Material)Resources.Load("Materials/InformationMaterial1", typeof(Material));
@@ -84,9 +92,11 @@ public class MessageHandler : MonoBehaviour
 
     public void InitializeVersion(string version_name)
     {
-        current_version = version_name;
+        current_version = version_name;  // Get V3.1
+        current_producttype = current_version.Split('.')[0];  // Get V3
         Debug.Log("Load product version " + current_version);
-        current_action_display.GetComponent<Text>().text = current_version;
+        Debug.Log("Load product type " + current_producttype);
+        current_action_display.GetComponent<Text>().text = "Load version " + current_version;
 
         product_versions = assemblies.GetComponent<AssemblyOrganisation>().main_items_list;
         holder_versions = product_holder.GetComponent<AssemblyOrganisation>().main_items_list;
@@ -118,11 +128,11 @@ public class MessageHandler : MonoBehaviour
                 {
                     product.SetActive(true);
 
-                    try  // Show product
+                    try  // Show complete product
                     {
-                        GameObject product_copy = Instantiate(product, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
-                        product_copy.transform.localPosition = new Vector3(0, 0, 0);
-                        product_copy.transform.localScale = 0.5f * product_copy.transform.localScale;
+                        total_assembly_miniature = Instantiate(product, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
+                        total_assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
+                        total_assembly_miniature.transform.localScale = 0.5f * total_assembly_miniature.transform.localScale;
                     }
                     catch
                     {
@@ -168,7 +178,7 @@ public class MessageHandler : MonoBehaviour
         }
     }
 
-    public void InitializeSteps(int number_steps)  // TODO
+    public void InitializeSteps(int number_steps)
     {
         Debug.Log("InitializeSteps: " + number_steps.ToString());
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps);
@@ -233,7 +243,7 @@ public class MessageHandler : MonoBehaviour
         current_knowledge_level = knowledge_level;
 
         // Find and show prefab
-        GameObject item_prefab = FindPrefab("Prefabs/Parts/" + current_version + "/" + item_name, item_name);
+        GameObject item_prefab = FindPrefab("Prefabs/Parts/" + current_producttype + "/" + item_name, item_name);
         if (item_prefab == null)
         {
             Debug.LogWarning("Prefab for " + item_name + " not found");
@@ -301,28 +311,37 @@ public class MessageHandler : MonoBehaviour
     public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time)  // TODO: Level System
     {
         Debug.Log("Show assembly instruction for " + item_name);
+        total_assembly_miniature.SetActive(true);
         current_action_display.GetComponent<Text>().text = "Assemble";
+
+        // Highlight assembly position
         foreach (GameObject item in assembly_items)
         {
             if (item.name == item_name)
             {
                 item.SetActive(true);
                 active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_1);
+                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards:true);
                 break;
             }
         }
+
+        // Highlight position in miniature
+        GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
+        ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards:false);
     }
 
     public void ShowToolUsage(string action_name)  // TODO: Add animations
     {
         Debug.Log("Show tool usage instruction for " + action_name);
+        total_assembly_miniature.SetActive(true);
         current_action_display.GetComponent<Text>().text = "Assemble with tool";
     }
 
     public void ShowInstructions(int knowledge_level, GameObject obj)  // TODO
     {
-        /*current_knowledge_level = knowledge_level;
+        /*total_assembly_miniature.SetActive(true);
+        current_knowledge_level = knowledge_level;
         Transform toolpoint = obj.transform.Find("Toolpoint(Clone)");
         switch (knowledge_level)
         {
@@ -437,16 +456,22 @@ public class MessageHandler : MonoBehaviour
         return null;
     }
 
-    private void ShowObjectPosition(GameObject current_object, Material material)
+    private void ShowObjectPosition(GameObject current_object, Material material, bool disable_afterwards)
     {
         if (current_object.GetComponent<ObjectInteractions>() != null)
         {
             current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
-            active_items.Add(current_object);
+            if(disable_afterwards)
+            {
+                active_items.Add(current_object);
+            }
+            else
+            {
+                optically_changed_parts.Add(current_object);
+            }
         }
         else
         {
-            Debug.LogWarning("ObjectInteractions in Gameobject " + current_object.name + " not found  --> add it");
             current_object.AddComponent<ObjectInteractions>();
             current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
             active_items.Add(current_object);
@@ -455,14 +480,30 @@ public class MessageHandler : MonoBehaviour
 
     public void ResetWorkplace()
     {
-        foreach (Transform child in object_presentation.transform)
+        if (object_presentation.transform.childCount > 0)
         {
-            Destroy(child.gameObject);
+            foreach (Transform child in object_presentation.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            object_presentation.transform.DetachChildren();  // Remove children from parent, otherwise childCount is not working in same frame
         }
-        foreach (GameObject item in active_items)
+        if (active_items.Count() > 0)
         {
-            item.SetActive(false);
+            foreach (GameObject item in active_items)
+            {
+                item.SetActive(false);
+            }
         }
+        if(optically_changed_parts.Count() > 0)
+        {
+            foreach (GameObject part in optically_changed_parts.ToList())
+            {
+                part.GetComponent<ObjectInteractions>().ResetMaterial();
+                optically_changed_parts.Remove(part);
+            }
+        }
+        total_assembly_miniature.SetActive(false);
         active_items.Clear();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
     }
@@ -482,19 +523,28 @@ public class MessageHandler : MonoBehaviour
 
     private void ShowPickPrefab(GameObject prefab)
     {
-        foreach (Transform child in object_presentation.transform)
-        {
-            Destroy(child.gameObject);
-        }
-        int number_pick_options = object_presentation.transform.childCount;
-        Vector3 offset = new Vector3(0, 0.5f, 0);
-
-        // Show object at specified position
+        // Instantiate prefab and set parent
         GameObject displayed_item = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
         Vector3 original_scale = displayed_item.transform.localScale;
         displayed_item.transform.parent = object_presentation.transform;
-        displayed_item.transform.localPosition = new Vector3(0, 0, 0) + number_pick_options * offset;
-        displayed_item.transform.localScale = original_scale;
+        displayed_item.transform.localScale = original_scale * sizing_factor_v3;
+
+        // Check if several pick options exist
+        int number_pick_options = object_presentation.transform.childCount;
+        Vector3 offset = new Vector3(0, 0.5f, 0);
+
+        if (number_pick_options == 1)  // Show prefab at first pick position
+        {
+            displayed_item.transform.localPosition = new Vector3(0, 0, 0);
+        }
+        else  // Show prefab at subsequent pick position
+        {
+            Debug.Log("Number of pick options: " + number_pick_options.ToString());
+            int movement = number_pick_options - 1;
+            displayed_item.transform.localPosition = new Vector3(0, 0, 0) + movement * offset;
+        }
+
+        // Add properties
         if (displayed_item.GetComponent<ObjectInteractions>() == null)
         {
             displayed_item.AddComponent<ObjectInteractions>();

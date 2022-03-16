@@ -128,9 +128,16 @@ public class MessageHandler : MonoBehaviour
                 {
                     product.SetActive(true);
 
-                    try  // Show complete product
+                    try  // Show miniature product
                     {
                         total_assembly_miniature = Instantiate(product, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
+                        foreach (Transform part in total_assembly_miniature.transform)
+                        {
+                            if(part.name.Contains("Toolpoint"))
+                            {
+                                Destroy(part.gameObject);
+                            }
+                        }
                         total_assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
                         total_assembly_miniature.transform.localScale = 0.5f * total_assembly_miniature.transform.localScale;
                     }

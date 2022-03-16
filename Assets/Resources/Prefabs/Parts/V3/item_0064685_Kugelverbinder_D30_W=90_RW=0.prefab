@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765275831365795
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765275874279890
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,6 +281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765276231352097
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,6 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765276430440924
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,6 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765276435134672
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765276796623666
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +588,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2944765276796623666}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
@@ -596,7 +602,7 @@ Transform:
   - {fileID: 2944765277157396375}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!114 &2944765276796623692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,6 +616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765276801855843
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,6 +710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}
 --- !u!1 &2944765277157396372
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,3 +804,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 0}
+  initial_material: {fileID: 0}

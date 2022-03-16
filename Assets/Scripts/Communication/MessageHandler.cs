@@ -71,7 +71,7 @@ public class MessageHandler : MonoBehaviour
     void Start()
     {
         assembly_info_material_1 = (Material)Resources.Load("Materials/InformationMaterial1", typeof(Material));
-        assembly_info_material_2 = (Material)Resources.Load("InformationMaterial2", typeof(Material));
+        assembly_info_material_2 = (Material)Resources.Load("Materials/InformationMaterial2", typeof(Material));
         //toolpoint_material = (Material)Resources.Load("InformationMaterialToolpoints", typeof(Material));
         //finished_info_material = (Material)Resources.Load("LedGreen", typeof(Material));
         //invisible_material = (Material)Resources.Load("Transparent", typeof(Material));
@@ -294,28 +294,23 @@ public class MessageHandler : MonoBehaviour
         }
     }
 
-    public void ReturnTool(int tool_level, int tool_number, string led_color, int knowledge_level, int default_time)  // TODO
+    public void ReturnTool(string tool_name, string led_color, int knowledge_level, int default_time)
     {
-        /*current_knowledge_level = knowledge_level;
+        Debug.Log("Show return instruction for " + tool_name);
+        current_action_display.GetComponent<Text>().text = "Return Tool";
+        current_knowledge_level = knowledge_level;
 
-        if (current_knowledge_level == 0)
+        // Find prefab
+        GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
+        if (tool_prefab == null)
         {
-            IEnumerable<GameObject> pages = training_pages.Where(obj => obj.name == "ReturnTool");
-            foreach (GameObject page in pages)
-            {
-                page.SetActive(true);
-            }
-            left_controller.GetComponent<HighlightController>().HighlightTrigger();
-            right_controller.GetComponent<HighlightController>().HighlightTrigger();
-            ShowToolLeds(tool_level, tool_number, led_color, knowledge_level, default_time);
+            Debug.LogWarning("Prefab for " + tool_name + " not found");
+            return;
         }
-        else
-        {
-            ShowToolLeds(tool_level, tool_number, led_color, knowledge_level, default_time);
-        }*/
+        ShowPickPrefab(tool_prefab);
     }
 
-    public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time)  // TODO: Level System
+    public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time)
     {
         Debug.Log("Show assembly instruction for " + item_name);
         total_assembly_miniature.SetActive(true);
@@ -351,7 +346,7 @@ public class MessageHandler : MonoBehaviour
             {
                 item.SetActive(true);
                 active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards: true);
+                ShowObjectPosition(item, assembly_info_material_2, disable_afterwards: true);
                 break;
             }
         }
@@ -546,11 +541,12 @@ public class MessageHandler : MonoBehaviour
         GameObject displayed_item = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
         Vector3 original_scale = displayed_item.transform.localScale;
         displayed_item.transform.parent = object_presentation.transform;
+        displayed_item.transform.localRotation = prefab.transform.rotation;
         displayed_item.transform.localScale = original_scale * sizing_factor_v3;
 
         // Check if several pick options exist
         int number_pick_options = object_presentation.transform.childCount;
-        Vector3 offset = new Vector3(0, 0.5f, 0);
+        Vector3 offset = new Vector3(0.5f, 0, 0);
 
         if (number_pick_options == 1)  // Show prefab at first pick position
         {

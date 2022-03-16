@@ -154,6 +154,39 @@ public class Connection : MonoBehaviour
                     instruction.default_time
                     );
             }
+            else if (instruction.action_type == "useTool")
+            {
+                this.GetComponent<MessageHandler>().ShowToolUsage(
+                    instruction.action_name,
+                    instruction.knowledge_level,
+                    instruction.default_time
+                    );
+            }
+            else if (instruction.action_type == "returnTool")
+            {
+                this.GetComponent<MessageHandler>().ReturnTool(
+                    instruction.item_name,
+                    instruction.color,
+                    instruction.knowledge_level,
+                    instruction.default_time
+                    );
+            }
+            else if (instruction.action_type == "useSeveralObjects")
+            {
+                Debug.Log("Use Several Objects -> TODO");
+                Debug.Log(instruction.item_name);
+                Debug.Log(instruction.action_name);
+                //this.GetComponent<MessageHandler>().ShowAssemblyPosition(
+                //    instruction.item_name,
+                //    instruction.knowledge_level,
+                //    instruction.default_time
+                //    );
+                //this.GetComponent<MessageHandler>().ShowToolUsage(
+                //    instruction.action_name,
+                //    instruction.knowledge_level,
+                //    instruction.default_time
+                //    );
+            }
             else
             {
                 Debug.Log("Unknown user action: " + instruction.action_type);

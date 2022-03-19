@@ -10,63 +10,6 @@ using UnityEngine.UI;
 /// regarding picking and placing of objects as well as the returning of tools.
 /// </summary>
 
-/*[System.Serializable]
-public class CommunicationClass
-{
-    public string action_type = "";  // pickItem, pickTool, placeItem, useTool, useItemTool, turnAssembly, toolReturn, finishOrder
-    public string user_name = "";
-    public int user_level = 0;
-    public string resource = "AR_HAP";
-    public PickData pick = new PickData();
-    public PlaceData place = new PlaceData();
-    public ReturnData returns = new ReturnData();
-    public int default_time = 0;
-}
-
-[System.Serializable]
-public class PickData
-{
-    public ItemData pick_box = new ItemData();
-    public ItemData pick_tool = new ItemData();
-    public int knowledge_level = 0;
-}
-
-[System.Serializable]
-public class PlaceData
-{
-    public string item_list = "";         //list of item names which must be placed
-    public string action_list = "";         //list of toolpoints for tool interactions
-    public bool finished = false;       //information from client that production process is finished
-    public int knowledge_level = 0;      //support level [1,4]
-    public string annotation = "";      // Annotation for further assembly information
-}
-
-[System.Serializable]
-public class ReturnData
-{
-    public ItemData return_tool = new ItemData();
-}
-
-[System.Serializable]
-public class ItemData
-{
-    public string name = "";               // Part_A
-    public int level = 0;               //[1,4]
-    public int number = 0;               //box range [1,8]
-    public string led_color = "";         //green, yellow, red, reset
-}
-
-//[System.Serializable]
-//public class StorageInformation
-//{
-//    public BoxProperties box = new BoxProperties();
-//    public ToolProperties toolholder = new ToolProperties();
-//}
-
-*/
-
-// *********************************** Messages from the Server ***********************************************************
-
 [System.Serializable]
 public class BoxProperties
 {

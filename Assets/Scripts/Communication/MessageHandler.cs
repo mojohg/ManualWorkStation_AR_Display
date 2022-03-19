@@ -17,11 +17,16 @@ public class MessageHandler : MonoBehaviour
     private GameObject product_turns;
     private GameObject product_holder;
     private GameObject feedback_canvas;
+    private GameObject feedback_popups;
+    private GameObject levelup_confetti;
+    private GameObject training_finished_confetti;
+    private GameObject task_finished;
     //public GameObject training_finished;
 
     public int current_knowledge_level;
     public string current_version;
     private string current_producttype;
+    private GameObject current_assembly_GO;
 
     //private string box_name;
     //private string tool_holder_name;
@@ -46,7 +51,7 @@ public class MessageHandler : MonoBehaviour
     //private List<GameObject> training_pages = new List<GameObject>();
     private Material assembly_info_material_1;
     private Material assembly_info_material_2;
-    //private Material finished_info_material;
+    private Material finished_info_material;
     //private Material toolpoint_material;
     //private Material invisible_material;
     //private CommunicationClass message = new CommunicationClass();
@@ -73,7 +78,7 @@ public class MessageHandler : MonoBehaviour
         assembly_info_material_1 = (Material)Resources.Load("Materials/InformationMaterial1", typeof(Material));
         assembly_info_material_2 = (Material)Resources.Load("Materials/InformationMaterial2", typeof(Material));
         //toolpoint_material = (Material)Resources.Load("InformationMaterialToolpoints", typeof(Material));
-        //finished_info_material = (Material)Resources.Load("LedGreen", typeof(Material));
+        finished_info_material = (Material)Resources.Load("Materials/Green", typeof(Material));
         //invisible_material = (Material)Resources.Load("Transparent", typeof(Material));
         //levelup = GameObject.Find("LevelUp");
         //feedback_system = GameObject.Find("UserFeedback_Canvas");
@@ -83,11 +88,15 @@ public class MessageHandler : MonoBehaviour
         product_turns = GameObject.Find("ProductTurns");
         product_holder = GameObject.Find("ProductHolder");
         feedback_canvas = GameObject.Find("FeedbackCanvas");
+        feedback_popups = GameObject.Find("PopupParent");
         object_presentation = GameObject.Find("NextObjects");
         assembly_presentation = GameObject.Find("TotalAssembly");
         current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
         max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
         current_action_display = feedback_canvas.transform.Find("ActionInfo").gameObject;
+        levelup_confetti = GameObject.Find("LevelUp");
+        training_finished_confetti = GameObject.Find("TrainingFinished");
+        task_finished = GameObject.Find("TaskFinished");
     }
 
     public void InitializeVersion(string version_name)
@@ -126,11 +135,12 @@ public class MessageHandler : MonoBehaviour
             {
                 if (product.name == current_version)
                 {
-                    product.SetActive(true);
+                    current_assembly_GO = product;
+                    current_assembly_GO.SetActive(true);
 
                     try  // Show miniature product
                     {
-                        total_assembly_miniature = Instantiate(product, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
+                        total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
                         foreach (Transform part in total_assembly_miniature.transform)
                         {
                             if(part.name.Contains("Toolpoint"))
@@ -446,28 +456,13 @@ public class MessageHandler : MonoBehaviour
         uncompleted_steps.RemoveAt(0);
     }
 
-    public IEnumerator FinishJob()  // TODO
+    public void FinishJob()
     {
-        /*var generated_objects = GameObject.FindGameObjectsWithTag("GeneratedObject").ToList();
-        var assembled_objects = GameObject.FindGameObjectsWithTag("AssembledObject").ToList();
-        var all_objects = generated_objects.Union(assembled_objects).ToList();
-
-        this.transform.Find("Audio_Finished").GetComponent<AudioSource>().Play();
-        foreach (GameObject obj in all_objects)  // Show that operation is finished
-        {
-            obj.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
-        }
-        yield return new WaitForSeconds(3);
-
-        
-        foreach (GameObject obj in all_objects)  // Remove finished product
-        {
-            Destroy(obj);
-        }
-
-        message.action_type = "finishOrder";
-        server.GetComponent<Server>().SendUserInteractions(message);*/
-        return null;
+        ResetWorkplace();
+        current_assembly_GO.GetComponent<ObjectInteractions>().ActivateAllChildren();
+        current_assembly_GO.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
+        task_finished.GetComponent<AudioSource>().Play();
+        current_action_display.GetComponent<Text>().text = "Task finished; remove assembly";
     }
 
     private void ShowObjectPosition(GameObject current_object, Material material, bool disable_afterwards)

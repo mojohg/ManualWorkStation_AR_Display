@@ -54,26 +54,6 @@ public class ObjectInteractions : MonoBehaviour {
         mat_blue = (Material)Resources.Load("Materials/Blue", typeof(Material));        
     }
 
-    public void ChangeRGB(string color)
-    {
-        if (this.GetComponent<MeshRenderer>() != null)
-        {
-            if (color == "red")
-            {
-                this.GetComponent<MeshRenderer>().material = mat_red;
-            }
-            else if (color == "green")
-            {
-                this.GetComponent<MeshRenderer>().material = mat_green;
-            }
-            else if (color == "blue")
-            {
-                this.GetComponent<MeshRenderer>().material = mat_blue;
-            }
-
-        }
-    }
-
     public void ChangeMaterial(Material material)
     {
         if (this.GetComponent<MeshRenderer>() != null)
@@ -92,6 +72,23 @@ public class ObjectInteractions : MonoBehaviour {
             {
                 child.gameObject.GetComponent<ObjectInteractions>().ChangeMaterial(material);
             }            
+        }
+    }
+
+    public void ActivateAllChildren()
+    {
+        if (this.transform.childCount == 0)  // Check for child objects in assemblies
+        {
+            return;
+        }
+
+        foreach (Transform child in this.transform)
+        {
+            if (child.GetComponent<ObjectInteractions>() != null)
+            {
+                child.gameObject.SetActive(true);
+                child.gameObject.GetComponent<ObjectInteractions>().ActivateAllChildren();
+            }
         }
     }
 
@@ -156,29 +153,6 @@ public class ObjectInteractions : MonoBehaviour {
             mat.renderQueue = 3001;
         }
         
-    }
-
-    public GameObject FindChild(string name)
-    {
-        GameObject found_child = null;
-        if (this.transform.childCount > 0)
-        {
-            foreach (Transform child in this.transform)
-            {
-                if (child.name == name)
-                {
-                    found_child = child.gameObject;
-                }
-                else if (child.transform.childCount > 0)
-                {
-                    if (child.GetComponent<ObjectInteractions>() != null)
-                    {
-                        found_child = child.GetComponent<ObjectInteractions>().FindChild(name);
-                    }
-                }
-            }
-        }        
-        return found_child;
     }
 
     public void StoreCurrentProperties()

@@ -174,6 +174,10 @@ public class Connection : MonoBehaviour
                 Debug.Log("Unknown user action: " + instruction.action_type);
             }
         }
+        else if (message.Contains("order_finished"))
+        {
+            this.GetComponent<MessageHandler>().FinishJob();
+        }
         else
         {
             Debug.Log("Unknown message type: " + message);

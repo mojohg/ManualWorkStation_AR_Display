@@ -10,6 +10,7 @@ public class Connection : MonoBehaviour
 
     private UserInstruction instruction = new UserInstruction();
     private OrderProperties order_properties = new OrderProperties();
+    private PerformanceProperties performance_info = new PerformanceProperties();
     private bool connected = false;
     private bool retry = true;
     private IEnumerator coroutine;
@@ -135,8 +136,6 @@ public class Connection : MonoBehaviour
             }
             else if (instruction.action_type == "mount")
             {
-                Debug.Log(instruction.item_list);
-                Debug.Log(instruction.action_list);
                 if(instruction.item_list != null)
                 {
                     foreach (string item in instruction.item_list)
@@ -177,6 +176,11 @@ public class Connection : MonoBehaviour
         else if (message.Contains("order_finished"))
         {
             this.GetComponent<MessageHandler>().FinishJob();
+        }
+        else if (message.Contains("performance"))
+        {
+            performance_info = JsonConvert.DeserializeObject<PerformanceProperties>(message);
+            this.GetComponent<MessageHandler>().ParsePerformanceMessage(performance_info);
         }
         else
         {

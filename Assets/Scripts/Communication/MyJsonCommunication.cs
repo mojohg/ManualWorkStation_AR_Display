@@ -49,10 +49,11 @@ public class UserInstruction
 public class PerformanceProperties
 {
     public int total_points = 0;
-    public float performance = 0f;
+    public float time_performance = 0f;
+    public float quality_performance = 0f;
     public int total_level = 0;
-    public bool node_finished = false;
-    public bool level_up = false;
+    public string node_finished = "False";
+    public string level_up = "False";
     public string message_text = "";
     public MessageColor message_color = new MessageColor();
 }

@@ -17,16 +17,14 @@ public class UI_CircularDisplay : MonoBehaviour
     {
     }
 
-    public void InitializeCircularDisplay(float max_number, float threshold_yellow, float threshold_red)
+    public void InitializeCircularDisplay(float threshold_yellow, float threshold_red)
     {
-        max = max_number;
         threshold_y = threshold_yellow;
         threshold_r = threshold_red;
     }
 
-    public void UpdateCircularDisplay(float number)
+    public void UpdateCircularDisplay(float ratio)
     {
-        float ratio = number/max;
         float percentage = ratio * 100;
         uiText.text = percentage.ToString() + "%";
         uiFill.fillAmount = ratio;

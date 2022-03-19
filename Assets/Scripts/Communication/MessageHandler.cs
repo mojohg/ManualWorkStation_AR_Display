@@ -21,6 +21,7 @@ public class MessageHandler : MonoBehaviour
     private GameObject levelup_confetti;
     private GameObject training_finished_confetti;
     private GameObject task_finished;
+    private GameObject final_assembly_green;
     //public GameObject training_finished;
 
     public int current_knowledge_level;
@@ -52,6 +53,7 @@ public class MessageHandler : MonoBehaviour
     private Material assembly_info_material_1;
     private Material assembly_info_material_2;
     private Material finished_info_material;
+    private Material error_info_material;
     //private Material toolpoint_material;
     //private Material invisible_material;
     //private CommunicationClass message = new CommunicationClass();
@@ -62,7 +64,6 @@ public class MessageHandler : MonoBehaviour
     private GameObject max_point_display;
     private int max_points;
     private List<GameObject> uncompleted_steps = new List<GameObject>();
-    private GameObject prefab_bar;
     private GameObject object_presentation;
     private GameObject assembly_presentation;
 
@@ -77,30 +78,38 @@ public class MessageHandler : MonoBehaviour
     {
         assembly_info_material_1 = (Material)Resources.Load("Materials/InformationMaterial1", typeof(Material));
         assembly_info_material_2 = (Material)Resources.Load("Materials/InformationMaterial2", typeof(Material));
-        //toolpoint_material = (Material)Resources.Load("InformationMaterialToolpoints", typeof(Material));
         finished_info_material = (Material)Resources.Load("Materials/Green", typeof(Material));
-        //invisible_material = (Material)Resources.Load("Transparent", typeof(Material));
-        //levelup = GameObject.Find("LevelUp");
-        //feedback_system = GameObject.Find("UserFeedback_Canvas");
+        error_info_material = (Material)Resources.Load("Materials/Red", typeof(Material));
 
         // Find GO
         assemblies = GameObject.Find("Assemblies");
         product_turns = GameObject.Find("ProductTurns");
         product_holder = GameObject.Find("ProductHolder");
-        feedback_canvas = GameObject.Find("FeedbackCanvas");
         feedback_popups = GameObject.Find("PopupParent");
         object_presentation = GameObject.Find("NextObjects");
         assembly_presentation = GameObject.Find("TotalAssembly");
-        current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
-        max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
-        current_action_display = feedback_canvas.transform.Find("ActionInfo").gameObject;
         levelup_confetti = GameObject.Find("LevelUp");
         training_finished_confetti = GameObject.Find("TrainingFinished");
         task_finished = GameObject.Find("TaskFinished");
+
+        // Find Elements of Feedback Canvas
+        feedback_canvas = GameObject.Find("FeedbackCanvas");
+        current_action_display = feedback_canvas.transform.Find("ActionInfo").gameObject;
+        current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
+        max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
     }
 
     public void InitializeVersion(string version_name)
     {
+        // Reset everything
+        ResetWorkplace();
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
+
+        // Set colors of gamification elements
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().InitializeQualityRate(80.0f, 60.0f);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().InitializeTimeRate(80.0f, 60.0f);
+
+        // Load new work information
         current_version = version_name;  // Get V3.1
         current_producttype = current_version.Split('.')[0];  // Get V3
         Debug.Log("Load product version " + current_version);
@@ -140,6 +149,10 @@ public class MessageHandler : MonoBehaviour
 
                     try  // Show miniature product
                     {
+                        if(total_assembly_miniature != null)
+                        {
+                            Destroy(total_assembly_miniature);
+                        }
                         total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
                         foreach (Transform part in total_assembly_miniature.transform)
                         {
@@ -198,6 +211,7 @@ public class MessageHandler : MonoBehaviour
     public void InitializeSteps(int number_steps)
     {
         Debug.Log("InitializeSteps: " + number_steps.ToString());
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNumberSteps();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps);
     }
 
@@ -215,48 +229,29 @@ public class MessageHandler : MonoBehaviour
         ResetWorkplace();
     }
 
-    public void ParsePerformanceMessage(PerformanceProperties message)  // TODO
+    public void ParsePerformanceMessage(PerformanceProperties msg)
     {
-        Debug.Log("ParsePerformanceMessage");
-        /*
-        if(feedback_system == null)
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(msg.total_points);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(msg.quality_performance);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(msg.time_performance);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(msg.total_level);
+        if (msg.node_finished == "True")
         {
-            feedback_system = GameObject.Find("UserFeedback_Canvas");
+            Debug.Log("Step finished");
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
         }
-        if(feedback_system != null)
+        if(msg.level_up == "True")
         {
-            feedback_system.GetComponent<User_UI_Feedback>().ShowPoints(message.total_points);
-            feedback_system.GetComponent<User_UI_Feedback>().ShowPerformance(message.performance, 0f, 1f);
-            feedback_system.GetComponent<User_UI_Feedback>().ShowLevel(message.total_level);
-
-            if (message.message_text != "")
-            {
-                feedback_system.GetComponent<User_UI_Feedback>().DisplayPointPopup(message.message_text,
-                message.message_color.r, message.message_color.g, message.message_color.b);
-            }
-
-            if (message.node_finished)
-            {
-                feedback_system.GetComponent<User_UI_Feedback>().FinishStep();
-            }
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
         }
-        if(message.level_up)
+        if(msg.message_text != "")
         {
-            if(levelup == null)
-            {
-                levelup = GameObject.Find("LevelUp");
-            }
-            if(levelup != null)
-            {
-                levelup.GetComponent<User_Levelup>().ShowLevelUp();
-            }            
-        }*/
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(msg.message_text, msg.message_color.r, msg.message_color.g, msg.message_color.b);
+        }
     }
 
     public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)  // TODO: Level System
     {
-        Debug.Log("Show pick instruction for " + item_name);
-        current_action_display.GetComponent<Text>().text = "Pick Item";
         current_knowledge_level = knowledge_level;
 
         // Find and show prefab
@@ -268,20 +263,26 @@ public class MessageHandler : MonoBehaviour
         }
         ShowPickPrefab(item_prefab);
 
-        if (led_color == "red")  // Wrong pick
+        // Show instructions
+        if (led_color == "green")  // Correct pick
         {
-            // source_wrong.Play();  ToDo: Use element from feedback GO
-
+            Debug.Log("Show pick instruction for " + item_name);
+            current_action_display.GetComponent<Text>().text = "Pick Item";
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
         }
-        else if (led_color == "green")  // Correct pick
+        else if (led_color == "red")  // Wrong pick
         {
+            Debug.Log("Show error pick instruction for " + item_name);
+            current_action_display.GetComponent<Text>().text = "Wrong pick, place wrong object in box";
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
+            GameObject item = ShowPickPrefab(item_prefab);
+            item.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
         }
+        
     }
 
-    public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)  // TODO Level System & Wrong Pick
-    {
-        Debug.Log("Show pick instruction for " + tool_name);
-        current_action_display.GetComponent<Text>().text = "Pick Tool";
+    public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)  // TODO Level System
+    {        
         current_knowledge_level = knowledge_level;
 
         // Find prefab
@@ -292,15 +293,21 @@ public class MessageHandler : MonoBehaviour
             return;
         }
 
-        if (led_color == "red")  // Wrong pick
+        // Show pick instructions
+        if (led_color == "green")  // Correct pick
         {
-            // source_wrong.Play();  ToDo: Use element from feedback GO
-            // TODO: Show tool with cross
-
-        }
-        else if (led_color == "green")  // Correct pick
-        {
+            Debug.Log("Show pick instruction for " + tool_name);
+            current_action_display.GetComponent<Text>().text = "Pick tool";
             ShowPickPrefab(tool_prefab);
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
+        }
+        else if (led_color == "red")  // Wrong pick
+        {
+            Debug.Log("Show error pick instruction for " + tool_name);
+            current_action_display.GetComponent<Text>().text = "Wrong pick, return tool";
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
+            GameObject tool = ShowPickPrefab(tool_prefab);
+            tool.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
         }
     }
 
@@ -318,6 +325,9 @@ public class MessageHandler : MonoBehaviour
             return;
         }
         ShowPickPrefab(tool_prefab);
+
+        // Start timer
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
     public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time)
@@ -341,6 +351,9 @@ public class MessageHandler : MonoBehaviour
         // Highlight position in miniature
         GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
         ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards:false);
+
+        // Start timer
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
     public void ShowToolUsage(string action_name, int knowledge_level, int default_time)  // TODO: Add animations
@@ -360,75 +373,9 @@ public class MessageHandler : MonoBehaviour
                 break;
             }
         }
-    }
 
-    public void ShowInstructions(int knowledge_level, GameObject obj)  // TODO
-    {
-        /*total_assembly_miniature.SetActive(true);
-        current_knowledge_level = knowledge_level;
-        Transform toolpoint = obj.transform.Find("Toolpoint(Clone)");
-        switch (knowledge_level)
-        {
-            case 0:
-                if (toolpoint != null)
-                {
-                    if (toolpoint.gameObject.GetComponent<ObjectInteractions>() == null)
-                    {
-                        toolpoint.gameObject.AddComponent<ObjectInteractions>();  // Show toolpoint
-                    }
-                }
-                ShowObjectPosition(obj, assembly_info_material_1);
-                break;
-
-            case 1:
-                if (toolpoint != null)
-                {
-                    if (toolpoint.gameObject.GetComponent<ObjectInteractions>() == null)
-                    {
-                        toolpoint.gameObject.AddComponent<ObjectInteractions>();  // Show toolpoint
-                    }
-                }
-                ShowObjectPosition(obj, assembly_info_material_1);
-                break;
-
-            case 2:
-                if (toolpoint != null)
-                {
-                    if (toolpoint.gameObject.GetComponent<ObjectInteractions>() == null)
-                    {
-                        ShowObjectPosition(obj, assembly_info_material_1);  // Highlight components which interact with tool
-                    }
-                }
-                else
-                {
-                    ShowObjectPosition(obj, assembly_info_material_2);  // Highlight assembly position
-                }                
-                break;
-
-            case 3:
-                if (toolpoint != null)
-                {
-                    if (toolpoint.gameObject.GetComponent<ObjectInteractions>() == null)
-                    {
-                        ShowObjectPosition(obj, assembly_info_material_1);  // Highlight components which interact with tool
-                    }
-                }
-                else
-                {
-                    ShowObjectPosition(obj, assembly_info_material_2);  // Highlight assembly position
-                }
-                if (obj.GetComponent<AssembleObjects>() != null)
-                {
-                    obj.GetComponent<AssembleObjects>().CheckSupportNecessity();
-                }
-                break;
-            case 4:
-                if (obj.GetComponent<AssembleObjects>() != null)
-                {
-                    obj.GetComponent<AssembleObjects>().CheckSupportNecessity();
-                }
-                break;
-        }*/
+        // Start timer
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
     public void ShowPoints(int current_points)
@@ -458,9 +405,11 @@ public class MessageHandler : MonoBehaviour
 
     public void FinishJob()
     {
-        ResetWorkplace();
         current_assembly_GO.GetComponent<ObjectInteractions>().ActivateAllChildren();
-        current_assembly_GO.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
+
+        final_assembly_green = Instantiate(current_assembly_GO);
+        current_assembly_GO.SetActive(false);
+        final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
         task_finished.GetComponent<AudioSource>().Play();
         current_action_display.GetComponent<Text>().text = "Task finished; remove assembly";
     }
@@ -512,7 +461,14 @@ public class MessageHandler : MonoBehaviour
                 optically_changed_parts.Remove(part);
             }
         }
-        total_assembly_miniature.SetActive(false);
+        if(total_assembly_miniature != null)
+        {
+            total_assembly_miniature.SetActive(false);
+        }
+        if(final_assembly_green != null)
+        {
+            Destroy(final_assembly_green);
+        }
         active_items.Clear();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
     }
@@ -530,7 +486,7 @@ public class MessageHandler : MonoBehaviour
         return null;
     }
 
-    private void ShowPickPrefab(GameObject prefab)
+    private GameObject ShowPickPrefab(GameObject prefab)
     {
         // Instantiate prefab and set parent
         GameObject displayed_item = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -559,6 +515,8 @@ public class MessageHandler : MonoBehaviour
         {
             displayed_item.AddComponent<ObjectInteractions>();
         }
+
+        return displayed_item;
     }
 
     private GameObject FindPrefab(string path_name, string prefab_name)

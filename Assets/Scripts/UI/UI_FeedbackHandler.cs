@@ -79,20 +79,21 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void ShowPoints(int current_points)
     {
-        point_display.transform.Find("CurrentPoints").GetComponent<Text>().text = current_points.ToString();        
+        Text point_text = point_display.transform.Find("CurrentPoints").GetComponent<Text>();
+        point_text.text = current_points.ToString();        
         float ratio = current_points / max_number_points;
 
         if (ratio > 0.8f)
         {
-            point_display.transform.Find("Current").GetComponent<Text>().color = Color.green;
+            point_text.color = Color.green;
         }
         else if (ratio > 0.4f)
         {
-            point_display.transform.Find("Current").GetComponent<Text>().color = Color.cyan;
+            point_text.color = Color.cyan;
         }
         else
         {
-            point_display.transform.Find("Current").GetComponent<Text>().color = Color.yellow;
+            point_text.color = Color.yellow;
         }
     }
 
@@ -140,6 +141,18 @@ public class UI_FeedbackHandler : MonoBehaviour
         }
     }
 
+    public void ResetNumberSteps()
+    {
+        Debug.Log("Reset number of steps");
+        foreach(Transform point in progressBar.transform)
+        {
+            if(point.name.Contains("Bar"))
+            {
+                Destroy(point.gameObject);
+            }            
+        }
+    }
+
     public void FinishStep()
     {
         uncompleted_steps[0].GetComponent<Image>().color = Color.green;
@@ -151,19 +164,19 @@ public class UI_FeedbackHandler : MonoBehaviour
         timer.GetComponent<UI_Timer>().StartTimer(duration_seconds);
     }
 
-    public void InitializeQualityRate(float max_value, float threshold_yellow, float threshold_red)
+    public void InitializeQualityRate(float threshold_yellow, float threshold_red)
     {
-        quality_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(max_value, threshold_yellow, threshold_red);
+        quality_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(threshold_yellow, threshold_red);
     }
 
     public void ShowQualityRate(float quality_rate)
-    {        
+    {
         quality_display.GetComponent<UI_CircularDisplay>().UpdateCircularDisplay(quality_rate);
     }
 
-    public void InitializeTimeRate(float max_value, float threshold_yellow, float threshold_red)
+    public void InitializeTimeRate(float threshold_yellow, float threshold_red)
     {
-        time_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(max_value, threshold_yellow, threshold_red);
+        time_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(threshold_yellow, threshold_red);
     }
 
     public void ShowTimeRate(float quality_rate)

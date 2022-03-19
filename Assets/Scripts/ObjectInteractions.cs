@@ -17,10 +17,6 @@ public class ObjectInteractions : MonoBehaviour {
     public Material initial_material;
     private Material current_material;
     private Shader standardShader;
-
-    private Material mat_red;
-    private Material mat_green;
-    private Material mat_blue;
     private Material mat_grey;
 
     void Awake()
@@ -47,11 +43,7 @@ public class ObjectInteractions : MonoBehaviour {
         client = GameObject.Find("Client");
         arrow_prefab = (GameObject)Resources.Load("Prefabs/General/Arrow_1", typeof(GameObject));
         standardShader = Shader.Find("Standard");
-        StoreCurrentProperties();
-
-        mat_red = (Material)Resources.Load("Materials/Red", typeof(Material));
-        mat_green = (Material)Resources.Load("Materials/Green", typeof(Material));
-        mat_blue = (Material)Resources.Load("Materials/Blue", typeof(Material));        
+        StoreCurrentProperties();      
     }
 
     public void ChangeMaterial(Material material)
@@ -118,7 +110,7 @@ public class ObjectInteractions : MonoBehaviour {
 
     public void ResetMaterial()
     {
-        ChangeMaterial(initial_material);
+        ChangeMaterial(initial_material);     
     }
 
     public void ShowObjectBoundaries(Vector4 outline_color, float outline_width)

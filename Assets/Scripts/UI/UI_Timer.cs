@@ -9,7 +9,8 @@ public class UI_Timer : MonoBehaviour
     public Image uiFill;
     public Text uiText;
 
-    private int remainingDuration;  // in milliseconds
+    private int remaining_duration;  // in milliseconds
+    private int max_duration;
 
     private void Start()
     {
@@ -17,22 +18,27 @@ public class UI_Timer : MonoBehaviour
 
     public void StartTimer(int duration_sec)
     {
-        ResetTimer();
-        remainingDuration = duration_sec * 1000;
-        Debug.Log("Set timer: " + remainingDuration.ToString());
-        StartCoroutine(UpdateTimer(remainingDuration));
+        /*remainingDuration = duration_sec * 1000;
+        Debug.Log("Set timer to : " + remainingDuration.ToString() + " milliseconds");
+        StartCoroutine(UpdateTimer(remainingDuration));*/
+        max_duration = duration_sec;
+        remaining_duration = duration_sec;
+        StartCoroutine(UpdateTimer());
     }
 
-    private IEnumerator UpdateTimer(int duration)
+    private IEnumerator UpdateTimer()  // int duration
     {
-        while (remainingDuration >= 0)
+        while (remaining_duration >= 0)
         {
-            Debug.Log("Count: " + remainingDuration.ToString());
-            //uiText.text = $"{remaining_sec / 60:00}:{remaining_sec % 60:00}";
-            uiText.text = $"{remainingDuration / 1000:00}:{remainingDuration % 1000:00}";
+            /*uiText.text = $"{remainingDuration / 1000:00}:{remainingDuration % 1000:00}";
             uiFill.fillAmount = Mathf.InverseLerp(0, duration, remainingDuration);
             remainingDuration = remainingDuration - 10;
-            yield return new WaitForSeconds(0.010f);
+            yield return new WaitForSeconds(0.010f);*/
+
+            uiText.text = $"{remaining_duration / 60:00}:{remaining_duration % 60:00}";
+            uiFill.fillAmount = Mathf.InverseLerp(0, max_duration, remaining_duration);
+            remaining_duration = remaining_duration - 1;
+            yield return new WaitForSeconds(1f);
         }
         OnEnd();
     }

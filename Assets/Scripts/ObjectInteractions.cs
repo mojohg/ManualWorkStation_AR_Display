@@ -158,54 +158,6 @@ public class ObjectInteractions : MonoBehaviour {
         
     }
 
-    public void TransferUserInteraction(CommunicationClass user_interaction_response)
-    {
-        if (client != null)
-        {
-            // client.GetComponent<Server>().SendUserInteractions(user_interaction_response);
-        }        
-    }
-
-    public void ShowDirection(Quaternion goal_rotation, float interpol_ratio, GameObject controller)
-    {
-        //if (this.gameObject.GetComponent<SpecialProperties>() != null)  // Do not show an arrow in case of rotation symmetry
-        //{
-        //    if (this.gameObject.GetComponent<SpecialProperties>().rotationSymmetry == true)
-        //    {
-        //        return;
-        //    }
-        //}
-
-        if (arrow_prefab == null)
-        {
-            Debug.LogWarning("Arrow prefab not found.");
-        }
-
-        if (Quaternion.Angle(this.transform.rotation, goal_rotation) > rotation_help_limit)
-        {
-            if (arrow == null)
-            {
-                //arrow = Instantiate(arrow_prefab, this.transform.position, this.transform.rotation);
-                //arrow.transform.SetParent(this.transform);
-                arrow = Instantiate(arrow_prefab, controller.transform.position, controller.transform.rotation);
-                arrow.transform.SetParent(controller.transform);
-            }
-            arrow.transform.rotation = Quaternion.Slerp(this.transform.rotation, goal_rotation, interpol_ratio);
-        }
-        else
-        {
-            UnshowDirection();
-        }
-    }
-
-    public void UnshowDirection()
-    {
-        if (arrow != null)
-        {
-            Destroy(arrow);
-        }
-    }
-
     public GameObject FindChild(string name)
     {
         GameObject found_child = null;

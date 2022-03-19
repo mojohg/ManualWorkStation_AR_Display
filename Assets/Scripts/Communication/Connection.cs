@@ -133,34 +133,32 @@ public class Connection : MonoBehaviour
                     instruction.default_time
                     );
             }
-            else if (instruction.action_type == "placeItem")
+            else if (instruction.action_type == "mount")
             {
-                this.GetComponent<MessageHandler>().ShowAssemblyPosition(
-                    instruction.item_name,
-                    instruction.knowledge_level,
-                    instruction.default_time
-                    );
-            }
-            else if (instruction.action_type == "useItemTool")
-            {
-                this.GetComponent<MessageHandler>().ShowAssemblyPosition(
-                    instruction.item_name,
-                    instruction.knowledge_level,
-                    instruction.default_time
-                    );
-                this.GetComponent<MessageHandler>().ShowToolUsage(
-                    instruction.action_name,
-                    instruction.knowledge_level,
-                    instruction.default_time
-                    );
-            }
-            else if (instruction.action_type == "useTool")
-            {
-                this.GetComponent<MessageHandler>().ShowToolUsage(
-                    instruction.action_name,
-                    instruction.knowledge_level,
-                    instruction.default_time
-                    );
+                Debug.Log(instruction.item_list);
+                Debug.Log(instruction.action_list);
+                if(instruction.item_list != null)
+                {
+                    foreach (string item in instruction.item_list)
+                    {
+                        this.GetComponent<MessageHandler>().ShowAssemblyPosition(
+                        item,
+                        instruction.knowledge_level,
+                        instruction.default_time
+                        );
+                    }
+                }
+                if(instruction.action_list != null)
+                {
+                    foreach (string toolpoint in instruction.action_list)
+                    {
+                        this.GetComponent<MessageHandler>().ShowToolUsage(
+                        toolpoint,
+                        instruction.knowledge_level,
+                        instruction.default_time
+                        );
+                    }
+                }
             }
             else if (instruction.action_type == "returnTool")
             {
@@ -170,22 +168,6 @@ public class Connection : MonoBehaviour
                     instruction.knowledge_level,
                     instruction.default_time
                     );
-            }
-            else if (instruction.action_type == "useSeveralObjects")
-            {
-                Debug.Log("Use Several Objects -> TODO");
-                Debug.Log(instruction.item_name);
-                Debug.Log(instruction.action_name);
-                //this.GetComponent<MessageHandler>().ShowAssemblyPosition(
-                //    instruction.item_name,
-                //    instruction.knowledge_level,
-                //    instruction.default_time
-                //    );
-                //this.GetComponent<MessageHandler>().ShowToolUsage(
-                //    instruction.action_name,
-                //    instruction.knowledge_level,
-                //    instruction.default_time
-                //    );
             }
             else
             {

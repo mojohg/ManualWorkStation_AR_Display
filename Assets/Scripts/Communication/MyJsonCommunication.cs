@@ -10,7 +10,7 @@ using UnityEngine.UI;
 /// regarding picking and placing of objects as well as the returning of tools.
 /// </summary>
 
-[System.Serializable]
+/*[System.Serializable]
 public class CommunicationClass
 {
     public string action_type = "";  // pickItem, pickTool, placeItem, useTool, useItemTool, turnAssembly, toolReturn, finishOrder
@@ -34,12 +34,11 @@ public class PickData
 [System.Serializable]
 public class PlaceData
 {
-    // public string picture_ar = "";        //selection of support data for work
-    //public string version = "";         //definition of product version for verification process
-    public string item_name = "";         //definition of product name to check location
-    public string action_name = "";         //definition of product name to check location
+    public string item_list = "";         //list of item names which must be placed
+    public string action_list = "";         //list of toolpoints for tool interactions
     public bool finished = false;       //information from client that production process is finished
     public int knowledge_level = 0;      //support level [1,4]
+    public string annotation = "";      // Annotation for further assembly information
 }
 
 [System.Serializable]
@@ -64,7 +63,7 @@ public class ItemData
 //    public ToolProperties toolholder = new ToolProperties();
 //}
 
-
+*/
 
 // *********************************** Messages from the Server ***********************************************************
 
@@ -95,8 +94,9 @@ public class OrderProperties
 public class UserInstruction
 {
     public string action_type = "";
-    public string item_name = "";
-    public string action_name = "";
+    public string item_name = "";  // for pick operations
+    public List<string> item_list = new List<string>();  // for place operations
+    public List<string> action_list = new List<string>();  // for place operations
     public string color = "";
     public int knowledge_level = 1;
     public int default_time = 0;

@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using System.IO;
+using System;
 
 public class Setup_Camera : MonoBehaviour {
 
@@ -15,6 +18,8 @@ public class Setup_Camera : MonoBehaviour {
     private int box_x0;
 
     private float speed = 0.01f;
+
+    private CameraSetupProperties new_camera_settings = new CameraSetupProperties();
 
     //private bool left = false;
     //private bool right = false;
@@ -98,7 +103,13 @@ public class Setup_Camera : MonoBehaviour {
                         
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Store settings"))
             {
-                
+                new_camera_settings.camera_pos_x = main_camera.transform.position.x;
+                new_camera_settings.camera_pos_y = main_camera.transform.position.y;
+                new_camera_settings.camera_pos_z = main_camera.transform.position.z;
+                new_camera_settings.orthographic_size = main_camera.GetComponent<Camera>().orthographicSize;
+
+                // serialize JSON to a string and then write string to a file
+                File.WriteAllText(main_camera.GetComponent<CameraHandler>().setup_info_path, JsonConvert.SerializeObject(new_camera_settings));
             }
         }
     }

@@ -253,4 +253,20 @@ public class UI_FeedbackHandler : MonoBehaviour
         Debug.LogWarning("Gameobject " + name + " not found");
         return null;
     }
+
+    public void EnableGamification()
+    {
+        foreach(GameObject element in ui_elements)
+        {
+            element.SetActive(false);
+        }
+    }
+
+    public void DisableGamification()
+    {
+        foreach (GameObject element in ui_elements)
+        {
+            element.SetActive(true);
+        }
+    }
 }

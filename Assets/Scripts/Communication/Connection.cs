@@ -215,6 +215,12 @@ public class Connection : MonoBehaviour
         SendWebSocketMessage("Ping");
     }
 
+    public void SendInformation(string message)
+    {
+        Debug.Log("Send information to server: " + message);
+        SendWebSocketMessage(message);
+    }
+
     private async void OnApplicationQuit()
     {
         await websocket.Close();

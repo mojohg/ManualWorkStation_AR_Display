@@ -24,6 +24,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject progressBar;
     private GameObject point_display;
     private GameObject levelup;
+    private GameObject perfect_run;
     private GameObject training_finished;
     private GameObject wrong_action;
     private GameObject correct_action;
@@ -58,6 +59,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         current_level = FindUiElement("CurrentLevel", ui_elements);
         popup_parent = GameObject.Find("PopupParent");
         levelup = GameObject.Find("LevelUp");
+        perfect_run = GameObject.Find("PerfectRun");
         training_finished = GameObject.Find("TrainingFinished");
         wrong_action = GameObject.Find("WrongAction");
         error_plane = GameObject.Find("ErrorPlane");
@@ -161,7 +163,10 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void StartTimer(int duration_seconds)
     {
-        timer.GetComponent<UI_Timer>().StartTimer(duration_seconds);
+        if(timer != null)
+        {
+            timer.GetComponent<UI_Timer>().StartTimer(duration_seconds);
+        }
     }
 
     public void InitializeQualityRate(float threshold_yellow, float threshold_red)
@@ -194,6 +199,11 @@ public class UI_FeedbackHandler : MonoBehaviour
     public void DisplayLevelup()
     {
         levelup.GetComponent<UI_Confetti>().ShowConfetti();
+    }
+
+    public void DisplayPerfectRun()
+    {
+        perfect_run.GetComponent<UI_Confetti>().ShowConfetti();
     }
 
     public void DisplayTrainingFinished()

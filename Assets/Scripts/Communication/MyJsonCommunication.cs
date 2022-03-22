@@ -54,6 +54,7 @@ public class PerformanceProperties
     public int total_level = 0;
     public string node_finished = "False";
     public string level_up = "False";
+    public string perfect_run = "False";
     public string message_text = "";
     public MessageColor message_color = new MessageColor();
 }

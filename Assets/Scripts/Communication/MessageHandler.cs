@@ -244,6 +244,10 @@ public class MessageHandler : MonoBehaviour
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
         }
+        if(msg.perfect_run == "True")
+        {
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
+        }
         if(msg.message_text != "")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(msg.message_text, msg.message_color.r, msg.message_color.g, msg.message_color.b);

@@ -13,6 +13,7 @@ public class Connection : MonoBehaviour
     private PerformanceProperties performance_info = new PerformanceProperties();
     private bool connected = false;
     private bool retry = true;
+    private bool init_received = false;
     private IEnumerator coroutine;
 
     // Start is called before the first frame update
@@ -93,6 +94,7 @@ public class Connection : MonoBehaviour
         else if (message.Contains("new_instructions"))  //Reset support for next work step
         {
             this.GetComponent<MessageHandler>().NewInstructions();
+            init_received = true;
             SendWebSocketMessage("ACK-new_instructions");
         }
         else if (message.Contains("version"))  //Set product version
@@ -115,62 +117,65 @@ public class Connection : MonoBehaviour
         }
         else if (message.Contains("action_type"))  //Show instruction
         {
-            instruction = JsonConvert.DeserializeObject<UserInstruction>(message);
-            if (instruction.action_type == "pickItem")
+            if (init_received)  // Only execute messages if init was received
             {
-                this.GetComponent<MessageHandler>().PickObject(
-                instruction.item_name,
-                instruction.color,
-                instruction.knowledge_level,
-                instruction.default_time
-                );
-            }
-            else if (instruction.action_type == "pickTool")
-            {
-                this.GetComponent<MessageHandler>().PickTool(
+                instruction = JsonConvert.DeserializeObject<UserInstruction>(message);
+                if (instruction.action_type == "pickItem")
+                {
+                    this.GetComponent<MessageHandler>().PickObject(
                     instruction.item_name,
                     instruction.color,
                     instruction.knowledge_level,
                     instruction.default_time
                     );
-            }
-            else if (instruction.action_type == "mount")
-            {
-                if(instruction.item_list != null)
+                }
+                else if (instruction.action_type == "pickTool")
                 {
-                    foreach (string item in instruction.item_list)
-                    {
-                        this.GetComponent<MessageHandler>().ShowAssemblyPosition(
-                        item,
+                    this.GetComponent<MessageHandler>().PickTool(
+                        instruction.item_name,
+                        instruction.color,
                         instruction.knowledge_level,
                         instruction.default_time
                         );
+                }
+                else if (instruction.action_type == "mount")
+                {
+                    if (instruction.item_list != null)
+                    {
+                        foreach (string item in instruction.item_list)
+                        {
+                            this.GetComponent<MessageHandler>().ShowAssemblyPosition(
+                            item,
+                            instruction.knowledge_level,
+                            instruction.default_time
+                            );
+                        }
+                    }
+                    if (instruction.action_list != null)
+                    {
+                        foreach (string toolpoint in instruction.action_list)
+                        {
+                            this.GetComponent<MessageHandler>().ShowToolUsage(
+                            toolpoint,
+                            instruction.knowledge_level,
+                            instruction.default_time
+                            );
+                        }
                     }
                 }
-                if(instruction.action_list != null)
+                else if (instruction.action_type == "returnTool")
                 {
-                    foreach (string toolpoint in instruction.action_list)
-                    {
-                        this.GetComponent<MessageHandler>().ShowToolUsage(
-                        toolpoint,
+                    this.GetComponent<MessageHandler>().ReturnTool(
+                        instruction.item_name,
+                        instruction.color,
                         instruction.knowledge_level,
                         instruction.default_time
                         );
-                    }
                 }
-            }
-            else if (instruction.action_type == "returnTool")
-            {
-                this.GetComponent<MessageHandler>().ReturnTool(
-                    instruction.item_name,
-                    instruction.color,
-                    instruction.knowledge_level,
-                    instruction.default_time
-                    );
-            }
-            else
-            {
-                Debug.Log("Unknown user action: " + instruction.action_type);
+                else
+                {
+                    Debug.Log("Unknown user action: " + instruction.action_type);
+                }
             }
         }
         else if (message.Contains("order_finished"))

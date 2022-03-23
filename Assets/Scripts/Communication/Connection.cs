@@ -36,12 +36,12 @@ public class Connection : MonoBehaviour
         websocket.OnMessage += (bytes) =>
         {
             string message = System.Text.Encoding.UTF8.GetString(bytes);  // get message as string
-            // Debug.Log("Message received: " + message);
-            if(message.Length > 0)
-            {
-                ExecuteCommand(message);
-                message = "";
-            }
+            Debug.Log("Message received: " + message);
+            //if(message.Length > 0)
+            //{
+            //    ExecuteCommand(message);
+            //    message = "";
+            //}
         };
 
         websocket.OnError += (e) =>

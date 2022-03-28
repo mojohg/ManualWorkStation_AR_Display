@@ -37,11 +37,11 @@ public class Connection : MonoBehaviour
         {
             string message = System.Text.Encoding.UTF8.GetString(bytes);  // get message as string
             Debug.Log("Message received: " + message);
-            //if(message.Length > 0)
-            //{
-            //    ExecuteCommand(message);
-            //    message = "";
-            //}
+            if (message.Length > 0)
+            {
+                ExecuteCommand(message);
+                message = "";
+            }
         };
 
         websocket.OnError += (e) =>
@@ -100,97 +100,97 @@ public class Connection : MonoBehaviour
         else if (message.Contains("version"))  //Set product version
         {
             order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
-            this.GetComponent<MessageHandler>().InitializeVersion(order_properties.version);
+            //this.GetComponent<MessageHandler>().InitializeVersion(order_properties.version);
             SendWebSocketMessage("ACK-version");
         }
-        else if (message.Contains("number_steps"))  //Set number of steps
-        {
-            order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
-            this.GetComponent<MessageHandler>().InitializeSteps(order_properties.number_steps);
-            SendWebSocketMessage("ACK-number_steps");
-        }
-        else if (message.Contains("number_points"))  //Set number of points
-        {
-            order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
-            this.GetComponent<MessageHandler>().InitializePoints(order_properties.number_points);
-            SendWebSocketMessage("ACK-number_points");
-        }
-        else if (message.Contains("action_type"))  //Show instruction
-        {
-            if (init_received)  // Only execute messages if init was received
-            {
-                instruction = JsonConvert.DeserializeObject<UserInstruction>(message);
-                if (instruction.action_type == "pickItem")
-                {
-                    this.GetComponent<MessageHandler>().PickObject(
-                    instruction.item_name,
-                    instruction.color,
-                    instruction.knowledge_level,
-                    instruction.default_time
-                    );
-                }
-                else if (instruction.action_type == "pickTool")
-                {
-                    this.GetComponent<MessageHandler>().PickTool(
-                        instruction.item_name,
-                        instruction.color,
-                        instruction.knowledge_level,
-                        instruction.default_time
-                        );
-                }
-                else if (instruction.action_type == "mount")
-                {
-                    if (instruction.item_list != null)
-                    {
-                        foreach (string item in instruction.item_list)
-                        {
-                            this.GetComponent<MessageHandler>().ShowAssemblyPosition(
-                            item,
-                            instruction.knowledge_level,
-                            instruction.default_time
-                            );
-                        }
-                    }
-                    if (instruction.action_list != null)
-                    {
-                        foreach (string toolpoint in instruction.action_list)
-                        {
-                            this.GetComponent<MessageHandler>().ShowToolUsage(
-                            toolpoint,
-                            instruction.knowledge_level,
-                            instruction.default_time
-                            );
-                        }
-                    }
-                }
-                else if (instruction.action_type == "returnTool")
-                {
-                    this.GetComponent<MessageHandler>().ReturnTool(
-                        instruction.item_name,
-                        instruction.color,
-                        instruction.knowledge_level,
-                        instruction.default_time
-                        );
-                }
-                else
-                {
-                    Debug.Log("Unknown user action: " + instruction.action_type);
-                }
-            }
-        }
-        else if (message.Contains("order_finished"))
-        {
-            this.GetComponent<MessageHandler>().FinishJob();
-        }
-        else if (message.Contains("performance"))
-        {
-            performance_info = JsonConvert.DeserializeObject<PerformanceProperties>(message);
-            this.GetComponent<MessageHandler>().ParsePerformanceMessage(performance_info);
-        }
-        else
-        {
-            Debug.Log("Unknown message type: " + message);
-        }
+        //else if (message.Contains("number_steps"))  //Set number of steps
+        //{
+        //    order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
+        //    this.GetComponent<MessageHandler>().InitializeSteps(order_properties.number_steps);
+        //    SendWebSocketMessage("ACK-number_steps");
+        //}
+        //else if (message.Contains("number_points"))  //Set number of points
+        //{
+        //    order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
+        //    this.GetComponent<MessageHandler>().InitializePoints(order_properties.number_points);
+        //    SendWebSocketMessage("ACK-number_points");
+        //}
+        //else if (message.Contains("action_type"))  //Show instruction
+        //{
+        //    if (init_received)  // Only execute messages if init was received
+        //    {
+        //        instruction = JsonConvert.DeserializeObject<UserInstruction>(message);
+        //        if (instruction.action_type == "pickItem")
+        //        {
+        //            this.GetComponent<MessageHandler>().PickObject(
+        //            instruction.item_name,
+        //            instruction.color,
+        //            instruction.knowledge_level,
+        //            instruction.default_time
+        //            );
+        //        }
+        //        else if (instruction.action_type == "pickTool")
+        //        {
+        //            this.GetComponent<MessageHandler>().PickTool(
+        //                instruction.item_name,
+        //                instruction.color,
+        //                instruction.knowledge_level,
+        //                instruction.default_time
+        //                );
+        //        }
+        //        else if (instruction.action_type == "mount")
+        //        {
+        //            if (instruction.item_list != null)
+        //            {
+        //                foreach (string item in instruction.item_list)
+        //                {
+        //                    this.GetComponent<MessageHandler>().ShowAssemblyPosition(
+        //                    item,
+        //                    instruction.knowledge_level,
+        //                    instruction.default_time
+        //                    );
+        //                }
+        //            }
+        //            if (instruction.action_list != null)
+        //            {
+        //                foreach (string toolpoint in instruction.action_list)
+        //                {
+        //                    this.GetComponent<MessageHandler>().ShowToolUsage(
+        //                    toolpoint,
+        //                    instruction.knowledge_level,
+        //                    instruction.default_time
+        //                    );
+        //                }
+        //            }
+        //        }
+        //        else if (instruction.action_type == "returnTool")
+        //        {
+        //            this.GetComponent<MessageHandler>().ReturnTool(
+        //                instruction.item_name,
+        //                instruction.color,
+        //                instruction.knowledge_level,
+        //                instruction.default_time
+        //                );
+        //        }
+        //        else
+        //        {
+        //            Debug.Log("Unknown user action: " + instruction.action_type);
+        //        }
+        //    }
+        //}
+        //else if (message.Contains("order_finished"))
+        //{
+        //    this.GetComponent<MessageHandler>().FinishJob();
+        //}
+        //else if (message.Contains("performance"))
+        //{
+        //    performance_info = JsonConvert.DeserializeObject<PerformanceProperties>(message);
+        //    this.GetComponent<MessageHandler>().ParsePerformanceMessage(performance_info);
+        //}
+        //else
+        //{
+        //    Debug.Log("Unknown message type: " + message);
+        //}
     }
 
     async void EstablishConnection()

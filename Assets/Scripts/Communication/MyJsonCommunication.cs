@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameDevWare.Serialization;
 
 
 /// <summary>
@@ -65,3 +66,4 @@ public class MessageColor
     public float g = 0f;
     public float b = 0f;
 }
+

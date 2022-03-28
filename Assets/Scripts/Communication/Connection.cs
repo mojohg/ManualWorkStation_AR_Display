@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NativeWebSocket;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
+using GameDevWare.Serialization;
 
 public class Connection : MonoBehaviour
 {
@@ -101,6 +102,9 @@ public class Connection : MonoBehaviour
         {
             //order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
             //this.GetComponent<MessageHandler>().InitializeVersion(order_properties.version);
+            var value = new { x = 1, y = 2 };
+            var valueJson = Json.SerializeToString(value); // -> {"x":1,"y":2}
+            Debug.Log(valueJson);
             this.GetComponent<MessageHandler>().InitializeVersion("V3.3");
             SendWebSocketMessage("ACK-version");
         }

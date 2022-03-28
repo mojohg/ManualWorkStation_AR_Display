@@ -99,8 +99,9 @@ public class Connection : MonoBehaviour
         }
         else if (message.Contains("version"))  //Set product version
         {
-            order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
+            //order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
             //this.GetComponent<MessageHandler>().InitializeVersion(order_properties.version);
+            this.GetComponent<MessageHandler>().InitializeVersion("V3.3");
             SendWebSocketMessage("ACK-version");
         }
         //else if (message.Contains("number_steps"))  //Set number of steps

@@ -149,14 +149,14 @@ public class MessageHandler : MonoBehaviour
 
                     try  // Show miniature product
                     {
-                        if(total_assembly_miniature != null)
+                        if (total_assembly_miniature != null)
                         {
                             Destroy(total_assembly_miniature);
                         }
                         total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
                         foreach (Transform part in total_assembly_miniature.transform)
                         {
-                            if(part.name.Contains("Toolpoint"))
+                            if (part.name.Contains("Toolpoint"))
                             {
                                 Destroy(part.gameObject);
                             }
@@ -215,7 +215,7 @@ public class MessageHandler : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps);
     }
 
-    public void InitializePoints (int number_points)
+    public void InitializePoints(int number_points)
     {
         max_points = number_points;
         Debug.Log("InitializePoints: " + max_points.ToString());
@@ -223,35 +223,34 @@ public class MessageHandler : MonoBehaviour
         ShowPoints(0);
     }
 
-    public void NewInstructions ()
+    public void NewInstructions()
     {
         Debug.Log("New work step -> reset support");
         ResetWorkplace();
     }
 
-    public void ParsePerformanceMessage(int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string level_up, string perfect_run, 
-        string message_text, int message_color_r, int message_color_g, int message_color_b)
+    public void ParsePerformanceMessage(PerformanceProperties msg)
     {
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(total_points);
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(quality_performance);
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(total_level);
-        if (node_finished == "True")
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(msg.total_points);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(msg.quality_performance);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(msg.time_performance);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(msg.total_level);
+        if (msg.node_finished == "True")
         {
             Debug.Log("Step finished");
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
         }
-        if(level_up == "True")
+        if (msg.level_up == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
         }
-        if(perfect_run == "True")
+        if (msg.perfect_run == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
         }
-        if(message_text != "")
+        if (msg.message_text != "")
         {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(message_text, message_color_r, message_color_g, message_color_b);
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(msg.message_text, msg.message_color.r, msg.message_color.g, msg.message_color.b);
         }
     }
 
@@ -283,11 +282,11 @@ public class MessageHandler : MonoBehaviour
             GameObject item = ShowPickPrefab(item_prefab);
             item.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
         }
-        
+
     }
 
     public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)  // TODO Level System
-    {        
+    {
         current_knowledge_level = knowledge_level;
 
         // Find prefab
@@ -348,14 +347,14 @@ public class MessageHandler : MonoBehaviour
             {
                 item.SetActive(true);
                 active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards:true);
+                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards: true);
                 break;
             }
         }
 
         // Highlight position in miniature
         GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
-        ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards:false);
+        ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards: false);
 
         // Start timer
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
@@ -424,7 +423,7 @@ public class MessageHandler : MonoBehaviour
         if (current_object.GetComponent<ObjectInteractions>() != null)
         {
             current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
-            if(disable_afterwards)
+            if (disable_afterwards)
             {
                 active_items.Add(current_object);
             }
@@ -438,7 +437,7 @@ public class MessageHandler : MonoBehaviour
             current_object.AddComponent<ObjectInteractions>();
             current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
             active_items.Add(current_object);
-        } 
+        }
     }
 
     public void ResetWorkplace()
@@ -458,7 +457,7 @@ public class MessageHandler : MonoBehaviour
                 item.SetActive(false);
             }
         }
-        if(optically_changed_parts.Count() > 0)
+        if (optically_changed_parts.Count() > 0)
         {
             foreach (GameObject part in optically_changed_parts.ToList())
             {
@@ -466,11 +465,11 @@ public class MessageHandler : MonoBehaviour
                 optically_changed_parts.Remove(part);
             }
         }
-        if(total_assembly_miniature != null)
+        if (total_assembly_miniature != null)
         {
             total_assembly_miniature.SetActive(false);
         }
-        if(final_assembly_green != null)
+        if (final_assembly_green != null)
         {
             Destroy(final_assembly_green);
         }

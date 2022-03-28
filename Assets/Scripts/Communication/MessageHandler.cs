@@ -229,28 +229,29 @@ public class MessageHandler : MonoBehaviour
         ResetWorkplace();
     }
 
-    public void ParsePerformanceMessage(PerformanceProperties msg)
+    public void ParsePerformanceMessage(int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string level_up, string perfect_run, 
+        string message_text, int message_color_r, int message_color_g, int message_color_b)
     {
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(msg.total_points);
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(msg.quality_performance);
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(msg.time_performance);
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(msg.total_level);
-        if (msg.node_finished == "True")
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(total_points);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(quality_performance);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(total_level);
+        if (node_finished == "True")
         {
             Debug.Log("Step finished");
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
         }
-        if(msg.level_up == "True")
+        if(level_up == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
         }
-        if(msg.perfect_run == "True")
+        if(perfect_run == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
         }
-        if(msg.message_text != "")
+        if(message_text != "")
         {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(msg.message_text, msg.message_color.r, msg.message_color.g, msg.message_color.b);
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(message_text, message_color_r, message_color_g, message_color_b);
         }
     }
 

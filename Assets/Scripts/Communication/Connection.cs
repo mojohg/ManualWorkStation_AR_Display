@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using NativeWebSocket;
 using System.Text.RegularExpressions;
+using System;
+using System.Globalization;
 
 public class Connection : MonoBehaviour
 {
@@ -99,24 +101,25 @@ public class Connection : MonoBehaviour
         }
         else if (message.Contains("version"))  //Set product version {"version": "V3.3"}
         {
-            //order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
             Regex rx = new Regex(@"version<(.*?)>");
             string result = rx.Match(message).Groups[1].Value;
             this.GetComponent<MessageHandler>().InitializeVersion(result);
             SendWebSocketMessage("ACK-version");
         }
-        //else if (message.Contains("number_steps"))  //Set number of steps
-        //{
-        //    order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
-        //    this.GetComponent<MessageHandler>().InitializeSteps(order_properties.number_steps);
-        //    SendWebSocketMessage("ACK-number_steps");
-        //}
-        //else if (message.Contains("number_points"))  //Set number of points
-        //{
-        //    order_properties = JsonConvert.DeserializeObject<OrderProperties>(message);
-        //    this.GetComponent<MessageHandler>().InitializePoints(order_properties.number_points);
-        //    SendWebSocketMessage("ACK-number_points");
-        //}
+        else if (message.Contains("number_steps"))  //Set number of steps
+        {
+            Regex rx = new Regex(@"number_steps<(.*?)>");
+            string result = rx.Match(message).Groups[1].Value;
+            this.GetComponent<MessageHandler>().InitializeSteps(Convert.ToInt32(result));
+            SendWebSocketMessage("ACK-number_steps");
+        }
+        else if (message.Contains("number_points"))  //Set number of points
+        {
+            Regex rx = new Regex(@"number_points<(.*?)>");
+            string result = rx.Match(message).Groups[1].Value;
+            this.GetComponent<MessageHandler>().InitializePoints(Convert.ToInt32(result));
+            SendWebSocketMessage("ACK-number_points");
+        }
         //else if (message.Contains("action_type"))  //Show instruction
         //{
         //    if (init_received)  // Only execute messages if init was received
@@ -180,19 +183,63 @@ public class Connection : MonoBehaviour
         //        }
         //    }
         //}
-        //else if (message.Contains("order_finished"))
-        //{
-        //    this.GetComponent<MessageHandler>().FinishJob();
-        //}
-        //else if (message.Contains("performance"))
-        //{
-        //    performance_info = JsonConvert.DeserializeObject<PerformanceProperties>(message);
-        //    this.GetComponent<MessageHandler>().ParsePerformanceMessage(performance_info);
-        //}
-        //else
-        //{
-        //    Debug.Log("Unknown message type: " + message);
-        //}
+        else if (message.Contains("order_finished"))
+        {
+            this.GetComponent<MessageHandler>().FinishJob();
+        }
+        else if (message.Contains("performance"))  // {"message_color": {"r": 0, "g": 1, "b": 0}}
+        {
+            Regex rx = new Regex(@"total_points<(.*?)>");
+            string total_points = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"time_performance<(.*?)>");
+            string time_performance = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"quality_performance<(.*?)>");
+            string quality_performance = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"total_level<(.*?)>");
+            string total_level = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"node_finished<(.*?)>");
+            string node_finished = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"level_up<(.*?)>");
+            string level_up = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"perfect_run<(.*?)>");
+            string perfect_run = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"message_text<(.*?)>");
+            string message_text = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"message_color_r<(.*?)>");
+            string message_color_r = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"message_color_g<(.*?)>");
+            string message_color_g = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"message_color_b<(.*?)>");
+            string message_color_b = rx.Match(message).Groups[1].Value;
+
+
+            this.GetComponent<MessageHandler>().ParsePerformanceMessage(
+                total_points: Convert.ToInt32(total_points),
+                time_performance: float.Parse(time_performance, CultureInfo.InvariantCulture.NumberFormat),
+                quality_performance: float.Parse(quality_performance, CultureInfo.InvariantCulture.NumberFormat),
+                total_level: Convert.ToInt32(total_level),
+                node_finished: node_finished,
+                level_up: level_up,
+                perfect_run: perfect_run,
+                message_text: message_text,
+                message_color_r: Convert.ToInt32(message_color_r),
+                message_color_g: Convert.ToInt32(message_color_g),
+                message_color_b: Convert.ToInt32(message_color_b));
+        }
+        else
+        {
+            Debug.Log("Unknown message type: " + message);
+        }
     }
 
     async void EstablishConnection()

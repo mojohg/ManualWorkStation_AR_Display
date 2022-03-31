@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.IO;
+using UnityEngine.UI;
 using System;
 
 public class Setup_Camera : MonoBehaviour {
@@ -21,14 +22,12 @@ public class Setup_Camera : MonoBehaviour {
 
     private CameraSetupProperties new_camera_settings = new CameraSetupProperties();
 
-    //private bool left = false;
-    //private bool right = false;
-    //private bool up = false;
-    //private bool down = false;
-    //private bool zoom_in = false;
-    //private bool zoom_out = false;
+    private bool setup_mode = false;
+    private bool prev_setup_mode = false;
 
     public GameObject main_camera;
+    private GameObject client;
+    private GameObject assembly;
 
     void OnEnable()
     {
@@ -42,6 +41,8 @@ public class Setup_Camera : MonoBehaviour {
 
     void Start()
     {
+        client = GameObject.Find("Client");
+        assembly = GameObject.Find("V3.3");
     }
 
     void Update()
@@ -68,11 +69,35 @@ public class Setup_Camera : MonoBehaviour {
             }
 
             // Add elements
-            if (GUI.Button(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), "Move left"))
+            setup_mode = GUI.Toggle(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), setup_mode, "Setup-Mode");
+            if (prev_setup_mode != setup_mode)
+            {
+                prev_setup_mode = setup_mode;
+                if (setup_mode)
+                {
+                    client.GetComponent<Connection_noJson>().SendInformation("{setup}");
+                    assembly.SetActive(true);
+                    foreach (Transform item in assembly.transform)
+                    {
+                        item.gameObject.SetActive(true);
+                    }
+                }
+                else
+                {
+                    client.GetComponent<Connection_noJson>().SendInformation("{ready}");
+                    assembly.SetActive(false);
+                    foreach (Transform item in assembly.transform)
+                    {
+                        item.gameObject.SetActive(false);
+                    }
+                }
+            }
+            int i = 1;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Move left"))
             {
                 main_camera.transform.position += transform.forward * speed;
             }
-            int i = 0;
+            i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Move right"))
             {
                 main_camera.transform.position += - transform.forward * speed;
@@ -100,7 +125,7 @@ public class Setup_Camera : MonoBehaviour {
                 main_camera.GetComponent<Camera>().orthographicSize += 0.1f;
             }
             i++;
-                        
+            
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Store settings"))
             {
                 new_camera_settings.camera_pos_x = main_camera.transform.position.x;

@@ -26,7 +26,7 @@ public class UI_CircularDisplay : MonoBehaviour
     public void UpdateCircularDisplay(float ratio)
     {
         float percentage = ratio * 100;
-        uiText.text = percentage.ToString() + "%";
+        uiText.text = percentage.ToString("0.0") + "%";
         uiFill.fillAmount = ratio;
 
         // Adjust colors

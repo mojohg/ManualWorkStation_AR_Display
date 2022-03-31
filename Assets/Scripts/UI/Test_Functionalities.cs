@@ -75,7 +75,7 @@ public class Test_Functionalities : MonoBehaviour {
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Show quality rate"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().InitializeQualityRate(80.0f, 60.0f);
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(0.7f);
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(0.77777777777777f);
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Show time rate"))
@@ -123,9 +123,9 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(60);
             }
             i++;
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Reset notifications"))
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Reset game elements"))
             {
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetFeedbackElements();
             }
             i++;
             sellevel = GUI.SelectionGrid(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 40), sellevel, levels, 3);

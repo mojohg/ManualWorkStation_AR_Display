@@ -33,6 +33,10 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject timer;
     private GameObject quality_display;
     private GameObject time_display;
+    private GameObject max_points;
+    private GameObject current_points;
+    private GameObject levelname;
+    private GameObject levelimage;
 
 
     void Awake()
@@ -67,23 +71,28 @@ public class UI_FeedbackHandler : MonoBehaviour
         timer = GameObject.Find("Timer");
         quality_display = GameObject.Find("QualityDisplay");
         time_display = GameObject.Find("TimeDisplay");
+        
+        max_points = point_display.transform.Find("MaxPoints").gameObject;
+        current_points = point_display.transform.Find("CurrentPoints").gameObject;
+        levelname = current_level.transform.Find("LevelName").gameObject;
+        levelimage = current_level.transform.Find("LevelImage").gameObject;
 
         // Disable unnecessary elements
         ui_notifications.Add(error_plane);
         error_plane.SetActive(false);
     }
 
-    public void SetMaxPoints(int max_points)
+    public void SetMaxPoints(int points)
     {
-        max_number_points = max_points;
-        point_display.transform.Find("MaxPoints").GetComponent<Text>().text = max_points.ToString();
+        max_number_points = points;
+        max_points.GetComponent<Text>().text = max_points.ToString();
     }
 
-    public void ShowPoints(int current_points)
+    public void ShowPoints(int points)
     {
-        Text point_text = point_display.transform.Find("CurrentPoints").GetComponent<Text>();
-        point_text.text = current_points.ToString();        
-        float ratio = current_points / max_number_points;
+        Text point_text = current_points.GetComponent<Text>();
+        point_text.text = points.ToString();        
+        float ratio = points / max_number_points;
 
         if (ratio > 0.8f)
         {
@@ -100,10 +109,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     }
 
     public void ShowLevel(int level)
-    {
-        GameObject levelname = current_level.transform.Find("LevelName").gameObject;
-        GameObject levelimage = current_level.transform.Find("LevelImage").gameObject;
-        
+    {        
         if (level == 0)
         {
             levelname.GetComponent<Text>().text = "Introduction";
@@ -172,6 +178,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     public void InitializeQualityRate(float threshold_yellow, float threshold_red)
     {
         quality_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(threshold_yellow, threshold_red);
+        quality_display.GetComponent<UI_CircularDisplay>().UpdateCircularDisplay(1);
     }
 
     public void ShowQualityRate(float quality_rate)
@@ -182,6 +189,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     public void InitializeTimeRate(float threshold_yellow, float threshold_red)
     {
         time_display.GetComponent<UI_CircularDisplay>().InitializeCircularDisplay(threshold_yellow, threshold_red);
+        time_display.GetComponent<UI_CircularDisplay>().UpdateCircularDisplay(1);
     }
 
     public void ShowTimeRate(float quality_rate)
@@ -268,5 +276,17 @@ public class UI_FeedbackHandler : MonoBehaviour
         {
             element.SetActive(true);
         }
+    }
+
+    public void ResetFeedbackElements()
+    {
+        ResetNotifications();
+        ResetNumberSteps();
+        max_points.GetComponent<Text>().text = "";
+        current_points.GetComponent<Text>().text = "";
+        levelname.GetComponent<Text>().text = "Beginner";
+        levelimage.GetComponent<Image>().sprite = level_1_sprite;
+        quality_display.GetComponent<UI_CircularDisplay>().UpdateCircularDisplay(1);
+        time_display.GetComponent<UI_CircularDisplay>().UpdateCircularDisplay(1);
     }
 }

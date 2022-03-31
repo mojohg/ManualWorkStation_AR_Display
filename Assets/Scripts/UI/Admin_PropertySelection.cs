@@ -102,6 +102,7 @@ public class Admin_PropertySelection : MonoBehaviour {
             if (GUI.Button(new Rect(box_x0 + margins, 430 + 25 * 0, box_width - 2 * margins, 20), "Reset Order"))
             {
                 client.GetComponent<Connection_noJson>().SendInformation("{resetOrder}");
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetFeedbackElements();
             }
         }        
     }

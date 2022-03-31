@@ -22,9 +22,9 @@ public class Admin_PropertySelection : MonoBehaviour {
     private string tmp_username = "Username";
 
     [HideInInspector] public string[] selectionLevels_5 = { "Level 0", "Level 1", "Level 2", "Level 3", "Level 4", "Auto" };
-    [HideInInspector] public int userLevel = 5;
+    [HideInInspector] public int user_level = 5;
     [HideInInspector] public bool gamification = true;
-    [HideInInspector] public string username = "No-User";
+    [HideInInspector] public string user_name = "No-User";
 
     private GameObject username_go;
 
@@ -77,11 +77,11 @@ public class Admin_PropertySelection : MonoBehaviour {
             // Apply changes if save button is pressed
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Save"))
             {
-                if (tmp_username != username)
+                if (tmp_username != user_name)
                 {
-                    username = tmp_username;
-                    client.GetComponent<Connection_noJson>().SendInformation("username[" + username + "]");
-                    username_go.GetComponent<Text>().text = username;
+                    user_name = tmp_username;
+                    client.GetComponent<Connection_noJson>().SendInformation("username[" + user_name + "]");
+                    username_go.GetComponent<Text>().text = user_name;
                 }
 
                 if (tmp_gamification != gamification)  // Activate or deactivate game elements
@@ -97,10 +97,10 @@ public class Admin_PropertySelection : MonoBehaviour {
                     }
                 }
 
-                if (tmp_level != userLevel)
+                if (tmp_level != user_level)
                 {
-                    userLevel = tmp_level;
-                    client.GetComponent<Connection_noJson>().SendInformation("[level:" + userLevel + "]");
+                    user_level = tmp_level;
+                    client.GetComponent<Connection_noJson>().SendInformation("[level:" + user_level + "]");
                 }
             }
 

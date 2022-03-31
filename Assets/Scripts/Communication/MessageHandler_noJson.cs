@@ -15,17 +15,14 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject product_turns;
     private GameObject product_holder;
     private GameObject feedback_canvas;
-    private GameObject feedback_popups;
-    private GameObject levelup_confetti;
-    private GameObject training_finished_confetti;
     private GameObject task_finished;
     private GameObject final_assembly_green;
+    private GameObject active_product_version;
 
     public int current_knowledge_level;
     public string current_version;
     private string current_producttype;
     private GameObject current_assembly_GO;
-    private GameObject active_product_version;
 
     private List<GameObject> holder_versions;
     private List<GameObject> product_versions;
@@ -69,11 +66,8 @@ public class MessageHandler_noJson : MonoBehaviour
         assemblies = GameObject.Find("Assemblies");
         product_turns = GameObject.Find("ProductTurns");
         product_holder = GameObject.Find("ProductHolder");
-        feedback_popups = GameObject.Find("PopupParent");
         object_presentation = GameObject.Find("NextObjects");
         assembly_presentation = GameObject.Find("TotalAssembly");
-        levelup_confetti = GameObject.Find("LevelUp");
-        training_finished_confetti = GameObject.Find("TrainingFinished");
         task_finished = GameObject.Find("TaskFinished");
 
         // Find Elements of Feedback Canvas
@@ -192,7 +186,8 @@ public class MessageHandler_noJson : MonoBehaviour
         }
 
         // Acknowledge init and send user information to hardware control
-        client.GetComponent<Connection_noJson>().SendInformation("init_username[" + setup_test.GetComponent<Admin_PropertySelection>().username + "]level[" + setup_test.GetComponent<Admin_PropertySelection>().userLevel + "]");
+        Debug.Log(setup_test.GetComponent<Admin_PropertySelection>().user_name);
+        client.GetComponent<Connection_noJson>().SendInformation("init_username[" + setup_test.GetComponent<Admin_PropertySelection>().user_name + "]level[" + setup_test.GetComponent<Admin_PropertySelection>().user_level + "]");
 
     }
 

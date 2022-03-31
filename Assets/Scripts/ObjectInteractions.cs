@@ -10,10 +10,7 @@ using Newtonsoft.Json;
 public class ObjectInteractions : MonoBehaviour {
 
     private int number_children = 0;
-    private GameObject client;
     [HideInInspector] public GameObject arrow;
-    private GameObject arrow_prefab;
-    private int rotation_help_limit = 40;
     public Material initial_material;
     private Material current_material;
     private Shader standardShader;
@@ -40,8 +37,6 @@ public class ObjectInteractions : MonoBehaviour {
     
     void Start()
     {
-        client = GameObject.Find("Client");
-        arrow_prefab = (GameObject)Resources.Load("Prefabs/General/Arrow_1", typeof(GameObject));
         standardShader = Shader.Find("Standard");
         StoreCurrentProperties();      
     }

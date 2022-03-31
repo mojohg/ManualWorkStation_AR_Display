@@ -19,7 +19,6 @@ public class GameElements_Selection : MonoBehaviour {
     private bool tmp_quality = true;
     private bool tmp_level = true;
     private bool tmp_performance_comparison = true;
-    private bool tmp_own_goals = true;
 
     [HideInInspector] public bool point_display = true;
     [HideInInspector] public bool clock = true;
@@ -126,7 +125,6 @@ public class GameElements_Selection : MonoBehaviour {
                 tmp_quality = true;
                 tmp_level = true;
                 tmp_performance_comparison = true;
-                tmp_own_goals = true;
 
                 point_display = true;
                 clock = true;

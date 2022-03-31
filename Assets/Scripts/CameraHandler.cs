@@ -19,7 +19,7 @@ public class CameraHandler : MonoBehaviour
             this.transform.position = new Vector3(setup_data.camera_pos_x, setup_data.camera_pos_y, setup_data.camera_pos_z);
             this.GetComponent<Camera>().orthographicSize = setup_data.orthographic_size;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             Debug.Log("File for camera setup not found -> use standard properties");
         }

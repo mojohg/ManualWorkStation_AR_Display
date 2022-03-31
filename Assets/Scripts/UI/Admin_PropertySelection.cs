@@ -76,7 +76,7 @@ public class Admin_PropertySelection : MonoBehaviour {
                 if (tmp_username != username)
                 {
                     username = tmp_username;
-                    client.GetComponent<Connection>().SendInformation("username[" + username + "]");
+                    client.GetComponent<Connection_noJson>().SendInformation("username[" + username + "]");
                 }
 
                 if (tmp_gamification != gamification)  // Activate or deactivate game elements
@@ -95,13 +95,13 @@ public class Admin_PropertySelection : MonoBehaviour {
                 if (tmp_level != userLevel)
                 {
                     userLevel = tmp_level;
-                    client.GetComponent<Connection>().SendInformation("{level:" + userLevel + "}");
+                    client.GetComponent<Connection_noJson>().SendInformation("{level:" + userLevel + "}");
                 }
             }
 
             if (GUI.Button(new Rect(box_x0 + margins, 430 + 25 * 0, box_width - 2 * margins, 20), "Reset Order"))
             {
-                client.GetComponent<Connection>().SendInformation("{resetOrder}");
+                client.GetComponent<Connection_noJson>().SendInformation("{resetOrder}");
             }
         }        
     }

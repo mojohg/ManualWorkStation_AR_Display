@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Text.RegularExpressions;
 
 public class Admin_PropertySelection : MonoBehaviour {
@@ -23,7 +24,9 @@ public class Admin_PropertySelection : MonoBehaviour {
     [HideInInspector] public string[] selectionLevels_5 = { "Level 0", "Level 1", "Level 2", "Level 3", "Level 4", "Auto" };
     [HideInInspector] public int userLevel = 5;
     [HideInInspector] public bool gamification = true;
-    [HideInInspector] public string username = "Username";
+    [HideInInspector] public string username = "No-User";
+
+    private GameObject username_go;
 
     // Regex pattern = new Regex(@"^\w+$");
 
@@ -41,6 +44,7 @@ public class Admin_PropertySelection : MonoBehaviour {
     {
         client = GameObject.Find("Client");
         feedback_canvas = GameObject.Find("FeedbackCanvas");
+        username_go = GameObject.Find("Username");
     }
 
     void Update()
@@ -77,6 +81,7 @@ public class Admin_PropertySelection : MonoBehaviour {
                 {
                     username = tmp_username;
                     client.GetComponent<Connection_noJson>().SendInformation("username[" + username + "]");
+                    username_go.GetComponent<Text>().text = username;
                 }
 
                 if (tmp_gamification != gamification)  // Activate or deactivate game elements
@@ -95,7 +100,7 @@ public class Admin_PropertySelection : MonoBehaviour {
                 if (tmp_level != userLevel)
                 {
                     userLevel = tmp_level;
-                    client.GetComponent<Connection_noJson>().SendInformation("{level:" + userLevel + "}");
+                    client.GetComponent<Connection_noJson>().SendInformation("[level:" + userLevel + "]");
                 }
             }
 

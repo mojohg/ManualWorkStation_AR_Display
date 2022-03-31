@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Newtonsoft.Json;
 using System.Linq;
-using System.Threading;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// The class MessageHandler contains methods for parsing the messages coming from the IoT adapter and the MES.
@@ -13,6 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class MessageHandler_noJson : MonoBehaviour
 {
+    private GameObject client;
     private GameObject assemblies;
     private GameObject product_turns;
     private GameObject product_holder;
@@ -22,43 +20,26 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject training_finished_confetti;
     private GameObject task_finished;
     private GameObject final_assembly_green;
-    //public GameObject training_finished;
 
     public int current_knowledge_level;
     public string current_version;
     private string current_producttype;
     private GameObject current_assembly_GO;
-
-    //private string box_name;
-    //private string tool_holder_name;
-    //private string led_name;
-    //private string version_name;
-    //private string name_box;
-    //private GameObject current_led;
-    //private GameObject server;
-    //private GameObject boxes;    
-    //private GameObject current_storage_area;
     private GameObject active_product_version;
-    //private GameObject current_prefab;
-    //private GameObject feedback_system;
-    //private GameObject levelup;
-    //private List<GameObject> tools = new List<GameObject>();
+
     private List<GameObject> holder_versions;
     private List<GameObject> product_versions;
     private List<GameObject> assembly_items;
     private List<GameObject> turn_versions;
     private List<GameObject> turn_operations;
     private List<GameObject> active_items = new List<GameObject>();
-    //private List<GameObject> training_pages = new List<GameObject>();
     private Material assembly_info_material_1;
     private Material assembly_info_material_2;
     private Material finished_info_material;
     private Material error_info_material;
-    //private Material toolpoint_material;
-    //private Material invisible_material;
-    //private CommunicationClass message = new CommunicationClass();
 
     // UI
+    private GameObject setup_test;
     private GameObject current_point_display;
     private GameObject current_action_display;
     private GameObject max_point_display;
@@ -81,7 +62,10 @@ public class MessageHandler_noJson : MonoBehaviour
         finished_info_material = (Material)Resources.Load("Materials/Green", typeof(Material));
         error_info_material = (Material)Resources.Load("Materials/Red", typeof(Material));
 
+        client = GameObject.Find("Client");
+
         // Find GO
+        setup_test = GameObject.Find("Setup_Test");
         assemblies = GameObject.Find("Assemblies");
         product_turns = GameObject.Find("ProductTurns");
         product_holder = GameObject.Find("ProductHolder");
@@ -103,7 +87,7 @@ public class MessageHandler_noJson : MonoBehaviour
     {
         // Reset everything
         ResetWorkplace();
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetFeedbackElements();
 
         // Set colors of gamification elements
         feedback_canvas.GetComponent<UI_FeedbackHandler>().InitializeQualityRate(80.0f, 60.0f);
@@ -206,6 +190,10 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             Debug.LogWarning("Product turn operations not found of version " + current_version);
         }
+
+        // Acknowledge init and send user information to hardware control
+        client.GetComponent<Connection_noJson>().SendInformation("init_username[" + setup_test.GetComponent<Admin_PropertySelection>().username + "]level[" + setup_test.GetComponent<Admin_PropertySelection>().userLevel + "]");
+
     }
 
     public void InitializeSteps(int number_steps)

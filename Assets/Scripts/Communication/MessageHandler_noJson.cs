@@ -240,13 +240,6 @@ public class MessageHandler_noJson : MonoBehaviour
 
     public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)  // TODO: Level System
     {
-        // Update level on UI if required
-        if (knowledge_level != current_knowledge_level)
-        {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(knowledge_level);
-            current_knowledge_level = knowledge_level;
-        }
-
         // Find and show prefab
         GameObject item_prefab = FindPrefab("Prefabs/Parts/" + current_producttype + "/" + item_name, item_name);
         if (item_prefab == null)
@@ -276,13 +269,6 @@ public class MessageHandler_noJson : MonoBehaviour
 
     public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)  // TODO Level System
     {
-        // Update level on UI if required
-        if (knowledge_level != current_knowledge_level)
-        {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(knowledge_level);
-            current_knowledge_level = knowledge_level;
-        }
-
         // Find prefab
         GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
         if (tool_prefab == null)
@@ -312,7 +298,6 @@ public class MessageHandler_noJson : MonoBehaviour
     public void ReturnTool(string tool_name, string led_color, int knowledge_level, int default_time)
     {
         current_action_display.GetComponent<Text>().text = "Return Tool";
-        current_knowledge_level = knowledge_level;
 
         // Find prefab
         GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
@@ -332,13 +317,6 @@ public class MessageHandler_noJson : MonoBehaviour
         Debug.Log("Show assembly instruction for " + item_name);
         total_assembly_miniature.SetActive(true);
         current_action_display.GetComponent<Text>().text = "Assemble";
-
-        // Update level on UI if required
-        if (knowledge_level != current_knowledge_level)
-        {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(knowledge_level);
-            current_knowledge_level = knowledge_level;
-        }
 
         // Highlight assembly position
         foreach (GameObject item in assembly_items)
@@ -365,13 +343,6 @@ public class MessageHandler_noJson : MonoBehaviour
         Debug.Log("Show tool usage instruction for " + action_name);
         total_assembly_miniature.SetActive(true);
         current_action_display.GetComponent<Text>().text = "Assemble with tool";
-
-        // Update level on UI if required
-        if (knowledge_level != current_knowledge_level)
-        {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(knowledge_level);
-            current_knowledge_level = knowledge_level;
-        }
 
         // Highlight toolpoint
         foreach (GameObject item in assembly_items)

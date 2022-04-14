@@ -168,12 +168,15 @@ public class Connection_noJson : MonoBehaviour
                     rx = new Regex(@"action_list<(.*?)>");
                     string actions = rx.Match(message).Groups[1].Value;
 
-                    if (items.Length > 0)
+                    if (items.Length > 2)  // String should contain more than "[]"
                     {
+                        Debug.Log("Items: " + items);
+                        Debug.Log(items.Length);
                         string[] item_list = items.Split(',');
 
                         foreach (string item in item_list)
                         {
+                            Debug.Log("Execute item " + item);
                             string item_name = item.Replace("[", "");
                             item_name = item_name.Replace("]", "");
                             item_name = item_name.Replace("'", "");
@@ -185,22 +188,25 @@ public class Connection_noJson : MonoBehaviour
                             );
                         }
                     }
-                    if (actions.Length > 0)
+                    if (actions.Length > 2)  // String should contain more than "[]"
                     {
-                        Debug.Log(actions);
+                        Debug.Log("Actions: " + actions);
                         string[] action_list = actions.Split(',');
 
                         foreach (string toolpoint in action_list)
                         {
-                            string toolpoint_name = toolpoint.Replace("[", "");
-                            toolpoint_name = toolpoint_name.Replace("]", "");
-                            toolpoint_name = toolpoint_name.Replace("'", "");
-                            toolpoint_name = toolpoint_name.Replace(" ", "");
-                            this.GetComponent<MessageHandler_noJson>().ShowToolUsage(
-                            toolpoint_name,
-                            knowledge_level,
-                            default_time
-                            );
+                            if (toolpoint.Length > 0)
+                            {
+                                string toolpoint_name = toolpoint.Replace("[", "");
+                                toolpoint_name = toolpoint_name.Replace("]", "");
+                                toolpoint_name = toolpoint_name.Replace("'", "");
+                                toolpoint_name = toolpoint_name.Replace(" ", "");
+                                this.GetComponent<MessageHandler_noJson>().ShowToolUsage(
+                                toolpoint_name,
+                                knowledge_level,
+                                default_time
+                                );
+                            }                            
                         }
                     }
                 }

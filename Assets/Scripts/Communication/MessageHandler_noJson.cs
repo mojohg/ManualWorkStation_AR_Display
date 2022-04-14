@@ -30,10 +30,13 @@ public class MessageHandler_noJson : MonoBehaviour
     private List<GameObject> turn_versions;
     private List<GameObject> turn_operations;
     private List<GameObject> active_items = new List<GameObject>();
+    
+    // Materials
     private Material assembly_info_material_1;
     private Material assembly_info_material_2;
     private Material finished_info_material;
     private Material error_info_material;
+    private Material transparent_material;
 
     // UI
     private GameObject setup_test;
@@ -58,6 +61,7 @@ public class MessageHandler_noJson : MonoBehaviour
         assembly_info_material_2 = (Material)Resources.Load("Materials/InformationMaterial2", typeof(Material));
         finished_info_material = (Material)Resources.Load("Materials/Green", typeof(Material));
         error_info_material = (Material)Resources.Load("Materials/Red", typeof(Material));
+        transparent_material = (Material)Resources.Load("Materials/Transparent", typeof(Material));
 
         client = GameObject.Find("Client");
 
@@ -134,9 +138,17 @@ public class MessageHandler_noJson : MonoBehaviour
                         total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
                         foreach (Transform part in total_assembly_miniature.transform)
                         {
-                            if(part.name.Contains("Toolpoint"))
+                            if(part.name.Contains("Toolpoint"))  // Set toolpoints as transparent for miniature assembly
                             {
-                                Destroy(part.gameObject);
+                                // part.GetComponent<ObjectInteractions>().ChangeMaterial(transparent_material);
+                                // part.GetComponent<ObjectInteractions>().initial_material = transparent_material;
+                            }
+                            foreach(Transform sub_part in part)  // Remove animations in miniature view
+                            {
+                                if (sub_part.name.Contains("Animation"))
+                                {
+                                    Destroy(sub_part.gameObject);
+                                }
                             }
                         }
                         total_assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
@@ -247,21 +259,20 @@ public class MessageHandler_noJson : MonoBehaviour
             Debug.LogWarning("Prefab for " + item_name + " not found");
             return;
         }
-        ShowPickPrefab(item_prefab);
 
         // Show instructions
         if (led_color == "green")  // Correct pick
         {
             Debug.Log("Show pick instruction for " + item_name);
-            current_action_display.GetComponent<Text>().text = "Pick Item";
+            ShowPickPrefab(item_prefab, "Pick item");
             feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
         }
         else if (led_color == "red")  // Wrong pick
         {
             Debug.Log("Show error pick instruction for " + item_name);
-            current_action_display.GetComponent<Text>().text = "Wrong pick, place wrong object in box";
             feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
-            GameObject item = ShowPickPrefab(item_prefab);
+            ResetWorkplace();
+            GameObject item = ShowPickPrefab(item_prefab, "Wrong pick, place wrong object in box");
             item.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
         }
         
@@ -281,24 +292,21 @@ public class MessageHandler_noJson : MonoBehaviour
         if (led_color == "green")  // Correct pick
         {
             Debug.Log("Show pick instruction for " + tool_name);
-            current_action_display.GetComponent<Text>().text = "Pick tool";
-            ShowPickPrefab(tool_prefab);
+            ShowPickPrefab(tool_prefab, "Pick tool");
             feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
         }
         else if (led_color == "red")  // Wrong pick
         {
             Debug.Log("Show error pick instruction for " + tool_name);
-            current_action_display.GetComponent<Text>().text = "Wrong pick, return tool";
             feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
-            GameObject tool = ShowPickPrefab(tool_prefab);
+            ResetWorkplace();
+            GameObject tool = ShowPickPrefab(tool_prefab, "Wrong pick, return tool");
             tool.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
         }
     }
 
     public void ReturnTool(string tool_name, string led_color, int knowledge_level, int default_time)
     {
-        current_action_display.GetComponent<Text>().text = "Return Tool";
-
         // Find prefab
         GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
         if (tool_prefab == null)
@@ -306,7 +314,7 @@ public class MessageHandler_noJson : MonoBehaviour
             Debug.LogWarning("Prefab for " + tool_name + " not found");
             return;
         }
-        ShowPickPrefab(tool_prefab);
+        ShowPickPrefab(tool_prefab, "Return Tool");
 
         // Start timer
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
@@ -356,6 +364,10 @@ public class MessageHandler_noJson : MonoBehaviour
             }
         }
 
+        // Highlight position in miniature
+        GameObject current_mini_part = total_assembly_miniature.transform.Find(action_name).gameObject;
+        ShowObjectPosition(current_mini_part, assembly_info_material_2, disable_afterwards: false);
+
         // Start timer
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
@@ -391,6 +403,18 @@ public class MessageHandler_noJson : MonoBehaviour
 
         final_assembly_green = Instantiate(current_assembly_GO);
         current_assembly_GO.SetActive(false);
+
+        foreach (Transform part in final_assembly_green.transform)
+        {
+            foreach (Transform sub_part in part)  // Remove animations in final green view
+            {
+                if (sub_part.name.Contains("Animation"))
+                {
+                    Destroy(sub_part.gameObject);
+                }
+            }
+        }
+
         final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
         task_finished.GetComponent<AudioSource>().Play();
         current_action_display.GetComponent<Text>().text = "Task finished; remove assembly";
@@ -407,6 +431,7 @@ public class MessageHandler_noJson : MonoBehaviour
             }
             else
             {
+                Debug.Log("Add " + current_object.name + " to optically changed parts");
                 optically_changed_parts.Add(current_object);
             }
         }
@@ -468,7 +493,7 @@ public class MessageHandler_noJson : MonoBehaviour
         return null;
     }
 
-    private GameObject ShowPickPrefab(GameObject prefab)
+    private GameObject ShowPickPrefab(GameObject prefab, string display_text)
     {
         // Instantiate prefab and set parent
         GameObject displayed_item = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -484,12 +509,16 @@ public class MessageHandler_noJson : MonoBehaviour
         if (number_pick_options == 1)  // Show prefab at first pick position
         {
             displayed_item.transform.localPosition = new Vector3(0, 0, 0);
+
+            current_action_display.GetComponent<Text>().text = display_text;
         }
         else  // Show prefab at subsequent pick position
         {
             Debug.Log("Number of pick options: " + number_pick_options.ToString());
             int movement = number_pick_options - 1;
             displayed_item.transform.localPosition = new Vector3(0, 0, 0) + movement * offset;
+
+            current_action_display.GetComponent<Text>().text = "Pick objects";
         }
 
         // Add properties

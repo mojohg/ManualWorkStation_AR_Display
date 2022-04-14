@@ -2057,7 +2057,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_Name
-      value: head_assembly
+      value: Animation_head_assembly
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
@@ -4132,7 +4132,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Version 15
+  m_Text: Version 16
 --- !u!222 &544917459
 CanvasRenderer:
   m_ObjectHideFlags: 0

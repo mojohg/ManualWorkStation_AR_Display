@@ -418,6 +418,8 @@ public class MessageHandler_noJson : MonoBehaviour
         final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
         task_finished.GetComponent<AudioSource>().Play();
         current_action_display.GetComponent<Text>().text = "Task finished; remove assembly";
+
+        client.GetComponent<Connection_noJson>().SendInformation("{finished}");
     }
 
     private void ShowObjectPosition(GameObject current_object, Material material, bool disable_afterwards)

@@ -412,7 +412,11 @@ public class MessageHandler_noJson : MonoBehaviour
     {
         current_assembly_GO.GetComponent<ObjectInteractions>().ActivateAllChildren();
 
-        final_assembly_green = Instantiate(current_assembly_GO);
+        final_assembly_green = Instantiate(
+            original: current_assembly_GO,
+            position: current_assembly_GO.transform.position,
+            rotation: current_assembly_GO.transform.rotation,
+            parent: current_assembly_GO.transform.parent);
         current_assembly_GO.SetActive(false);
 
         foreach (Transform part in final_assembly_green.transform)

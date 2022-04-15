@@ -168,6 +168,9 @@ public class Connection_noJson : MonoBehaviour
                     rx = new Regex(@"action_list<(.*?)>");
                     string actions = rx.Match(message).Groups[1].Value;
 
+                    rx = new Regex(@"annotation<(.*?)>");
+                    string annotation = rx.Match(message).Groups[1].Value;
+
                     if (items.Length > 2)  // String should contain more than "[]"
                     {
                         string[] item_list = items.Split(',');
@@ -182,7 +185,8 @@ public class Connection_noJson : MonoBehaviour
                             this.GetComponent<MessageHandler_noJson>().ShowAssemblyPosition(
                             item_name,
                             knowledge_level,
-                            default_time
+                            default_time,
+                            annotation
                             );
                         }
                     }
@@ -202,7 +206,8 @@ public class Connection_noJson : MonoBehaviour
                                 this.GetComponent<MessageHandler_noJson>().ShowToolUsage(
                                 toolpoint_name,
                                 knowledge_level,
-                                default_time
+                                default_time,
+                                annotation
                                 );
                             }                            
                         }

@@ -47,6 +47,7 @@ public class MessageHandler_noJson : MonoBehaviour
     private List<GameObject> uncompleted_steps = new List<GameObject>();
     private GameObject object_presentation;
     private GameObject assembly_presentation;
+    private GameObject annotation;
 
     // UI: Miniature assembly
     private GameObject total_assembly_miniature;
@@ -79,6 +80,7 @@ public class MessageHandler_noJson : MonoBehaviour
         current_action_display = feedback_canvas.transform.Find("ActionInfo").gameObject;
         current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
         max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
+        annotation = feedback_canvas.transform.Find("Annotation").gameObject;
     }
 
     public void InitializeVersion(string version_name)
@@ -320,11 +322,12 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
-    public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time)
+    public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time, string text_annotation)
     {
         Debug.Log("Show assembly instruction for " + item_name);
         total_assembly_miniature.SetActive(true);
         current_action_display.GetComponent<Text>().text = "Assemble";
+        annotation.GetComponent<Text>().text = text_annotation;
 
         // Highlight assembly position
         foreach (GameObject item in assembly_items)
@@ -346,11 +349,12 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
-    public void ShowToolUsage(string action_name, int knowledge_level, int default_time)  // TODO: Add animations
+    public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)  // TODO: Add animations
     {
         Debug.Log("Show tool usage instruction for " + action_name);
         total_assembly_miniature.SetActive(true);
         current_action_display.GetComponent<Text>().text = "Assemble with tool";
+        annotation.GetComponent<Text>().text = text_annotation;
 
         // Highlight toolpoint
         foreach (GameObject item in assembly_items)
@@ -476,6 +480,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }
         active_items.Clear();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
+        annotation.GetComponent<Text>().text = "";
     }
 
     public GameObject FindGameobject(string name, List<GameObject> gameobject_list)

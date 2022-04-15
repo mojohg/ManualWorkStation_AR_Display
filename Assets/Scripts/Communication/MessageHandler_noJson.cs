@@ -220,7 +220,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
     public void NewInstructions ()
     {
-        Debug.Log("New work step -> reset support");
+        // Debug.Log("New work step -> reset support");
         ResetWorkplace();
     }
 
@@ -427,14 +427,10 @@ public class MessageHandler_noJson : MonoBehaviour
         if (current_object.GetComponent<ObjectInteractions>() != null)
         {
             current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
-            if(disable_afterwards)
+            optically_changed_parts.Add(current_object);
+            if (disable_afterwards)
             {
                 active_items.Add(current_object);
-            }
-            else
-            {
-                Debug.Log("Add " + current_object.name + " to optically changed parts");
-                optically_changed_parts.Add(current_object);
             }
         }
         else

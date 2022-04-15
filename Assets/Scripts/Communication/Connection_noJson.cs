@@ -170,8 +170,6 @@ public class Connection_noJson : MonoBehaviour
 
                     if (items.Length > 2)  // String should contain more than "[]"
                     {
-                        Debug.Log("Items: " + items);
-                        Debug.Log(items.Length);
                         string[] item_list = items.Split(',');
 
                         foreach (string item in item_list)
@@ -190,7 +188,7 @@ public class Connection_noJson : MonoBehaviour
                     }
                     if (actions.Length > 2)  // String should contain more than "[]"
                     {
-                        Debug.Log("Actions: " + actions);
+                        // Debug.Log("Actions: " + actions);
                         string[] action_list = actions.Split(',');
 
                         foreach (string toolpoint in action_list)

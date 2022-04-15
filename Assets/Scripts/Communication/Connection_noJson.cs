@@ -287,6 +287,26 @@ public class Connection_noJson : MonoBehaviour
                 message_color_g: Convert.ToInt32(message_color_g),
                 message_color_b: Convert.ToInt32(message_color_b));
         }
+        else if (message.Contains("camera"))
+        {
+            Regex rx = new Regex(@"camera_x<(.*?)>");
+            string camera_x = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"camera_y<(.*?)>");
+            string camera_y = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"camera_z<(.*?)>");
+            string camera_z = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"camera_orthographic<(.*?)>");
+            string camera_orthographic = rx.Match(message).Groups[1].Value;
+
+            this.GetComponent<MessageHandler_noJson>().InitializeCamera(
+                x: float.Parse(camera_x),
+                y: float.Parse(camera_y),
+                z: float.Parse(camera_z),
+                ortho: float.Parse(camera_orthographic));
+        }
         else
         {
             Debug.Log("Unknown message type: " + message);

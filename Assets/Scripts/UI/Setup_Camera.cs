@@ -133,8 +133,11 @@ public class Setup_Camera : MonoBehaviour {
                 new_camera_settings.camera_pos_z = main_camera.transform.position.z;
                 new_camera_settings.orthographic_size = main_camera.GetComponent<Camera>().orthographicSize;
 
-                // serialize JSON to a string and then write string to a file
-                File.WriteAllText(main_camera.GetComponent<CameraHandler>().setup_info_path, JsonConvert.SerializeObject(new_camera_settings));
+                // Send camera information to client for storage
+                client.GetComponent<Connection_noJson>().SendInformation("camera-x[" + main_camera.transform.position.x + "]");
+                client.GetComponent<Connection_noJson>().SendInformation("camera-y[" + main_camera.transform.position.y + "]");
+                client.GetComponent<Connection_noJson>().SendInformation("camera-z[" + main_camera.transform.position.z + "]");
+                client.GetComponent<Connection_noJson>().SendInformation("camera-orthographic[" + main_camera.GetComponent<Camera>().orthographicSize + "]");
             }
         }
     }

@@ -43,5 +43,6 @@ public class UI_Confetti : MonoBehaviour {
 		{
 			confetti_text.SetActive(false);
 		}
+		particles.Stop();
 	}
 }

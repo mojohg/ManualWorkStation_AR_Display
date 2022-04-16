@@ -17,7 +17,6 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject feedback_canvas;
     private GameObject task_finished;
     private GameObject final_assembly_green;
-    private GameObject active_product_version;
     private GameObject camera;
 
     public int current_knowledge_level;
@@ -79,10 +78,10 @@ public class MessageHandler_noJson : MonoBehaviour
 
         // Find Elements of Feedback Canvas
         feedback_canvas = GameObject.Find("FeedbackCanvas");
-        current_action_display = feedback_canvas.transform.Find("ActionInfo").gameObject;
-        current_point_display = feedback_canvas.transform.Find("PointDisplay/CurrentPoints").gameObject;
-        max_point_display = feedback_canvas.transform.Find("PointDisplay/MaxPoints").gameObject;
-        annotation = feedback_canvas.transform.Find("Annotation").gameObject;
+        current_action_display = feedback_canvas.transform.Find("General/ActionInfo").gameObject;
+        annotation = feedback_canvas.transform.Find("General/Annotation").gameObject;
+        current_point_display = feedback_canvas.transform.Find("Gamification/PointDisplay/CurrentPoints").gameObject;
+        max_point_display = feedback_canvas.transform.Find("Gamification/PointDisplay/MaxPoints").gameObject;
     }
 
     public void InitializeVersion(string version_name)
@@ -142,11 +141,6 @@ public class MessageHandler_noJson : MonoBehaviour
                         total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
                         foreach (Transform part in total_assembly_miniature.transform)
                         {
-                            if(part.name.Contains("Toolpoint"))  // Set toolpoints as transparent for miniature assembly
-                            {
-                                // part.GetComponent<ObjectInteractions>().ChangeMaterial(transparent_material);
-                                // part.GetComponent<ObjectInteractions>().initial_material = transparent_material;
-                            }
                             foreach(Transform sub_part in part)  // Remove animations in miniature view
                             {
                                 if (sub_part.name.Contains("Animation"))
@@ -168,7 +162,6 @@ public class MessageHandler_noJson : MonoBehaviour
                     {
                         item.SetActive(false);  // Deactivate GO that they are not visible
                     }
-                    active_product_version = product;
                 }
                 else
                 {
@@ -453,6 +446,7 @@ public class MessageHandler_noJson : MonoBehaviour
             current_object.AddComponent<ObjectInteractions>();
             current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
             active_items.Add(current_object);
+            optically_changed_parts.Add(current_object);
         } 
     }
 

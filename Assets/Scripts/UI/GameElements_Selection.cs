@@ -33,6 +33,11 @@ public class GameElements_Selection : MonoBehaviour {
     public GameObject go_level;
     public GameObject go_performance_comparison;
     public GameObject go_own_goals;
+    public GameObject popup;
+    public GameObject go_levelup;
+    public GameObject text_levelup;
+    public GameObject go_perfect_run;
+    public GameObject text_perfect_run;
 
     Regex pattern = new Regex(@"^\w+$");
 

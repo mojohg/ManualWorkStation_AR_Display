@@ -39,10 +39,6 @@ public class MessageHandler : MonoBehaviour
     //private GameObject boxes;    
     //private GameObject current_storage_area;
     private GameObject active_product_version;
-    //private GameObject current_prefab;
-    //private GameObject feedback_system;
-    //private GameObject levelup;
-    //private List<GameObject> tools = new List<GameObject>();
     private List<GameObject> holder_versions;
     private List<GameObject> product_versions;
     private List<GameObject> assembly_items;

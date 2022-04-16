@@ -67,7 +67,7 @@ public class Admin_PropertySelection : MonoBehaviour {
             // Add elements
             tmp_username = GUI.TextField(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), tmp_username, 16);
             int i = 0;
-            tmp_gamification = GUI.Toggle(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), tmp_gamification, "Gamification Elements");
+            tmp_gamification = GUI.Toggle(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), tmp_gamification, "Gamification Enabled");
             i++;
             GUI.Label(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Static Level Selection");
             i++;

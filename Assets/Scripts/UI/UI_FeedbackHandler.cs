@@ -5,14 +5,16 @@ using UnityEngine.UI;
 
 public class UI_FeedbackHandler : MonoBehaviour 
 {
+    public GameObject general_feedback_elements;
+    public GameObject gamified_feedback_elements;
     public Sprite level_0_sprite;
     public Sprite level_1_sprite;
     public Sprite level_2_sprite;
     public Sprite level_3_sprite;
     public Sprite level_4_sprite;
-    public List<GameObject> ui_elements;
     public List<GameObject> ui_notifications;
     public List<GameObject> uncompleted_steps;
+    
     private float max_number_points;
 
     // Prefabs
@@ -41,13 +43,6 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     void Awake()
     {
-		foreach (Transform element in this.transform)
-        {
-            if (element.name != "LevelUpText" && element.name != "TrainingFinishedText")
-            {
-                ui_elements.Add(element.gameObject);
-            }
-        }
     }
 
 	void Start () 
@@ -57,10 +52,10 @@ public class UI_FeedbackHandler : MonoBehaviour
         prefab_popup = Resources.Load("Prefabs/UI/Popup", typeof(GameObject)) as GameObject;
         
         // Find elements in scene
-        point_display = FindUiElement("PointDisplay", ui_elements);
-        quality_display = FindUiElement("QualityDisplay", ui_elements);
-        progressBar = FindUiElement("StepDisplay", ui_elements);
-        current_level = FindUiElement("CurrentLevel", ui_elements);
+        point_display = GameObject.Find("PointDisplay");
+        quality_display = GameObject.Find("QualityDisplay");
+        progressBar = GameObject.Find("StepDisplay");
+        current_level = GameObject.Find("CurrentLevel");
         popup_parent = GameObject.Find("PopupParent");
         levelup = GameObject.Find("LevelUp");
         perfect_run = GameObject.Find("PerfectRun");
@@ -219,7 +214,6 @@ public class UI_FeedbackHandler : MonoBehaviour
         training_finished.GetComponent<UI_Confetti>().ShowConfetti();
         
         GameObject.Find("Assemblies").SetActive(false);
-        this.DisableFeedbackElements();
     }
 
     public void NotifyCorrectAction()
@@ -233,14 +227,6 @@ public class UI_FeedbackHandler : MonoBehaviour
         error_plane.SetActive(true);
     }
 
-    private void DisableFeedbackElements()
-    {
-        foreach (GameObject element in ui_elements)
-        {
-            element.SetActive(false);
-        }
-    }
-
     public void ResetNotifications()
     {
         foreach(GameObject notification in ui_notifications)
@@ -249,33 +235,20 @@ public class UI_FeedbackHandler : MonoBehaviour
         }
     }
 
-    public GameObject FindUiElement(string name, List<GameObject> gameobject_list)
-    {
-        foreach (GameObject obj in gameobject_list)
-        {
-            if (obj.name == name)
-            {
-                return obj;
-            }
-        }
-        Debug.LogWarning("Gameobject " + name + " not found");
-        return null;
-    }
-
     public void EnableGamification()
     {
-        foreach(GameObject element in ui_elements)
-        {
-            element.SetActive(false);
-        }
+        gamified_feedback_elements.SetActive(true);
+        levelup.SetActive(true);
+        perfect_run.SetActive(true);
+        popup_parent.SetActive(true);
     }
 
     public void DisableGamification()
     {
-        foreach (GameObject element in ui_elements)
-        {
-            element.SetActive(true);
-        }
+        gamified_feedback_elements.SetActive(false); 
+        levelup.SetActive(false);
+        perfect_run.SetActive(false);
+        popup_parent.SetActive(false);
     }
 
     public void ResetFeedbackElements()

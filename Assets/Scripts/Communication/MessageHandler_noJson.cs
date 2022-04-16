@@ -372,6 +372,7 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             current_action_display.GetComponent<Text>().text = "Assemble";
             annotation.GetComponent<Text>().text = text_annotation;
+            annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
             ShowAssemblyPosition(assembly_info_material_1, item_name, disable_afterwards: true, change_material: false);
             ShowPositionMiniature(item_name);
         }
@@ -405,6 +406,7 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             current_action_display.GetComponent<Text>().text = "Assemble with tool";
             annotation.GetComponent<Text>().text = text_annotation;
+            annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
             ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
             ShowPositionMiniature(action_name);
         }
@@ -528,7 +530,7 @@ public class MessageHandler_noJson : MonoBehaviour
         task_finished.GetComponent<AudioSource>().Play();
         current_action_display.GetComponent<Text>().text = "Task finished; remove assembly";
 
-        client.GetComponent<Connection_noJson>().SendInformation("{finished}");
+        // client.GetComponent<Connection_noJson>().SendInformation("{finished}");
     }
 
     private void ShowObjectPosition(GameObject current_object, Material material, bool disable_afterwards, bool change_material)
@@ -585,6 +587,7 @@ public class MessageHandler_noJson : MonoBehaviour
         active_items.Clear();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
         annotation.GetComponent<Text>().text = "";
+        annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
         current_action_display.GetComponent<Text>().text = "";
     }
 

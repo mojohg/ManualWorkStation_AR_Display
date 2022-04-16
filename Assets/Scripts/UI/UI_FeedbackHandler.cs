@@ -39,7 +39,6 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject current_points;
     private GameObject levelname;
     private GameObject levelimage;
-    private GameObject levelinfo;
 
 
     void Awake()
@@ -67,8 +66,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         timer = GameObject.Find("Timer");
         quality_display = GameObject.Find("QualityDisplay");
         time_display = GameObject.Find("TimeDisplay");
-        levelinfo = GameObject.Find("LevelInfo");
-        
+
         max_points = point_display.transform.Find("MaxPoints").gameObject;
         current_points = point_display.transform.Find("CurrentPoints").gameObject;
         levelname = current_level.transform.Find("LevelName").gameObject;
@@ -111,31 +109,26 @@ public class UI_FeedbackHandler : MonoBehaviour
         {
             levelname.GetComponent<Text>().text = "Level 0 - Introduction";
             levelimage.GetComponent<Image>().sprite = level_0_sprite;
-            levelinfo.GetComponent<Text>().text = "Level 0: \nIntroduction level";
         }
         if (level == 1)
         {
             levelname.GetComponent<Text>().text = "Level 1 - Beginner";
             levelimage.GetComponent<Image>().sprite = level_1_sprite;
-            levelinfo.GetComponent<Text>().text = "Level 1: \nAll information is shown";
         }
         else if ( level == 2)
         {
             levelname.GetComponent<Text>().text = "Level 2 - Advanced";
             levelimage.GetComponent<Image>().sprite = level_2_sprite;
-            levelinfo.GetComponent<Text>().text = "Level 2: \nInformation is reduced";
         }
         else if (level == 3)
         {
             levelname.GetComponent<Text>().text = "Level 3 - Very Advanced";
             levelimage.GetComponent<Image>().sprite = level_3_sprite;
-            levelinfo.GetComponent<Text>().text = "Level 3: \nInformation is reduced";
         }
         else if (level == 4)
         {
             levelname.GetComponent<Text>().text = "Level 4 - Expert";
             levelimage.GetComponent<Image>().sprite = level_4_sprite;
-            levelinfo.GetComponent<Text>().text = "Level 4: \nNo information is shown \n-> You know what to do";
         }
     }
 

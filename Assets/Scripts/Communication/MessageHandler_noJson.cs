@@ -147,6 +147,10 @@ public class MessageHandler_noJson : MonoBehaviour
                                 {
                                     Destroy(sub_part.gameObject);
                                 }
+                                if (sub_part.name.Contains("Text"))
+                                {
+                                    Destroy(sub_part.gameObject);
+                                }
                             }
                         }
                         total_assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
@@ -336,20 +340,20 @@ public class MessageHandler_noJson : MonoBehaviour
             {
                 item.SetActive(true);
                 active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards:true);
+                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards:true, change_material: false);
                 break;
             }
         }
 
         // Highlight position in miniature
         GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
-        ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards:false);
+        ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards:false, change_material: true);
 
         // Start timer
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
-    public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)  // TODO: Add animations
+    public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)
     {
         Debug.Log("Show tool usage instruction for " + action_name);
         total_assembly_miniature.SetActive(true);
@@ -363,14 +367,14 @@ public class MessageHandler_noJson : MonoBehaviour
             {
                 item.SetActive(true);
                 active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_2, disable_afterwards: true);
+                ShowObjectPosition(item, assembly_info_material_2, disable_afterwards: true, change_material: true);
                 break;
             }
         }
 
         // Highlight position in miniature
         GameObject current_mini_part = total_assembly_miniature.transform.Find(action_name).gameObject;
-        ShowObjectPosition(current_mini_part, assembly_info_material_2, disable_afterwards: false);
+        ShowObjectPosition(current_mini_part, assembly_info_material_2, disable_afterwards: false, change_material: true);
 
         // Start timer
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
@@ -430,24 +434,22 @@ public class MessageHandler_noJson : MonoBehaviour
         client.GetComponent<Connection_noJson>().SendInformation("{finished}");
     }
 
-    private void ShowObjectPosition(GameObject current_object, Material material, bool disable_afterwards)
+    private void ShowObjectPosition(GameObject current_object, Material material, bool disable_afterwards, bool change_material)
     {
-        if (current_object.GetComponent<ObjectInteractions>() != null)
+        if(change_material)
         {
-            current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
-            optically_changed_parts.Add(current_object);
-            if (disable_afterwards)
+            if (current_object.GetComponent<ObjectInteractions>() == null)
             {
-                active_items.Add(current_object);
+                current_object.AddComponent<ObjectInteractions>();
             }
-        }
-        else
-        {
-            current_object.AddComponent<ObjectInteractions>();
             current_object.GetComponent<ObjectInteractions>().ChangeMaterial(material);
-            active_items.Add(current_object);
             optically_changed_parts.Add(current_object);
-        } 
+        }
+        if (disable_afterwards)
+        {
+            active_items.Add(current_object);
+        }
+
     }
 
     public void ResetWorkplace()

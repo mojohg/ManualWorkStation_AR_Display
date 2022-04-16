@@ -49,6 +49,11 @@ public class GameElements_Selection : MonoBehaviour {
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        points = true;
+        time = true;
+        quality = true;
+        level = true;
+        popup = true;
     }
 
     void Start()

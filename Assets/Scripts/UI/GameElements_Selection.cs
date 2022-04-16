@@ -37,7 +37,7 @@ public class GameElements_Selection : MonoBehaviour {
     public GameObject go_level;
 
     // Collection of elements
-    private List<GameObject> gameobjects;
+    private List<GameObject> gameobjects = new List<GameObject>();
 
     Regex pattern = new Regex(@"^\w+$");
 

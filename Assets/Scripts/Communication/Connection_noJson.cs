@@ -182,7 +182,7 @@ public class Connection_noJson : MonoBehaviour
                             item_name = item_name.Replace("]", "");
                             item_name = item_name.Replace("'", "");
                             item_name = item_name.Replace(" ", "");
-                            this.GetComponent<MessageHandler_noJson>().ShowAssemblyPosition(
+                            this.GetComponent<MessageHandler_noJson>().ShowAssemblyInfos(
                             item_name,
                             knowledge_level,
                             default_time,

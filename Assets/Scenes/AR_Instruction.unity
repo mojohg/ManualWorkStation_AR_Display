@@ -4772,8 +4772,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   points: 1
   time: 1
-  quality: 0
-  level: 0
+  quality: 1
+  level: 1
   popup: 1
   go_quality: {fileID: 7749259201956852876}
   go_time: {fileID: 163586503}

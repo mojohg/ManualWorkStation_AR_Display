@@ -24,12 +24,13 @@ public class MessageHandler_noJson : MonoBehaviour
     private string current_producttype;
     private GameObject current_assembly_GO;
 
-    private List<GameObject> holder_versions;
-    private List<GameObject> product_versions;
-    private List<GameObject> assembly_items;
-    private List<GameObject> turn_versions;
-    private List<GameObject> turn_operations;
+    private List<GameObject> holder_versions = new List<GameObject>();
+    private List<GameObject> product_versions = new List<GameObject>();
+    private List<GameObject> assembly_items = new List<GameObject>();
+    private List<GameObject> turn_versions = new List<GameObject>();
+    private List<GameObject> turn_operations = new List<GameObject>();
     private List<GameObject> active_items = new List<GameObject>();
+    private List<GameObject> disabled_items = new List<GameObject>();
     
     // Materials
     private Material assembly_info_material_1;
@@ -89,6 +90,13 @@ public class MessageHandler_noJson : MonoBehaviour
         // Reset everything
         ResetWorkplace();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetFeedbackElements();
+        if(disabled_items.Count() > 0)
+        {
+            foreach(GameObject item in disabled_items)
+            {
+                item.SetActive(true);
+            }
+        }
 
         // Set colors of gamification elements
         feedback_canvas.GetComponent<UI_FeedbackHandler>().InitializeQualityRate(80.0f, 60.0f);
@@ -256,7 +264,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }
     }
 
-    public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)  // TODO: Level System
+    public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)
     {
         // Find and show prefab
         GameObject item_prefab = FindPrefab("Prefabs/Parts/" + current_producttype + "/" + item_name, item_name);
@@ -266,25 +274,33 @@ public class MessageHandler_noJson : MonoBehaviour
             return;
         }
 
-        // Show instructions
-        if (led_color == "green")  // Correct pick
+        if (led_color == "green")  // Correct pick -> show information according to level
         {
             Debug.Log("Show pick instruction for " + item_name);
-            ShowPickPrefab(item_prefab, "Pick item");
+            if (knowledge_level < 4)  // Show 3D image
+            {
+                ShowPickPrefab(item_prefab, "Pick item");
+            }
+            else if (knowledge_level == 4)  // Do not show 3D image
+            {
+            }
+            else
+            {
+                Debug.LogWarning("Unknown level " + knowledge_level);
+            }
             feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
         }
-        else if (led_color == "red")  // Wrong pick
+        else if (led_color == "red")  // Wrong pick -> show error information independently from level
         {
             Debug.Log("Show error pick instruction for " + item_name);
             feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
             ResetWorkplace();
             GameObject item = ShowPickPrefab(item_prefab, "Wrong pick, place wrong object in box");
             item.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
-        }
-        
+        }        
     }
 
-    public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)  // TODO Level System
+    public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)
     {
         // Find prefab
         GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
@@ -295,13 +311,23 @@ public class MessageHandler_noJson : MonoBehaviour
         }
 
         // Show pick instructions
-        if (led_color == "green")  // Correct pick
+        if (led_color == "green")  // Correct pick -> show information according to level
         {
             Debug.Log("Show pick instruction for " + tool_name);
-            ShowPickPrefab(tool_prefab, "Pick tool");
+            if (knowledge_level < 4)  // Show 3D image
+            {
+                ShowPickPrefab(tool_prefab, "Pick tool");
+            }
+            else if (knowledge_level == 4)  // Do not show 3D image
+            {
+            }
+            else
+            {
+                Debug.LogWarning("Unknown level " + knowledge_level);
+            }
             feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
         }
-        else if (led_color == "red")  // Wrong pick
+        else if (led_color == "red")  // Wrong pick -> show error information independently from level
         {
             Debug.Log("Show error pick instruction for " + tool_name);
             feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
@@ -320,64 +346,127 @@ public class MessageHandler_noJson : MonoBehaviour
             Debug.LogWarning("Prefab for " + tool_name + " not found");
             return;
         }
-        ShowPickPrefab(tool_prefab, "Return Tool");
 
-        // Start timer
+        // Show pick instructions
+        Debug.Log("Show return instruction for " + tool_name);
+        if (knowledge_level < 4)  // Show 3D image
+        {
+            ShowPickPrefab(tool_prefab, "Return tool");
+        }
+        else if (knowledge_level == 4)  // Do not show 3D image
+        {
+        }
+        else
+        {
+            Debug.LogWarning("Unknown level " + knowledge_level);
+        }
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
-    public void ShowAssemblyPosition(string item_name, int knowledge_level, int default_time, string text_annotation)
+    public void ShowAssemblyInfos(string item_name, int knowledge_level, int default_time, string text_annotation)
     {
-        Debug.Log("Show assembly instruction for " + item_name);
-        total_assembly_miniature.SetActive(true);
-        current_action_display.GetComponent<Text>().text = "Assemble";
-        annotation.GetComponent<Text>().text = text_annotation;
+        Debug.Log("Show assembly instruction for " + item_name + " in level " + knowledge_level);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
 
-        // Highlight assembly position
+        if (knowledge_level == 1)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble";
+            annotation.GetComponent<Text>().text = text_annotation;
+            ShowAssemblyPosition(item_name, disable_afterwards: true, change_material: false);
+            ShowPositionMiniature(item_name);
+        }
+        else if (knowledge_level == 2)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble";
+            GameObject item_go = ShowAssemblyPosition(item_name, disable_afterwards: true, change_material: false);
+            RemoveAssemblyHints(item_go);
+            ShowPositionMiniature(item_name);
+        }
+        else if (knowledge_level == 3)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble";
+            ShowPositionMiniature(item_name);
+        }
+        else if (knowledge_level == 4)
+        {
+        }
+        else
+        {
+            Debug.LogWarning("Unknown level " + knowledge_level);
+        }
+    }
+
+    private GameObject ShowAssemblyPosition(string item_name, bool disable_afterwards, bool change_material)
+    {
         foreach (GameObject item in assembly_items)
         {
             if (item.name == item_name)
             {
                 item.SetActive(true);
                 active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards:true, change_material: false);
-                break;
+                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards, change_material);
+                return item;
             }
         }
+        return null;
+    }
 
-        // Highlight position in miniature
+    private void RemoveAssemblyHints(GameObject current_item)
+    {
+        foreach (Transform part in current_item.transform)
+{
+            if (part.name.Contains("Animation"))
+            {
+                part.gameObject.SetActive(false);
+                disabled_items.Add(part.gameObject);
+            }
+            if (part.name.Contains("Text"))
+            {
+                part.gameObject.SetActive(false);
+                disabled_items.Add(part.gameObject);
+            }
+        }
+    }
+
+    private void ShowPositionMiniature(string item_name)
+    {
+        total_assembly_miniature.SetActive(true);
         GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
-        ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards:false, change_material: true);
-
-        // Start timer
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
+        ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards: false, change_material: true);
     }
 
     public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)
     {
         Debug.Log("Show tool usage instruction for " + action_name);
-        total_assembly_miniature.SetActive(true);
-        current_action_display.GetComponent<Text>().text = "Assemble with tool";
-        annotation.GetComponent<Text>().text = text_annotation;
-
-        // Highlight toolpoint
-        foreach (GameObject item in assembly_items)
-        {
-            if (item.name == action_name)
-            {
-                item.SetActive(true);
-                active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_2, disable_afterwards: true, change_material: true);
-                break;
-            }
-        }
-
-        // Highlight position in miniature
-        GameObject current_mini_part = total_assembly_miniature.transform.Find(action_name).gameObject;
-        ShowObjectPosition(current_mini_part, assembly_info_material_2, disable_afterwards: false, change_material: true);
-
-        // Start timer
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
+
+        if (knowledge_level == 1)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble with tool";
+            annotation.GetComponent<Text>().text = text_annotation;
+            ShowAssemblyPosition(action_name, disable_afterwards: true, change_material: true);
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 2)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble with tool";
+            GameObject action_go = ShowAssemblyPosition(action_name, disable_afterwards: true, change_material: true);
+            RemoveAssemblyHints(action_go);
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 3)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble with tool";
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 4)
+        {
+
+        }
+        else
+        {
+            Debug.LogWarning("Unknown level " + knowledge_level);
+        }        
     }
 
     public void ShowPoints(int current_points)
@@ -418,9 +507,13 @@ public class MessageHandler_noJson : MonoBehaviour
 
         foreach (Transform part in final_assembly_green.transform)
         {
-            foreach (Transform sub_part in part)  // Remove animations in final green view
+            foreach (Transform sub_part in part)  // Remove additional information
             {
                 if (sub_part.name.Contains("Animation"))
+                {
+                    Destroy(sub_part.gameObject);
+                }
+                if (sub_part.name.Contains("Text"))
                 {
                     Destroy(sub_part.gameObject);
                 }
@@ -488,6 +581,7 @@ public class MessageHandler_noJson : MonoBehaviour
         active_items.Clear();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNotifications();
         annotation.GetComponent<Text>().text = "";
+        current_action_display.GetComponent<Text>().text = "";
     }
 
     public GameObject FindGameobject(string name, List<GameObject> gameobject_list)

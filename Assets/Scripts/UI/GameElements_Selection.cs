@@ -9,35 +9,35 @@ public class GameElements_Selection : MonoBehaviour {
 
     private bool show_ui = false;
 
+    // UI properties
     private int margins = 10;
     private int box_width = 200;
     private int box_height;
     private int box_x0;
 
-    private bool tmp_point_display = true;
-    private bool tmp_clock = true;
+    // Temporary variables for selection process
+    private bool tmp_points = true;
+    private bool tmp_time = true;
     private bool tmp_quality = true;
     private bool tmp_level = true;
-    private bool tmp_performance_comparison = true;
+    private bool tmp_popup = true;
 
-    [HideInInspector] public bool point_display = true;
-    [HideInInspector] public bool clock = true;
+    // Variables for selection process
+    [HideInInspector] public bool points = true;
+    [HideInInspector] public bool time = true;
     [HideInInspector] public bool quality = true;
     [HideInInspector] public bool level = true;
-    [HideInInspector] public bool performance_comparison = true;
-    [HideInInspector] public bool own_goals = true;
+    [HideInInspector] public bool popup = true;
 
-    public GameObject go_point_display;
-    public GameObject go_clock;
+    // GameObjects in scene
     public GameObject go_quality;
+    public GameObject go_time;
+    public GameObject go_points;
+    public GameObject go_popup;
     public GameObject go_level;
-    public GameObject go_performance_comparison;
-    public GameObject go_own_goals;
-    public GameObject popup;
-    public GameObject go_levelup;
-    public GameObject text_levelup;
-    public GameObject go_perfect_run;
-    public GameObject text_perfect_run;
+
+    // Collection of elements
+    private List<GameObject> gameobjects;
 
     Regex pattern = new Regex(@"^\w+$");
 
@@ -53,17 +53,18 @@ public class GameElements_Selection : MonoBehaviour {
 
     void Start()
     {
-        point_display = true;
-        clock = true;
-        quality = true;
-        level = true;
-        performance_comparison = true;
-        own_goals = true;
+        // Create lists with all elements for reset purposes
+
+        gameobjects.Add(go_quality);
+        gameobjects.Add(go_time);
+        gameobjects.Add(go_points);
+        gameobjects.Add(go_popup);
+        gameobjects.Add(go_level);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.AltGr))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             show_ui = !show_ui;
         }
@@ -78,30 +79,31 @@ public class GameElements_Selection : MonoBehaviour {
             box_height = Screen.height - 2 * margins;
             GUI.Box(new Rect(box_x0, margins, box_width, box_height), "Gamification Cockpit");
 
-            // Add elements
-            tmp_point_display = GUI.Toggle(new Rect(box_x0 + margins, 40, box_width - 2 * margins, 20), tmp_point_display, "Show Points");
-            tmp_clock = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * 0, box_width - 2 * margins, 20), tmp_clock, "Show Clock");
-            tmp_quality = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * 1, box_width - 2 * margins, 20), tmp_quality, "Show Quality");
-            tmp_level = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * 2, box_width - 2 * margins, 20), tmp_level, "Show Level");
-            tmp_performance_comparison = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * 3, box_width - 2 * margins, 20), tmp_performance_comparison, "Show Performance");
-            // ToDo: Own goals
+            // Add element selection
+            tmp_points = GUI.Toggle(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), tmp_points, "Show Points");
+            int i = 0;
+            tmp_time = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_time, "Show Timer");
+            i++;
+            tmp_quality = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_quality, "Show Quality");
+            i++;
+            tmp_level = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_level, "Show Level");
+            i++; 
+            tmp_popup = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_popup, "Show Popup");
+            i++;
 
-            Debug.Log(point_display);
-            //Debug.Log(tmp_point_display);
-
-            // Apply changes if save button is pressed
+            // Apply changes if save button is pressed -> Activate or deactivate game elements
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 20 * 6, box_width - 2 * margins, 20), "Save"))
             {
-                if (tmp_point_display != point_display)
+                if (tmp_points != points)
                 {
-                    point_display = tmp_point_display;
-                    go_point_display.SetActive(point_display);
+                    points = tmp_points;
+                    go_points.SetActive(points);
                 }
 
-                if (tmp_clock != clock)  // Activate or deactivate game elements
+                if (tmp_time != time)
                 {
-                    clock = tmp_clock;
-                    go_clock.SetActive(clock);
+                    time = tmp_time;
+                    go_time.SetActive(time);
                 }
 
                 if (tmp_quality != quality)
@@ -116,32 +118,31 @@ public class GameElements_Selection : MonoBehaviour {
                     go_level.SetActive(level);
                 }
 
-                if (tmp_performance_comparison != performance_comparison)
+                if (tmp_popup != popup)
                 {
-                    performance_comparison = tmp_performance_comparison;
-                    // ToDo
+                    popup = tmp_popup;
+                    go_popup.SetActive(popup);
                 }
             }
 
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 20 * 8, box_width - 2 * margins, 20), "Reset Game Elements"))
             {
-                tmp_point_display = true;
-                tmp_clock = true;
+                foreach(GameObject element in gameobjects)
+                {
+                    element.SetActive(true);
+                }
+
+                tmp_points = true;
+                tmp_time = true;
                 tmp_quality = true;
                 tmp_level = true;
-                tmp_performance_comparison = true;
+                tmp_popup = true;
 
-                point_display = true;
-                clock = true;
+                points = true;
+                time = true;
                 quality = true;
                 level = true;
-                performance_comparison = true;
-                own_goals = true;
-
-                go_point_display.SetActive(true);
-                go_clock.SetActive(true);
-                go_quality.SetActive(true);
-                go_level.SetActive(true);
+                popup = true;
             }
         }        
     }

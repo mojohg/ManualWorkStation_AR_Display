@@ -107,27 +107,27 @@ public class UI_FeedbackHandler : MonoBehaviour
     {        
         if (level == 0)
         {
-            levelname.GetComponent<Text>().text = "Introduction";
+            levelname.GetComponent<Text>().text = "Level 0 - Introduction";
             levelimage.GetComponent<Image>().sprite = level_0_sprite;
         }
         if (level == 1)
         {
-            levelname.GetComponent<Text>().text = "Beginner";
+            levelname.GetComponent<Text>().text = "Level 1 - Beginner";
             levelimage.GetComponent<Image>().sprite = level_1_sprite;
         }
         else if ( level == 2)
         {
-            levelname.GetComponent<Text>().text = "Advanced";
+            levelname.GetComponent<Text>().text = "Level 2 - Advanced";
             levelimage.GetComponent<Image>().sprite = level_2_sprite;
         }
         else if (level == 3)
         {
-            levelname.GetComponent<Text>().text = "Very Advanced";
+            levelname.GetComponent<Text>().text = "Level 3 - Very Advanced";
             levelimage.GetComponent<Image>().sprite = level_3_sprite;
         }
         else if (level == 4)
         {
-            levelname.GetComponent<Text>().text = "Expert";
+            levelname.GetComponent<Text>().text = "Level 4 - Expert";
             levelimage.GetComponent<Image>().sprite = level_4_sprite;
         }
     }

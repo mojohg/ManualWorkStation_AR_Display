@@ -372,13 +372,13 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             current_action_display.GetComponent<Text>().text = "Assemble";
             annotation.GetComponent<Text>().text = text_annotation;
-            ShowAssemblyPosition(item_name, disable_afterwards: true, change_material: false);
+            ShowAssemblyPosition(assembly_info_material_1, item_name, disable_afterwards: true, change_material: false);
             ShowPositionMiniature(item_name);
         }
         else if (knowledge_level == 2)
         {
             current_action_display.GetComponent<Text>().text = "Assemble";
-            GameObject item_go = ShowAssemblyPosition(item_name, disable_afterwards: true, change_material: false);
+            GameObject item_go = ShowAssemblyPosition(assembly_info_material_1, item_name, disable_afterwards: true, change_material: false);
             RemoveAssemblyHints(item_go);
             ShowPositionMiniature(item_name);
         }
@@ -396,7 +396,41 @@ public class MessageHandler_noJson : MonoBehaviour
         }
     }
 
-    private GameObject ShowAssemblyPosition(string item_name, bool disable_afterwards, bool change_material)
+    public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)
+    {
+        Debug.Log("Show tool usage instruction for " + action_name);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
+
+        if (knowledge_level == 1)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble with tool";
+            annotation.GetComponent<Text>().text = text_annotation;
+            ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 2)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble with tool";
+            GameObject action_go = ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
+            RemoveAssemblyHints(action_go);
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 3)
+        {
+            current_action_display.GetComponent<Text>().text = "Assemble with tool";
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 4)
+        {
+
+        }
+        else
+        {
+            Debug.LogWarning("Unknown level " + knowledge_level);
+        }        
+    }
+
+    private GameObject ShowAssemblyPosition(Material material, string item_name, bool disable_afterwards, bool change_material)
     {
         foreach (GameObject item in assembly_items)
         {
@@ -404,7 +438,7 @@ public class MessageHandler_noJson : MonoBehaviour
             {
                 item.SetActive(true);
                 active_items.Add(item);
-                ShowObjectPosition(item, assembly_info_material_1, disable_afterwards, change_material);
+                ShowObjectPosition(item, material, disable_afterwards, change_material);
                 return item;
             }
         }
@@ -414,7 +448,7 @@ public class MessageHandler_noJson : MonoBehaviour
     private void RemoveAssemblyHints(GameObject current_item)
     {
         foreach (Transform part in current_item.transform)
-{
+        {
             if (part.name.Contains("Animation"))
             {
                 part.gameObject.SetActive(false);
@@ -433,40 +467,6 @@ public class MessageHandler_noJson : MonoBehaviour
         total_assembly_miniature.SetActive(true);
         GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
         ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards: false, change_material: true);
-    }
-
-    public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)
-    {
-        Debug.Log("Show tool usage instruction for " + action_name);
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
-
-        if (knowledge_level == 1)
-        {
-            current_action_display.GetComponent<Text>().text = "Assemble with tool";
-            annotation.GetComponent<Text>().text = text_annotation;
-            ShowAssemblyPosition(action_name, disable_afterwards: true, change_material: true);
-            ShowPositionMiniature(action_name);
-        }
-        else if (knowledge_level == 2)
-        {
-            current_action_display.GetComponent<Text>().text = "Assemble with tool";
-            GameObject action_go = ShowAssemblyPosition(action_name, disable_afterwards: true, change_material: true);
-            RemoveAssemblyHints(action_go);
-            ShowPositionMiniature(action_name);
-        }
-        else if (knowledge_level == 3)
-        {
-            current_action_display.GetComponent<Text>().text = "Assemble with tool";
-            ShowPositionMiniature(action_name);
-        }
-        else if (knowledge_level == 4)
-        {
-
-        }
-        else
-        {
-            Debug.LogWarning("Unknown level " + knowledge_level);
-        }        
     }
 
     public void ShowPoints(int current_points)
@@ -514,6 +514,10 @@ public class MessageHandler_noJson : MonoBehaviour
                     Destroy(sub_part.gameObject);
                 }
                 if (sub_part.name.Contains("Text"))
+                {
+                    Destroy(sub_part.gameObject);
+                }
+                if (sub_part.name.Contains("Toolpoint"))
                 {
                     Destroy(sub_part.gameObject);
                 }

@@ -22,14 +22,17 @@ public class UI_Confetti : MonoBehaviour {
 
 	public void ShowConfetti()
     {
+		Debug.Log("Confetti");
 		if(particles == null)
         {
+			Debug.Log("Particles not found");
 			particles = this.GetComponent<ParticleSystem>();
 		}
 		if (confetti_text != null)
 		{
 			confetti_text.SetActive(true);
 		}
+		particles.Stop();
 		particles.Play();
 		this.GetComponent<AudioSource>().Play();
 	}

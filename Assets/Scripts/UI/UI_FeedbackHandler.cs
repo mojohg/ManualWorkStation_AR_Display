@@ -134,6 +134,7 @@ public class UI_FeedbackHandler : MonoBehaviour
 
 	public void ShowNumberSteps(int number)
     {
+        uncompleted_steps.Clear();
         GameObject new_bar;
 
         for (int i = 0; i < number; i++)
@@ -158,8 +159,16 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void FinishStep()
     {
-        uncompleted_steps[0].GetComponent<Image>().color = Color.green;
-        uncompleted_steps.RemoveAt(0);
+        if(uncompleted_steps[0] != null)
+        {
+            uncompleted_steps[0].GetComponent<Image>().color = Color.green;
+            uncompleted_steps.RemoveAt(0);
+        }
+        else
+        {
+            Debug.LogWarning("List for step display not found");
+            Debug.Log(uncompleted_steps);
+        }
     }
 
     public void StartTimer(int duration_seconds)

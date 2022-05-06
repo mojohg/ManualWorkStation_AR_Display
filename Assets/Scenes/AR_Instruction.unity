@@ -2369,7 +2369,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.001
+      value: 0.005417822
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
@@ -2394,37 +2394,37 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9809674
+      value: 0.96427345
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.016575037
+      value: -0.014860035
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.023583964
+      value: 0.028766872
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.19202119
+      value: -0.26292288
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -1.3440001
+      value: -0.77500004
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 3.0180001
+      value: 3.6290002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -22.186
+      value: -30.528002
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 01b553a8579a8c941b025e3ad03cb3f9,
         type: 3}

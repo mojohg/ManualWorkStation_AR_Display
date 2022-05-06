@@ -90,12 +90,9 @@ public class MessageHandler_noJson : MonoBehaviour
         // Reset everything
         ResetWorkplace();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetFeedbackElements();
-        if(disabled_items.Count() > 0)
+        if(current_assembly_GO != null)  // Remove previous product display
         {
-            foreach(GameObject item in disabled_items)
-            {
-                item.SetActive(true);
-            }
+            Destroy(current_assembly_GO);
         }
 
         // Set colors of gamification elements
@@ -133,11 +130,15 @@ public class MessageHandler_noJson : MonoBehaviour
 
         try // Load product cad
         {
-            foreach (GameObject product in product_versions)
+            foreach (GameObject product in product_versions)  // Copy current product to highlight and modify it for the assembly instructions
             {
                 if (product.name == current_version)
                 {
-                    current_assembly_GO = product;
+                    current_assembly_GO = Instantiate(
+                        original: product,
+                        position: product.transform.position,
+                        rotation: product.transform.rotation,
+                        parent: product.transform.parent);
                     current_assembly_GO.SetActive(true);
 
                     try  // Show miniature product
@@ -169,16 +170,14 @@ public class MessageHandler_noJson : MonoBehaviour
                         Debug.LogWarning("Product version could not be displayed " + current_version);
                     }
 
-                    assembly_items = product.GetComponent<AssemblyOrganisation>().main_items_list;  // Find GO of assembly
+                    assembly_items = current_assembly_GO.GetComponent<AssemblyOrganisation>().main_items_list;  // Find GO of assembly
                     foreach (GameObject item in assembly_items)
                     {
                         item.SetActive(false);  // Deactivate GO that they are not visible
                     }
                 }
-                else
-                {
-                    product.SetActive(false);
-                }
+                product.SetActive(false);
+
             }
         }
         catch
@@ -467,6 +466,7 @@ public class MessageHandler_noJson : MonoBehaviour
     private void ShowPositionMiniature(string item_name)
     {
         total_assembly_miniature.SetActive(true);
+        Debug.Log("Show part in miniature: " + item_name);
         GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
         ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards: false, change_material: true);
     }
@@ -505,7 +505,7 @@ public class MessageHandler_noJson : MonoBehaviour
             position: current_assembly_GO.transform.position,
             rotation: current_assembly_GO.transform.rotation,
             parent: current_assembly_GO.transform.parent);
-        current_assembly_GO.SetActive(false);
+        Destroy(current_assembly_GO);
 
         foreach (Transform part in final_assembly_green.transform)
         {

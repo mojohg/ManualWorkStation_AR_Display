@@ -265,6 +265,13 @@ public class MessageHandler_noJson : MonoBehaviour
 
     public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)
     {
+        // Demo application for events
+        if(item_name == "thank_you")
+        {
+            current_action_display.GetComponent<Text>().text = "Thank You!";
+            return;
+        }
+
         // Find and show prefab
         GameObject item_prefab = FindPrefab("Prefabs/Parts/" + current_producttype + "/" + item_name, item_name);
         if (item_prefab == null)
@@ -364,6 +371,13 @@ public class MessageHandler_noJson : MonoBehaviour
 
     public void ShowAssemblyInfos(string item_name, int knowledge_level, int default_time, string text_annotation)
     {
+        if (item_name == "thank_you")
+        {
+            current_action_display.GetComponent<Text>().text = "Thank You!";
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayThankYou();
+            return;
+        }
+
         Debug.Log("Show assembly instruction for " + item_name + " in level " + knowledge_level);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
 

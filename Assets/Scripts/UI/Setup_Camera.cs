@@ -27,7 +27,8 @@ public class Setup_Camera : MonoBehaviour {
 
     public GameObject main_camera;
     private GameObject client;
-    private GameObject assembly;
+    private GameObject assemblies;
+    GameObject firstActiveGameObject;
 
     void OnEnable()
     {
@@ -42,7 +43,6 @@ public class Setup_Camera : MonoBehaviour {
     void Start()
     {
         client = GameObject.Find("Client");
-        assembly = GameObject.Find("V3.3");
     }
 
     void Update()
@@ -50,6 +50,16 @@ public class Setup_Camera : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.C))
         {
             show_ui = !show_ui;
+
+            // Find active assembly
+            assemblies = GameObject.Find("Assemblies");
+            for (int n = 0; n < assemblies.transform.childCount; n++)
+            {
+                if (assemblies.transform.GetChild(n).gameObject.activeSelf == true)
+                {
+                    firstActiveGameObject = assemblies.transform.GetChild(n).gameObject;
+                }
+            }
         }
     }
 
@@ -68,16 +78,16 @@ public class Setup_Camera : MonoBehaviour {
                 main_camera = GameObject.Find("MainCamera");
             }
 
-            // Add elements
-            setup_mode = GUI.Toggle(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), setup_mode, "Setup-Mode");
+            // Setup mode to check display position of assembly
+            setup_mode = GUI.Toggle(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), setup_mode, "Assembly Position Check");
             if (prev_setup_mode != setup_mode)
             {
                 prev_setup_mode = setup_mode;
                 if (setup_mode)
                 {
                     client.GetComponent<Connection_noJson>().SendInformation("{setup}");
-                    assembly.SetActive(true);
-                    foreach (Transform item in assembly.transform)
+                    firstActiveGameObject.SetActive(true);
+                    foreach (Transform item in firstActiveGameObject.transform)
                     {
                         item.gameObject.SetActive(true);
                     }
@@ -85,8 +95,8 @@ public class Setup_Camera : MonoBehaviour {
                 else
                 {
                     client.GetComponent<Connection_noJson>().SendInformation("{ready}");
-                    assembly.SetActive(false);
-                    foreach (Transform item in assembly.transform)
+                    firstActiveGameObject.SetActive(false);
+                    foreach (Transform item in firstActiveGameObject.transform)
                     {
                         item.gameObject.SetActive(false);
                     }

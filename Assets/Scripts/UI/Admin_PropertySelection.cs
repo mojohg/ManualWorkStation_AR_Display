@@ -28,6 +28,12 @@ public class Admin_PropertySelection : MonoBehaviour {
 
     private GameObject username_go;
 
+
+    private bool setup_mode = false;
+    private bool prev_setup_mode = false;
+    private GameObject assemblies;
+    GameObject firstActiveGameObject;
+
     // Regex pattern = new Regex(@"^\w+$");
 
     void OnEnable()
@@ -52,6 +58,16 @@ public class Admin_PropertySelection : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.A))
         {
             show_ui = !show_ui;
+
+            // Find active assembly
+            assemblies = GameObject.Find("Assemblies");
+            for (int n = 0; n < assemblies.transform.childCount; n++)
+            {
+                if (assemblies.transform.GetChild(n).gameObject.activeSelf == true)
+                {
+                    firstActiveGameObject = assemblies.transform.GetChild(n).gameObject;
+                }
+            }
         }
     }
 
@@ -104,9 +120,34 @@ public class Admin_PropertySelection : MonoBehaviour {
                 }
             }
 
-            if (GUI.Button(new Rect(box_x0 + margins, 430 + 25 * 0, box_width - 2 * margins, 20), "Reset Order"))
+            // Setup mode to allow changed at the MWS without analyzing the sensor signals
+            setup_mode = GUI.Toggle(new Rect(box_x0 + margins, 400 + 25 * 0, box_width - 2 * margins, 20), setup_mode, "Setup-Mode");
+            if (prev_setup_mode != setup_mode)
             {
-                client.GetComponent<Connection_noJson>().SendInformation("{resetOrder}");
+                prev_setup_mode = setup_mode;
+                if (setup_mode)
+                {
+                    client.GetComponent<Connection_noJson>().SendInformation("{setup}");
+                    firstActiveGameObject.SetActive(true);
+                    foreach (Transform item in firstActiveGameObject.transform)
+                    {
+                        item.gameObject.SetActive(true);
+                    }
+                }
+                else
+                {
+                    client.GetComponent<Connection_noJson>().SendInformation("{ready}");
+                    firstActiveGameObject.SetActive(false);
+                    foreach (Transform item in firstActiveGameObject.transform)
+                    {
+                        item.gameObject.SetActive(false);
+                    }
+                }
+            }
+
+            if (GUI.Button(new Rect(box_x0 + margins, 400 + 25 * 2, box_width - 2 * margins, 20), "Reset Order"))
+            {
+                client.GetComponent<Connection_noJson>().SendInformation("[resetOrder]");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetFeedbackElements();
             }
         }        

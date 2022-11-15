@@ -45,7 +45,12 @@ public class ObjectInteractions : MonoBehaviour {
     {
         if (this.GetComponent<MeshRenderer>() != null)
         {
+            Debug.Log("Change material of " + this.gameObject.name);
             this.GetComponent<MeshRenderer>().material = material;
+        }
+        else
+        {
+            Debug.Log("No mesh renderer available for " + this.gameObject.name);
         }
         
         if (this.transform.childCount == 0)  // Check for child objects in assemblies

@@ -384,7 +384,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
         if (knowledge_level == 1)
         {
-            current_action_display.GetComponent<Text>().text = "Move assembly";
+            current_action_display.GetComponent<Text>().text = "Move";
             annotation.GetComponent<Text>().text = text_annotation;
             annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
             ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
@@ -392,14 +392,14 @@ public class MessageHandler_noJson : MonoBehaviour
         }
         else if (knowledge_level == 2)
         {
-            current_action_display.GetComponent<Text>().text = "Move assembly";
+            current_action_display.GetComponent<Text>().text = "Move";
             GameObject action_go = ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
             RemoveAssemblyHints(action_go);
             ShowPositionMiniature(action_name);
         }
         else if (knowledge_level == 3)
         {
-            current_action_display.GetComponent<Text>().text = "Move assembly";
+            current_action_display.GetComponent<Text>().text = "Move";
             ShowPositionMiniature(action_name);
         }
         else if (knowledge_level == 4)

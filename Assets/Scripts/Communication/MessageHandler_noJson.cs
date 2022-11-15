@@ -377,6 +377,41 @@ public class MessageHandler_noJson : MonoBehaviour
         }
     }
 
+    public void ShowMoveInstruction(string action_name, int knowledge_level, int default_time, string text_annotation)
+    {
+        Debug.Log("Show move instruction for " + action_name);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
+
+        if (knowledge_level == 1)
+        {
+            current_action_display.GetComponent<Text>().text = "Move assembly";
+            annotation.GetComponent<Text>().text = text_annotation;
+            annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
+            ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 2)
+        {
+            current_action_display.GetComponent<Text>().text = "Move assembly";
+            GameObject action_go = ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
+            RemoveAssemblyHints(action_go);
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 3)
+        {
+            current_action_display.GetComponent<Text>().text = "Move assembly";
+            ShowPositionMiniature(action_name);
+        }
+        else if (knowledge_level == 4)
+        {
+
+        }
+        else
+        {
+            Debug.LogWarning("Unknown level " + knowledge_level);
+        }
+    }
+
     public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)
     {
         Debug.Log("Show tool usage instruction for " + action_name);

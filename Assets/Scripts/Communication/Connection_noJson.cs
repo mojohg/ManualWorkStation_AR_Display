@@ -213,6 +213,37 @@ public class Connection_noJson : MonoBehaviour
                         }
                     }
                 }
+                else if (action_type == "move")
+                {
+                    rx = new Regex(@"action_list<(.*?)>");
+                    string actions = rx.Match(message).Groups[1].Value;
+
+                    rx = new Regex(@"annotation<(.*?)>");
+                    string annotation = rx.Match(message).Groups[1].Value;
+
+                    if (actions.Length > 2)  // String should contain more than "[]"
+                    {
+                        // Debug.Log("Actions: " + actions);
+                        string[] action_list = actions.Split(',');
+
+                        foreach (string action in action_list)
+                        {
+                            if (action.Length > 0)
+                            {
+                                string action_name = action.Replace("[", "");
+                                action_name = action_name.Replace("]", "");
+                                action_name = action_name.Replace("'", "");
+                                action_name = action_name.Replace(" ", "");
+                                this.GetComponent<MessageHandler_noJson>().ShowMoveInstruction(
+                                action_name,
+                                knowledge_level,
+                                default_time,
+                                annotation
+                                );
+                            }
+                        }
+                    }
+                }
                 else if (action_type == "returnTool")
                 {
                     rx = new Regex(@"item_name<(.*?)>");

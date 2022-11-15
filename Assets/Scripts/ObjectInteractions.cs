@@ -43,8 +43,6 @@ public class ObjectInteractions : MonoBehaviour {
 
     public void ChangeMaterial(Material material)
     {
-        Debug.Log("Change material of " + this.gameObject.name);
-
         if (this.GetComponent<MeshRenderer>() != null)
         {
             this.GetComponent<MeshRenderer>().material = material;

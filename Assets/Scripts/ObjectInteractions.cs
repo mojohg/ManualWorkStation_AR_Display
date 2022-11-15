@@ -43,6 +43,8 @@ public class ObjectInteractions : MonoBehaviour {
 
     public void ChangeMaterial(Material material)
     {
+        Debug.Log("Change material of " + this.gameObject.name);
+
         if (this.GetComponent<MeshRenderer>() != null)
         {
             this.GetComponent<MeshRenderer>().material = material;
@@ -58,7 +60,12 @@ public class ObjectInteractions : MonoBehaviour {
             if (child.GetComponent<ObjectInteractions>() != null)
             {
                 child.gameObject.GetComponent<ObjectInteractions>().ChangeMaterial(material);
-            }            
+            }
+            else
+            {
+                child.gameObject.AddComponent<ObjectInteractions>();
+                child.gameObject.GetComponent<ObjectInteractions>().ChangeMaterial(material);
+            }
         }
     }
 

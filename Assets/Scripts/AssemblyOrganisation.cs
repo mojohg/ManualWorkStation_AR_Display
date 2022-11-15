@@ -11,7 +11,7 @@ public class AssemblyOrganisation : MonoBehaviour
     private int numberVersions;
     public List<GameObject> main_items_list;
     public List<GameObject> finished_items_list;
-    // public List<GameObject> toolobjects_list;
+    public float pick_prefab_scale = 1;
 
 
     // Use this for initialization

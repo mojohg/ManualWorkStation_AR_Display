@@ -12,8 +12,6 @@ public class MessageHandler_noJson : MonoBehaviour
 {
     private GameObject client;
     private GameObject assemblies;
-    private GameObject product_turns;
-    private GameObject product_holder;
     private GameObject feedback_canvas;
     private GameObject task_finished;
     private GameObject final_assembly_green;
@@ -24,11 +22,8 @@ public class MessageHandler_noJson : MonoBehaviour
     private string current_producttype;
     private GameObject current_assembly_GO;
 
-    private List<GameObject> holder_versions = new List<GameObject>();
     private List<GameObject> product_versions = new List<GameObject>();
     private List<GameObject> assembly_items = new List<GameObject>();
-    private List<GameObject> turn_versions = new List<GameObject>();
-    private List<GameObject> turn_operations = new List<GameObject>();
     private List<GameObject> active_items = new List<GameObject>();
     private List<GameObject> disabled_items = new List<GameObject>();
     
@@ -49,13 +44,11 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject object_presentation;
     private GameObject assembly_presentation;
     private GameObject annotation;
+    private float pick_prefab_scale;
 
     // UI: Miniature assembly
     private GameObject total_assembly_miniature;
     private List<GameObject> optically_changed_parts = new List<GameObject>();
-
-    // Properties of Assemblies
-    private float sizing_factor_v3 = 1.5f;
 
     void Start()
     {
@@ -70,8 +63,6 @@ public class MessageHandler_noJson : MonoBehaviour
         // Find GO
         setup_test = GameObject.Find("Setup_Test");
         assemblies = GameObject.Find("Assemblies");
-        product_turns = GameObject.Find("ProductTurns");
-        product_holder = GameObject.Find("ProductHolder");
         object_presentation = GameObject.Find("NextObjects");
         assembly_presentation = GameObject.Find("TotalAssembly");
         task_finished = GameObject.Find("TaskFinished");
@@ -107,108 +98,84 @@ public class MessageHandler_noJson : MonoBehaviour
         current_action_display.GetComponent<Text>().text = "Load version " + current_version;
 
         product_versions = assemblies.GetComponent<AssemblyOrganisation>().main_items_list;
-        holder_versions = product_holder.GetComponent<AssemblyOrganisation>().main_items_list;
-        turn_versions = product_turns.GetComponent<AssemblyOrganisation>().main_items_list;
-        try  // Load product holder
+
+        // Copy current product to highlight and modify it for the assembly instructions
+        foreach (GameObject product in product_versions)
         {
-            foreach (GameObject holder in holder_versions)
+            if (product.name == current_version)
             {
-                if (holder.name == current_version)
+                Debug.Log("Instantiate new assembly for " + product.name);
+                
+                // Check if assembly contains all required scripts
+                if (product.GetComponent<AssemblyOrganisation>() == null)
                 {
-                    holder.SetActive(true);
+                    product.AddComponent<AssemblyOrganisation>();
                 }
-                else
+                if (product.GetComponent<ObjectInteractions>() == null)
                 {
-                    holder.SetActive(false);
+                    product.AddComponent<ObjectInteractions>();
+                }
+                foreach (Transform item in product.transform)
+                {
+                    if (item.gameObject.GetComponent<ObjectInteractions>() == null)
+                    {
+                        item.gameObject.AddComponent<ObjectInteractions>();
+                    }
+                }
+
+                // Create new assembly to display information without modifying the original assembly object
+                current_assembly_GO = Instantiate(
+                    original: product,
+                    position: product.transform.position,
+                    rotation: product.transform.rotation,
+                    parent: product.transform.parent);
+                current_assembly_GO.SetActive(true);
+            }
+            product.SetActive(false);  // Deactivate all product versions
+        }
+
+        // Set product-specific properties
+        pick_prefab_scale = current_assembly_GO.GetComponent<AssemblyOrganisation>().pick_prefab_scale;
+        Debug.Log("New pick prefab scale: " + pick_prefab_scale);
+
+
+        if (current_assembly_GO == null)
+            {
+                Debug.LogError("Product assembly not found of version " + current_version);
+            }
+        
+        // Generate miniature product of current assembly
+        if (total_assembly_miniature != null)
+        {
+            Destroy(total_assembly_miniature);
+        }
+        total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), current_assembly_GO.transform.rotation, assembly_presentation.transform);
+        foreach (Transform part in total_assembly_miniature.transform)
+        {
+            foreach (Transform sub_part in part)  // Remove unnecessary information in miniature view
+            {
+                if (sub_part.name.Contains("Animation"))
+                {
+                    Destroy(sub_part.gameObject);
+                }
+                if (sub_part.name.Contains("Text"))
+                {
+                    Destroy(sub_part.gameObject);
                 }
             }
         }
-        catch
-        {
-            Debug.LogWarning("No product holder specified for version " + current_version);
-        }
+        total_assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
+        total_assembly_miniature.transform.localScale = 0.5f * total_assembly_miniature.transform.localScale;
 
-        try // Load product cad
+        // Deactivate all items of current assembly
+        foreach (Transform item in current_assembly_GO.transform)
         {
-            foreach (GameObject product in product_versions)  // Copy current product to highlight and modify it for the assembly instructions
-            {
-                if (product.name == current_version)
-                {
-                    current_assembly_GO = Instantiate(
-                        original: product,
-                        position: product.transform.position,
-                        rotation: product.transform.rotation,
-                        parent: product.transform.parent);
-                    current_assembly_GO.SetActive(true);
-
-                    try  // Show miniature product
-                    {
-                        if(total_assembly_miniature != null)
-                        {
-                            Destroy(total_assembly_miniature);
-                        }
-                        total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), product.transform.rotation, assembly_presentation.transform);
-                        foreach (Transform part in total_assembly_miniature.transform)
-                        {
-                            foreach(Transform sub_part in part)  // Remove animations in miniature view
-                            {
-                                if (sub_part.name.Contains("Animation"))
-                                {
-                                    Destroy(sub_part.gameObject);
-                                }
-                                if (sub_part.name.Contains("Text"))
-                                {
-                                    Destroy(sub_part.gameObject);
-                                }
-                            }
-                        }
-                        total_assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
-                        total_assembly_miniature.transform.localScale = 0.5f * total_assembly_miniature.transform.localScale;
-                    }
-                    catch
-                    {
-                        Debug.LogWarning("Product version could not be displayed " + current_version);
-                    }
-
-                    assembly_items = current_assembly_GO.GetComponent<AssemblyOrganisation>().main_items_list;  // Find GO of assembly
-                    foreach (GameObject item in assembly_items)
-                    {
-                        item.SetActive(false);  // Deactivate GO that they are not visible
-                    }
-                }
-                product.SetActive(false);
-
-            }
-        }
-        catch
-        {
-            Debug.LogWarning("Product assembly not found of version " + current_version);
-        }
-
-        try  // Load turn operations
-        {
-            foreach (GameObject ver in turn_versions)
-            {
-                if (ver.name == current_version)
-                {
-                    ver.SetActive(true);
-                    turn_operations = ver.GetComponent<AssemblyOrganisation>().main_items_list;
-                }
-                else
-                {
-                    ver.SetActive(false);
-                }
-            }
-        }
-        catch
-        {
-            Debug.LogWarning("Product turn operations not found of version " + current_version);
+            item.gameObject.SetActive(false);
         }
 
         // Acknowledge init and send user information to hardware control
         Debug.Log(setup_test.GetComponent<Admin_PropertySelection>().user_name);
         client.GetComponent<Connection_noJson>().SendInformation("init_username[" + setup_test.GetComponent<Admin_PropertySelection>().user_name + "]level[" + setup_test.GetComponent<Admin_PropertySelection>().user_level + "]");
-
     }
 
     public void InitializeSteps(int number_steps)
@@ -447,16 +414,17 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private GameObject ShowAssemblyPosition(Material material, string item_name, bool disable_afterwards, bool change_material)
     {
-        foreach (GameObject item in assembly_items)
+        foreach (Transform item in current_assembly_GO.transform)
         {
             if (item.name == item_name)
             {
-                item.SetActive(true);
-                active_items.Add(item);
-                ShowObjectPosition(item, material, disable_afterwards, change_material);
-                return item;
+                item.gameObject.SetActive(true);
+                active_items.Add(item.gameObject);
+                ShowObjectPosition(item.gameObject, material, disable_afterwards, change_material);
+                return item.gameObject;
             }
         }
+        Debug.LogError(item_name + " not found in assembly items: " + string.Join(", ", assembly_items));
         return null;
     }
 
@@ -625,7 +593,7 @@ public class MessageHandler_noJson : MonoBehaviour
         Vector3 original_scale = displayed_item.transform.localScale;
         displayed_item.transform.parent = object_presentation.transform;
         displayed_item.transform.localRotation = prefab.transform.rotation;
-        displayed_item.transform.localScale = original_scale * sizing_factor_v3;
+        displayed_item.transform.localScale = original_scale * pick_prefab_scale;
 
         // Check if several pick options exist
         int number_pick_options = object_presentation.transform.childCount;

@@ -161,15 +161,14 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void FinishStep()
     {
-        if(uncompleted_steps[0] != null)
+        if(uncompleted_steps.Count == 0)
         {
-            uncompleted_steps[0].GetComponent<Image>().color = Color.green;
-            uncompleted_steps.RemoveAt(0);
+            Debug.Log("Recipe finished");
         }
         else
         {
-            Debug.LogWarning("List for step display not found");
-            Debug.Log(uncompleted_steps);
+            uncompleted_steps[0].GetComponent<Image>().color = Color.green;
+            uncompleted_steps.RemoveAt(0);
         }
     }
 

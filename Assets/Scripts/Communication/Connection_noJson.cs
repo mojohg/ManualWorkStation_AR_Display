@@ -244,6 +244,17 @@ public class Connection_noJson : MonoBehaviour
                         }
                     }
                 }
+                else if (action_type == "storeItem")
+                {
+                    rx = new Regex(@"item_name<(.*?)>");
+                    string item_name = rx.Match(message).Groups[1].Value;
+
+                    this.GetComponent<MessageHandler_noJson>().StoreObject(
+                    item_name,
+                    knowledge_level,
+                    default_time
+                    );
+                }
                 else if (action_type == "returnTool")
                 {
                     rx = new Regex(@"item_name<(.*?)>");

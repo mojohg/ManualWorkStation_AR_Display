@@ -273,6 +273,13 @@ public class MessageHandler_noJson : MonoBehaviour
         }        
     }
 
+    public void StoreObject(string item_name, int knowledge_level, int default_time)
+    {
+        Debug.Log("Show store instruction for " + item_name);
+        current_action_display.GetComponent<Text>().text = "Store " + item_name;
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
+    }
+
     public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)
     {
         // Find prefab

@@ -382,6 +382,9 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             Debug.LogWarning("Unknown level " + knowledge_level);
         }
+
+        GameObject current_go = FindGameobject(item_name, current_assembly_GO.GetComponent<AssemblyOrganisation>().main_items_list);
+        current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list.Add(current_go);
     }
 
     public void ShowMoveInstruction(string action_name, int knowledge_level, int default_time, string text_annotation)
@@ -389,13 +392,44 @@ public class MessageHandler_noJson : MonoBehaviour
         Debug.Log("Show move instruction for " + action_name);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
 
+        // Find move position and orientation
+        GameObject move_pos = null;
+        foreach (Transform item in current_assembly_GO.transform)
+        {
+            if (item.name == action_name)
+            {
+                Debug.Log("Move pos found");
+                move_pos = item.gameObject;
+                move_pos.SetActive(true);
+                active_items.Add(move_pos);
+            }
+        }
+        if(move_pos == null)
+        {
+            Debug.LogError(move_pos + " not found in assembly items: " + string.Join(", ", assembly_items));
+        }
+
+        // Group all finished GO
+        GameObject existing_assembly  = new GameObject("ExistingAssembly");
+        foreach(GameObject item in current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list)
+        {
+            Debug.Log(item.name);
+            item.transform.SetParent(existing_assembly.transform);
+            item.SetActive(true);
+        }
+        existing_assembly.transform.position = move_pos.transform.position;
+        existing_assembly.transform.rotation = move_pos.transform.rotation;
+        existing_assembly.transform.SetParent(move_pos.transform);
+        current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list = new List<GameObject>();
+        current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list.Add(move_pos);
+
         if (knowledge_level == 1)
         {
             current_action_display.GetComponent<Text>().text = "Move";
             annotation.GetComponent<Text>().text = text_annotation;
             annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
-            ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
-            ShowPositionMiniature(action_name);
+            ShowAssemblyPosition(assembly_info_material_2, move_pos.name, disable_afterwards: true, change_material: true);
+            ShowPositionMiniature(move_pos.name);
         }
         else if (knowledge_level == 2)
         {
@@ -456,18 +490,11 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private GameObject ShowAssemblyPosition(Material material, string item_name, bool disable_afterwards, bool change_material)
     {
-        foreach (Transform item in current_assembly_GO.transform)
-        {
-            if (item.name == item_name)
-            {
-                item.gameObject.SetActive(true);
-                active_items.Add(item.gameObject);
-                ShowObjectPosition(item.gameObject, material, disable_afterwards, change_material);
-                return item.gameObject;
-            }
-        }
-        Debug.LogError(item_name + " not found in assembly items: " + string.Join(", ", assembly_items));
-        return null;
+        GameObject current_go = FindGameobject(item_name, current_assembly_GO.GetComponent<AssemblyOrganisation>().main_items_list);
+        current_go.gameObject.SetActive(true);
+        active_items.Add(current_go.gameObject);
+        ShowObjectPosition(current_go.gameObject, material, disable_afterwards, change_material);
+        return current_go.gameObject;
     }
 
     private void RemoveAssemblyHints(GameObject current_item)

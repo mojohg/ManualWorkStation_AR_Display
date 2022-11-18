@@ -223,7 +223,6 @@ public class Connection_noJson : MonoBehaviour
 
                     if (actions.Length > 2)  // String should contain more than "[]"
                     {
-                        // Debug.Log("Actions: " + actions);
                         string[] action_list = actions.Split(',');
 
                         foreach (string action in action_list)

@@ -47,7 +47,8 @@ public class MessageHandler_noJson : MonoBehaviour
     private float pick_prefab_scale;
 
     // UI: Miniature assembly
-    private GameObject total_assembly_miniature;
+    private GameObject assembly_miniature;
+    private GameObject assembly_miniature_holder;
     private List<GameObject> optically_changed_parts = new List<GameObject>();
 
     void Start()
@@ -143,29 +144,9 @@ public class MessageHandler_noJson : MonoBehaviour
             {
                 Debug.LogError("Product assembly not found of version " + current_version);
             }
-        
+
         // Generate miniature product of current assembly
-        if (total_assembly_miniature != null)
-        {
-            Destroy(total_assembly_miniature);
-        }
-        total_assembly_miniature = Instantiate(current_assembly_GO, new Vector3(0, 0, 0), current_assembly_GO.transform.rotation, assembly_presentation.transform);
-        foreach (Transform part in total_assembly_miniature.transform)
-        {
-            foreach (Transform sub_part in part)  // Remove unnecessary information in miniature view
-            {
-                if (sub_part.name.Contains("Animation"))
-                {
-                    Destroy(sub_part.gameObject);
-                }
-                if (sub_part.name.Contains("Text"))
-                {
-                    Destroy(sub_part.gameObject);
-                }
-            }
-        }
-        total_assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
-        total_assembly_miniature.transform.localScale = 0.5f * total_assembly_miniature.transform.localScale;
+        GenerateMiniature(current_assembly_GO);
 
         // Deactivate all items of current assembly
         foreach (Transform item in current_assembly_GO.transform)
@@ -360,7 +341,7 @@ public class MessageHandler_noJson : MonoBehaviour
             current_action_display.GetComponent<Text>().text = "Assemble";
             annotation.GetComponent<Text>().text = text_annotation;
             annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
-            ShowAssemblyPosition(assembly_info_material_1, item_name, disable_afterwards: true, change_material: false);
+            ShowAssemblyPosition(assembly_info_material_2, item_name, disable_afterwards: true, change_material: true);
             ShowPositionMiniature(item_name);
         }
         else if (knowledge_level == 2)
@@ -409,7 +390,7 @@ public class MessageHandler_noJson : MonoBehaviour
             Debug.LogError(move_pos + " not found in assembly items: " + string.Join(", ", assembly_items));
         }
 
-        // Group all finished GO
+        // Group all finished GO and move them to the new position
         GameObject existing_assembly  = new GameObject("ExistingAssembly");
         foreach(GameObject item in current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list)
         {
@@ -422,6 +403,9 @@ public class MessageHandler_noJson : MonoBehaviour
         existing_assembly.transform.SetParent(move_pos.transform);
         current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list = new List<GameObject>();
         current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list.Add(move_pos);
+
+        // Reload the miniature to include the changes
+        GenerateMiniature(current_assembly_GO);
 
         if (knowledge_level == 1)
         {
@@ -516,10 +500,16 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private void ShowPositionMiniature(string item_name)
     {
-        total_assembly_miniature.SetActive(true);
+        assembly_miniature.SetActive(true);
         Debug.Log("Show part in miniature: " + item_name);
-        GameObject current_mini_part = total_assembly_miniature.transform.Find(item_name).gameObject;
+        GameObject current_mini_part = assembly_miniature.transform.Find(item_name).gameObject;
         ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards: false, change_material: true);
+
+        // Activate holder if existing
+        if(assembly_miniature_holder != null)
+        {
+            assembly_miniature_holder.SetActive(true);
+        }
     }
 
     public void ShowPoints(int current_points)
@@ -602,6 +592,35 @@ public class MessageHandler_noJson : MonoBehaviour
 
     }
 
+    private void GenerateMiniature(GameObject original_go)
+    {
+        if (assembly_miniature != null)
+        {
+            Destroy(assembly_miniature);
+        }
+        assembly_miniature = Instantiate(original_go, new Vector3(0, 0, 0), original_go.transform.rotation, assembly_presentation.transform);
+        foreach (Transform part in assembly_miniature.transform)
+        {
+            foreach (Transform sub_part in part)
+            {
+                if (sub_part.name.Contains("AssemblyHolder"))  // Find assembly holder if existing
+                {
+                    assembly_miniature_holder = sub_part.gameObject;
+                }
+                if (sub_part.name.Contains("Animation"))  // Remove unnecessary information in miniature view
+                {
+                    Destroy(sub_part.gameObject);
+                }
+                if (sub_part.name.Contains("Text"))  // Remove unnecessary information in miniature view
+                {
+                    Destroy(sub_part.gameObject);
+                }
+            }
+        }
+        assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);
+        assembly_miniature.transform.localScale = 0.5f * assembly_miniature.transform.localScale;
+    }
+
     public void ResetWorkplace()
     {
         if (object_presentation.transform.childCount > 0)
@@ -627,9 +646,9 @@ public class MessageHandler_noJson : MonoBehaviour
                 optically_changed_parts.Remove(part);
             }
         }
-        if(total_assembly_miniature != null)
+        if(assembly_miniature != null)
         {
-            total_assembly_miniature.SetActive(false);
+            assembly_miniature.SetActive(false);
         }
         if(final_assembly_green != null)
         {

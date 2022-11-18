@@ -245,6 +245,7 @@ public class Connection_noJson : MonoBehaviour
                 }
                 else if (action_type == "storeItem")
                 {
+                    Debug.Log("STORE");
                     rx = new Regex(@"item_name<(.*?)>");
                     string item_name = rx.Match(message).Groups[1].Value;
 

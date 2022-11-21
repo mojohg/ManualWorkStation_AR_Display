@@ -194,7 +194,6 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(total_level);
         if (node_finished == "True")
         {
-            Debug.Log("Step finished");
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
         }
         if(level_up == "True")
@@ -386,7 +385,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }
         if(move_pos == null)
         {
-            Debug.LogError(move_pos + " not found in assembly items: " + string.Join(", ", assembly_items));
+            Debug.LogError(action_name + " not found in assembly items -> move instruction cannot be shown");
         }
 
         // Group all finished GO and move them to the new position

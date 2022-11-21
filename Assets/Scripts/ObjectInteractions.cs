@@ -20,13 +20,21 @@ public class ObjectInteractions : MonoBehaviour {
     {
         mat_grey = (Material)Resources.Load("Materials/StandardGrey", typeof(Material));
 
-        if (this.GetComponent<Renderer>() != null)  // Store own material
+        if (this.gameObject.GetComponent<Renderer>() != null)  // Store own material
         {
             initial_material = this.GetComponent<MeshRenderer>().material;
         }
-        else if (this.transform.childCount > 0)  // Use material of first child
+        else if (this.transform.childCount > 0)  // Use material of first child if possible
         {
-            initial_material = this.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+            Transform child = this.transform.GetChild(0);
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                initial_material = child.GetComponent<MeshRenderer>().material;
+            }
+            else  // Use standard material
+            {
+                initial_material = mat_grey;
+            }
         }
         else  // Use standard material
         {
@@ -46,10 +54,6 @@ public class ObjectInteractions : MonoBehaviour {
         if (this.GetComponent<MeshRenderer>() != null)
         {
             this.GetComponent<MeshRenderer>().material = material;
-        }
-        else
-        {
-            Debug.Log("No mesh renderer available for " + this.gameObject.name);
         }
         
         if (this.transform.childCount == 0)  // Check for child objects in assemblies

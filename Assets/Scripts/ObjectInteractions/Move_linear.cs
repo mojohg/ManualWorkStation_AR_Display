@@ -25,7 +25,24 @@ public class Move_linear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(current_distance);
+        if (x_movement)
+        {
+            if (current_distance > (distance * 1 / speed))
+            {
+                this.transform.position = initial_pos;
+                current_distance = 0;
+            }
+            transform.Translate(Vector3.up * speed * Time.deltaTime * direction);
+        }
+        if (y_movement)
+        {
+            if (current_distance > (distance * 1 / speed))
+            {
+                this.transform.position = initial_pos;
+                current_distance = 0;
+            }
+            transform.Translate(Vector3.right * speed * Time.deltaTime * direction);
+        }
         if (z_movement)
         {
             if (current_distance > (distance * 1/speed))

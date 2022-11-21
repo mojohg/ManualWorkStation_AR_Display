@@ -561,6 +561,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private void ShowObjectPosition(GameObject current_object, Material material, bool disable_afterwards, bool change_material)
     {
+        current_object.SetActive(true);
         if(change_material)
         {
             if (current_object.GetComponent<ObjectInteractions>() == null)

@@ -379,7 +379,6 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             if (item.name == action_name)
             {
-                Debug.Log("Move pos found");
                 move_pos = item.gameObject;
                 move_pos.SetActive(true);
                 active_items.Add(move_pos);
@@ -394,7 +393,6 @@ public class MessageHandler_noJson : MonoBehaviour
         GameObject existing_assembly  = new GameObject("ExistingAssembly");
         foreach(GameObject item in current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list)
         {
-            Debug.Log(item.name);
             item.transform.SetParent(existing_assembly.transform);
             item.SetActive(true);
         }
@@ -510,6 +508,10 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             assembly_miniature_holder.SetActive(true);
         }
+        else
+        {
+            Debug.Log("No holder for miniature found");
+        }
     }
 
     public void ShowPoints(int current_points)
@@ -569,7 +571,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
         final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
         task_finished.GetComponent<AudioSource>().Play();
-        current_action_display.GetComponent<Text>().text = "Task finished; remove assembly";
+        current_action_display.GetComponent<Text>().text = "Task finished";
 
         // client.GetComponent<Connection_noJson>().SendInformation("{finished}");
     }
@@ -601,17 +603,18 @@ public class MessageHandler_noJson : MonoBehaviour
         assembly_miniature = Instantiate(original_go, new Vector3(0, 0, 0), original_go.transform.rotation, assembly_presentation.transform);
         foreach (Transform part in assembly_miniature.transform)
         {
-            foreach (Transform sub_part in part)
+            if (part.name.Contains("AssemblyHolder"))  // Find assembly holder if existing
             {
-                if (sub_part.name.Contains("AssemblyHolder"))  // Find assembly holder if existing
-                {
-                    assembly_miniature_holder = sub_part.gameObject;
-                }
-                if (sub_part.name.Contains("Animation"))  // Remove unnecessary information in miniature view
+                Debug.Log("AssemblyHolder for miniature found");
+                assembly_miniature_holder = part.gameObject;
+            }
+            foreach (Transform sub_part in part)  // Remove unnecessary information in miniature view
+            {
+                if (sub_part.name.Contains("Animation"))
                 {
                     Destroy(sub_part.gameObject);
                 }
-                if (sub_part.name.Contains("Text"))  // Remove unnecessary information in miniature view
+                if (sub_part.name.Contains("Text"))
                 {
                     Destroy(sub_part.gameObject);
                 }

@@ -394,6 +394,7 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             item.transform.SetParent(existing_assembly.transform);
             item.SetActive(true);
+            item.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
         }
         existing_assembly.transform.position = move_pos.transform.position;
         existing_assembly.transform.rotation = move_pos.transform.rotation;
@@ -549,24 +550,7 @@ public class MessageHandler_noJson : MonoBehaviour
             parent: current_assembly_GO.transform.parent);
         Destroy(current_assembly_GO);
 
-        foreach (Transform part in final_assembly_green.transform)
-        {
-            foreach (Transform sub_part in part)  // Remove additional information
-            {
-                if (sub_part.name.Contains("Animation"))
-                {
-                    Destroy(sub_part.gameObject);
-                }
-                if (sub_part.name.Contains("Text"))
-                {
-                    Destroy(sub_part.gameObject);
-                }
-                if (sub_part.name.Contains("Toolpoint"))
-                {
-                    Destroy(sub_part.gameObject);
-                }
-            }
-        }
+        final_assembly_green.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
 
         final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
         task_finished.GetComponent<AudioSource>().Play();
@@ -600,23 +584,13 @@ public class MessageHandler_noJson : MonoBehaviour
             Destroy(assembly_miniature);
         }
         assembly_miniature = Instantiate(original_go, new Vector3(0, 0, 0), original_go.transform.rotation, assembly_presentation.transform);
+        assembly_miniature.GetComponent<ObjectInteractions>().RemoveTextAnimations();
         foreach (Transform part in assembly_miniature.transform)
         {
             if (part.name.Contains("AssemblyHolder"))  // Find assembly holder if existing
             {
                 Debug.Log("AssemblyHolder for miniature found");
                 assembly_miniature_holder = part.gameObject;
-            }
-            foreach (Transform sub_part in part)  // Remove unnecessary information in miniature view
-            {
-                if (sub_part.name.Contains("Animation"))
-                {
-                    Destroy(sub_part.gameObject);
-                }
-                if (sub_part.name.Contains("Text"))
-                {
-                    Destroy(sub_part.gameObject);
-                }
             }
         }
         assembly_miniature.transform.localPosition = new Vector3(0, 0, 0);

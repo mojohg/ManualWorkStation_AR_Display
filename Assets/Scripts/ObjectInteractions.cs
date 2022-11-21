@@ -167,4 +167,56 @@ public class ObjectInteractions : MonoBehaviour {
     {
         this.GetComponent<MeshRenderer>().material = current_material;
     }
+
+    public void RemoveUnnecessaryInformation()
+    {
+        if (this.name.Contains("Animation"))
+        {
+            Destroy(this.gameObject);
+        }
+        if (this.name.Contains("Text"))
+        {
+            Destroy(this.gameObject);
+        }
+        if (this.name.Contains("Toolpoint"))
+        {
+            Destroy(this.gameObject);
+        }
+        foreach (Transform sub_part in this.transform)  // Loop through children if existing
+        {
+            if (sub_part.GetComponent<ObjectInteractions>() != null)
+            {
+                sub_part.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
+            }
+            else
+            {
+                sub_part.gameObject.AddComponent<ObjectInteractions>();
+                sub_part.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
+            }
+        }
+    }
+
+    public void RemoveTextAnimations()
+    {
+        if (this.name.Contains("Animation"))
+        {
+            Destroy(this.gameObject);
+        }
+        if (this.name.Contains("Text"))
+        {
+            Destroy(this.gameObject);
+        }
+        foreach (Transform sub_part in this.transform)  // Loop through children if existing
+        {
+            if (sub_part.GetComponent<ObjectInteractions>() != null)
+            {
+                sub_part.GetComponent<ObjectInteractions>().RemoveTextAnimations();
+            }
+            else
+            {
+                sub_part.gameObject.AddComponent<ObjectInteractions>();
+                sub_part.GetComponent<ObjectInteractions>().RemoveTextAnimations();
+            }
+        }
+    }
 }

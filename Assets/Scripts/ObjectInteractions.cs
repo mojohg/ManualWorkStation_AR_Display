@@ -51,11 +51,14 @@ public class ObjectInteractions : MonoBehaviour {
 
     public void ChangeMaterial(Material material)
     {
-        if (this.GetComponent<MeshRenderer>() != null)
+        if(this.GetComponent<TextMesh>() == null)  // Only change material if it is not a text element
         {
-            this.GetComponent<MeshRenderer>().material = material;
+            if (this.GetComponent<MeshRenderer>() != null)
+            {
+                this.GetComponent<MeshRenderer>().material = material;
+            }
         }
-        
+
         if (this.transform.childCount == 0)  // Check for child objects in assemblies
         {
             return;

@@ -258,6 +258,14 @@ public class MessageHandler_noJson : MonoBehaviour
         Debug.Log("Show store instruction for " + item_name);
         current_action_display.GetComponent<Text>().text = "Store " + item_name;
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
+
+        // Delete the finished assembly GO if it is part of assembly
+        foreach (GameObject finished_item in current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list)
+        {
+            Destroy(finished_item);
+            current_assembly_GO.GetComponent<AssemblyOrganisation>().main_items_list.Remove(finished_item);
+        }
+        current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list = new List<GameObject>();
     }
 
     public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)
@@ -389,16 +397,20 @@ public class MessageHandler_noJson : MonoBehaviour
         }
 
         // Group all finished GO and move them to the new position
-        GameObject existing_assembly  = new GameObject("ExistingAssembly");
-        foreach(GameObject item in current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list)
+        // GameObject existing_assembly  = new GameObject("ExistingAssembly");
+        GameObject first_object = current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list[0];
+        first_object.SetActive(true);
+        current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list.Remove(first_object);
+
+        foreach (GameObject item in current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list)
         {
-            item.transform.SetParent(existing_assembly.transform);
+            item.transform.SetParent(first_object.transform);
             item.SetActive(true);
             item.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
         }
-        existing_assembly.transform.position = move_pos.transform.position;
-        existing_assembly.transform.rotation = move_pos.transform.rotation;
-        existing_assembly.transform.SetParent(move_pos.transform);
+        first_object.transform.position = move_pos.transform.position;
+        first_object.transform.rotation = move_pos.transform.rotation;
+        first_object.transform.SetParent(move_pos.transform);
         current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list = new List<GameObject>();
         current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list.Add(move_pos);
 

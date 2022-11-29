@@ -12,7 +12,9 @@ public class Move_linear : MonoBehaviour
     public bool z_movement = false;
 
     public int direction = 1;
-    
+    public int elapsed_frames = 0;
+    public int frames_till_movement = 1000;
+
     private Vector3 initial_pos;
     private float current_distance = 0;
 
@@ -25,32 +27,39 @@ public class Move_linear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (x_movement)
+        elapsed_frames++;
+        
+        if(elapsed_frames > frames_till_movement)
         {
-            if (current_distance > (distance * 1 / speed))
+            if (x_movement)
             {
-                this.transform.position = initial_pos;
-                current_distance = 0;
+                if (current_distance > (distance * 1 / speed))
+                {
+                    this.transform.position = initial_pos;
+                    current_distance = 0;
+                }
+                transform.Translate(Vector3.up * speed * direction);
             }
-            transform.Translate(Vector3.up * speed * Time.deltaTime * direction);
-        }
-        if (y_movement)
-        {
-            if (current_distance > (distance * 1 / speed))
+            if (y_movement)
             {
-                this.transform.position = initial_pos;
-                current_distance = 0;
+                if (current_distance > (distance * 1 / speed))
+                {
+                    this.transform.position = initial_pos;
+                    current_distance = 0;
+                }
+                transform.Translate(Vector3.right * speed * direction);
             }
-            transform.Translate(Vector3.right * speed * Time.deltaTime * direction);
-        }
-        if (z_movement)
-        {
-            if (current_distance > (distance * 1/speed))
+            if (z_movement)
             {
-                this.transform.position = initial_pos;
-                current_distance = 0;
+                if (current_distance > (distance * 1 / speed))
+                {
+                    this.transform.position = initial_pos;
+                    current_distance = 0;
+                }
+                transform.Translate(Vector3.forward * speed * direction);
             }
-            transform.Translate(Vector3.forward * speed * Time.deltaTime * direction);
+
+            elapsed_frames = 0;
         }
 
         current_distance++;

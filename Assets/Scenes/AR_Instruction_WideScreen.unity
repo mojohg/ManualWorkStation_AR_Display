@@ -7715,6 +7715,8 @@ MonoBehaviour:
   y_movement: 0
   z_movement: 1
   direction: 1
+  elapsed_frames: 100
+  frames_till_movement: 0
 --- !u!23 &472300591
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9263,12 +9265,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94458c4ac5fb3fc47b1457a75c5056ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 50
-  speed: 0.2
+  distance: 8
+  speed: 0.01
   x_movement: 0
   y_movement: 0
   z_movement: 1
   direction: -1
+  elapsed_frames: 0
+  frames_till_movement: 10
 --- !u!23 &561369308
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9476,6 +9480,8 @@ MonoBehaviour:
   y_movement: 0
   z_movement: 1
   direction: 1
+  elapsed_frames: 100
+  frames_till_movement: 0
 --- !u!23 &615245991
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9866,12 +9872,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94458c4ac5fb3fc47b1457a75c5056ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 100
-  speed: 0.2
+  distance: 8
+  speed: 0.01
   x_movement: 0
   y_movement: 0
   z_movement: 1
   direction: -1
+  elapsed_frames: 0
+  frames_till_movement: 10
 --- !u!23 &643870501
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10361,12 +10369,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94458c4ac5fb3fc47b1457a75c5056ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 100
-  speed: 0.2
+  distance: 8
+  speed: 0.01
   x_movement: 0
   y_movement: 0
   z_movement: 1
   direction: 1
+  elapsed_frames: 0
+  frames_till_movement: 10
 --- !u!23 &688827341
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15686,12 +15696,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94458c4ac5fb3fc47b1457a75c5056ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 100
-  speed: 0.2
+  distance: 8
+  speed: 0.01
   x_movement: 0
   y_movement: 0
   z_movement: 1
   direction: 1
+  elapsed_frames: 0
+  frames_till_movement: 10
 --- !u!23 &1057072971
 MeshRenderer:
   m_ObjectHideFlags: 0

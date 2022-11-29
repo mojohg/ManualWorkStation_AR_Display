@@ -248,7 +248,7 @@ public class MessageHandler_noJson : MonoBehaviour
             Debug.Log("Show error pick instruction for " + item_name);
             feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
             ResetWorkplace();
-            GameObject item = ShowPickPrefab(item_prefab, "Wrong pick, remove object");
+            GameObject item = ShowPickPrefab(item_prefab, "Wrong pick");
             item.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
         }        
     }

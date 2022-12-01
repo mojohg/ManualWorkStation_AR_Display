@@ -597,7 +597,7 @@ public class MessageHandler_noJson : MonoBehaviour
             Destroy(assembly_miniature);
         }
         assembly_miniature = Instantiate(original_go, new Vector3(0, 0, 0), original_go.transform.rotation, assembly_presentation.transform);
-        assembly_miniature.GetComponent<ObjectInteractions>().RemoveTextAnimations();
+        assembly_miniature.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
         foreach (Transform part in assembly_miniature.transform)
         {
             if (part.name.Contains("AssemblyHolder"))  // Find assembly holder if existing

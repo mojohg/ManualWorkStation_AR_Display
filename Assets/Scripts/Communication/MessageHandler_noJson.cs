@@ -354,7 +354,7 @@ public class MessageHandler_noJson : MonoBehaviour
         else if (knowledge_level == 2)
         {
             current_action_display.GetComponent<Text>().text = "Assemble";
-            GameObject item_go = ShowAssemblyPosition(assembly_info_material_1, item_name, disable_afterwards: true, change_material: false);
+            GameObject item_go = ShowAssemblyPosition(assembly_info_material_2, item_name, disable_afterwards: true, change_material: true);
             RemoveAssemblyHints(item_go);
             ShowPositionMiniature(item_name);
         }

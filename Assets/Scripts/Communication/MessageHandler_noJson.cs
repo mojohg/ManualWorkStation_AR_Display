@@ -188,6 +188,7 @@ public class MessageHandler_noJson : MonoBehaviour
     public void ParsePerformanceMessage(int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string level_up, string perfect_run, 
         string message_text, int message_color_r, int message_color_g, int message_color_b)
     {
+        // Todo: Neue Punkte schicken
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(total_points);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(quality_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
@@ -195,6 +196,7 @@ public class MessageHandler_noJson : MonoBehaviour
         if (node_finished == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
+            // Todo: Ton kurz
         }
         if(level_up == "True")
         {

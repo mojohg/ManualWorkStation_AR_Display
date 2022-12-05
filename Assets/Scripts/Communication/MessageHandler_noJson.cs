@@ -568,7 +568,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
         final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
         task_finished.GetComponent<AudioSource>().Play();
-        current_action_display.GetComponent<Text>().text = "Task finished";
+        current_action_display.GetComponent<Text>().text = "Task finished: Answer Questionnaire";
 
         // client.GetComponent<Connection_noJson>().SendInformation("{finished}");
     }

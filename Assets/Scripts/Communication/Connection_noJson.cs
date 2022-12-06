@@ -282,7 +282,10 @@ public class Connection_noJson : MonoBehaviour
         }
         else if (message.Contains("performance"))
         {
-            Regex rx = new Regex(@"total_points<(.*?)>");
+            Regex rx = new Regex(@"new_points<(.*?)>");
+            string new_points = rx.Match(message).Groups[1].Value;
+
+            rx = new Regex(@"total_points<(.*?)>");
             string total_points = rx.Match(message).Groups[1].Value;
 
             rx = new Regex(@"time_performance<(.*?)>");
@@ -317,6 +320,7 @@ public class Connection_noJson : MonoBehaviour
 
 
             this.GetComponent<MessageHandler_noJson>().ParsePerformanceMessage(
+                new_points: Convert.ToInt32(new_points),
                 total_points: Convert.ToInt32(total_points),
                 time_performance: float.Parse(time_performance, CultureInfo.InvariantCulture.NumberFormat),
                 quality_performance: float.Parse(quality_performance, CultureInfo.InvariantCulture.NumberFormat),

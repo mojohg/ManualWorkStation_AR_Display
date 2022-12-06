@@ -185,7 +185,7 @@ public class MessageHandler_noJson : MonoBehaviour
         camera.GetComponent<CameraHandler>().ChangeCameraSettings(x, y, z, ortho);
     }
 
-    public void ParsePerformanceMessage(int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string level_up, string perfect_run, 
+    public void ParsePerformanceMessage(int new_points, int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string level_up, string perfect_run, 
         string message_text, int message_color_r, int message_color_g, int message_color_b)
     {
         // Todo: Neue Punkte schicken

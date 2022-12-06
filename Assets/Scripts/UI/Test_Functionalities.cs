@@ -99,6 +99,16 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
             }
             i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "NiceRun"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayNiceRun();
+            }
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "FinishedRun"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayFinishedRun();
+            }
+            i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Point Popup"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup("Yeah +2", 0, 255, 0);

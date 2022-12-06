@@ -300,6 +300,9 @@ public class Connection_noJson : MonoBehaviour
             rx = new Regex(@"node_finished<(.*?)>");
             string node_finished = rx.Match(message).Groups[1].Value;
 
+            rx = new Regex(@"recipe_finished<(.*?)>");
+            string recipe_finished = rx.Match(message).Groups[1].Value;
+
             rx = new Regex(@"level_up<(.*?)>");
             string level_up = rx.Match(message).Groups[1].Value;
 
@@ -326,6 +329,7 @@ public class Connection_noJson : MonoBehaviour
                 quality_performance: float.Parse(quality_performance, CultureInfo.InvariantCulture.NumberFormat),
                 total_level: Convert.ToInt32(total_level),
                 node_finished: node_finished,
+                recipe_finished: recipe_finished,
                 level_up: level_up,
                 perfect_run: perfect_run,
                 message_text: message_text,

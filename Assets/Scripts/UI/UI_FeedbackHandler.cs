@@ -27,6 +27,8 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject point_display;
     private GameObject levelup;
     private GameObject perfect_run;
+    private GameObject nice_run;
+    private GameObject finished_run;
     private GameObject thank_you;
     private GameObject training_finished;
     private GameObject wrong_action;
@@ -52,27 +54,30 @@ public class UI_FeedbackHandler : MonoBehaviour
         prefab_bar = (GameObject)Resources.Load("Prefabs/UI/bar", typeof(GameObject));
         prefab_popup = Resources.Load("Prefabs/UI/Popup", typeof(GameObject)) as GameObject;
         
-        // Find elements in scene
+        // General elements in scene
         point_display = GameObject.Find("PointDisplay");
         quality_display = GameObject.Find("QualityDisplay");
         progressBar = GameObject.Find("StepDisplay");
         current_level = GameObject.Find("CurrentLevel");
         popup_parent = GameObject.Find("PopupParent");
-        levelup = GameObject.Find("LevelUp");
-        perfect_run = GameObject.Find("PerfectRun");
-        thank_you = GameObject.Find("ThankYou");
-        training_finished = GameObject.Find("TrainingFinished");
         wrong_action = GameObject.Find("WrongAction");
         error_plane = GameObject.Find("ErrorPlane");
         correct_action = GameObject.Find("CorrectAction");
         timer = GameObject.Find("Timer");
         quality_display = GameObject.Find("QualityDisplay");
         time_display = GameObject.Find("TimeDisplay");
-
         max_points = point_display.transform.Find("MaxPoints").gameObject;
         current_points = point_display.transform.Find("CurrentPoints").gameObject;
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
+
+        // UI messages after finishing a recipe
+        levelup = GameObject.Find("LevelUp");
+        finished_run = GameObject.Find("FinishedRun");
+        nice_run = GameObject.Find("NiceRun");
+        perfect_run = GameObject.Find("PerfectRun");
+        thank_you = GameObject.Find("ThankYou");
+        training_finished = GameObject.Find("TrainingFinished");
 
         // Disable unnecessary elements
         ui_notifications.Add(error_plane);
@@ -214,9 +219,19 @@ public class UI_FeedbackHandler : MonoBehaviour
         levelup.GetComponent<UI_Confetti>().ShowConfetti();
     }
 
-    public void DisplayPerfectRun()
+    public void DisplayPerfectRun()  // big confetti shower with big applause
     {
         perfect_run.GetComponent<UI_Confetti>().ShowConfetti();
+    }
+
+    public void DisplayNiceRun()
+    {
+        nice_run.GetComponent<AudioSource>().Play();
+    }
+
+    public void DisplayFinishedRun()
+    {
+        finished_run.GetComponent<AudioSource>().Play();
     }
 
     public void DisplayThankYou()

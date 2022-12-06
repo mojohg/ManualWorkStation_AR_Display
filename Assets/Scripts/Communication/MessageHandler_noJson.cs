@@ -13,7 +13,6 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject client;
     private GameObject assemblies;
     private GameObject feedback_canvas;
-    private GameObject task_finished;
     private GameObject final_assembly_green;
     private GameObject camera;
 
@@ -66,7 +65,6 @@ public class MessageHandler_noJson : MonoBehaviour
         assemblies = GameObject.Find("Assemblies");
         object_presentation = GameObject.Find("NextObjects");
         assembly_presentation = GameObject.Find("TotalAssembly");
-        task_finished = GameObject.Find("TaskFinished");
         camera = GameObject.Find("MainCamera");
 
         // Find Elements of Feedback Canvas
@@ -185,7 +183,7 @@ public class MessageHandler_noJson : MonoBehaviour
         camera.GetComponent<CameraHandler>().ChangeCameraSettings(x, y, z, ortho);
     }
 
-    public void ParsePerformanceMessage(int new_points, int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string level_up, string perfect_run, 
+    public void ParsePerformanceMessage(int new_points, int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string recipe_finished, string level_up, string perfect_run, 
         string message_text, int message_color_r, int message_color_g, int message_color_b)
     {
         // Todo: Neue Punkte schicken
@@ -567,7 +565,6 @@ public class MessageHandler_noJson : MonoBehaviour
         final_assembly_green.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
 
         final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
-        task_finished.GetComponent<AudioSource>().Play();
         current_action_display.GetComponent<Text>().text = "Task finished: Answer Questionnaire";
 
         // client.GetComponent<Connection_noJson>().SendInformation("{finished}");

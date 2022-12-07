@@ -108,5 +108,6 @@ actions.json
 bindings*.json
 unityProject.vrmanifest
 /Assets/ImportedPackages/*
+/Assets/Resources/Prefabs/UI/Effect_Library/*
 /CAD_Models
 *.FBX

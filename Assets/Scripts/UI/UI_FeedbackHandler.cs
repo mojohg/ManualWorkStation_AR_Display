@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UI_FeedbackHandler : MonoBehaviour 
 {
     public GameObject general_feedback_elements;
-    public GameObject gamified_feedback_elements;
+    public GameObject gamified_feedback_canvas;
     public Sprite level_0_sprite;
     public Sprite level_1_sprite;
     public Sprite level_2_sprite;
@@ -44,6 +44,10 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject levelimage;
     private GameObject finish_step_explosion;
     
+    // Game element collections
+    private GameObject special_effects;
+    private GameObject gamification_messages;
+    
     // Audio elements in scene
     private GameObject audio_finish_step;
 
@@ -75,6 +79,10 @@ public class UI_FeedbackHandler : MonoBehaviour
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
         finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
+
+        // Game element collections
+        special_effects = GameObject.Find("SpecialEffects");
+        gamification_messages = GameObject.Find("Gamification_Messages");
         
         // Audio elements
         audio_finish_step = GameObject.Find("Audio_FinishStep").gameObject;
@@ -278,18 +286,16 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void EnableGamification()
     {
-        gamified_feedback_elements.SetActive(true);
+        gamified_feedback_canvas.SetActive(true);
         levelup.SetActive(true);
-        perfect_run.SetActive(true);
-        popup_parent.SetActive(true);
+        gamification_messages.SetActive(true);
     }
 
     public void DisableGamification()
     {
-        gamified_feedback_elements.SetActive(false); 
-        levelup.SetActive(false);
-        perfect_run.SetActive(false);
-        popup_parent.SetActive(false);
+        gamified_feedback_canvas.SetActive(false); 
+        special_effects.SetActive(false);
+        gamification_messages.SetActive(false);
     }
 
     public void ResetFeedbackElements()

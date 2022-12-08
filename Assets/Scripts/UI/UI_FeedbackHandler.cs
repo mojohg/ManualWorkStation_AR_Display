@@ -73,7 +73,9 @@ public class UI_FeedbackHandler : MonoBehaviour
         current_points = point_display.transform.Find("CurrentPoints").gameObject;
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
-        audio_finish_step = feedback_canvas.transform.Find("Gamification/Audio_FinishStep").gameObject;
+        
+        // Audio elements
+        audio_finish_step = GameObject.Find("Audio_FinishStep").gameObject;
 
         // UI messages after finishing a recipe
         levelup = GameObject.Find("LevelUp");

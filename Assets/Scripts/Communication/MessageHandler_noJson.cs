@@ -170,7 +170,7 @@ public class MessageHandler_noJson : MonoBehaviour
         max_points = number_points;
         Debug.Log("InitializePoints: " + max_points.ToString());
         max_point_display.GetComponent<Text>().text = max_points.ToString();
-        ShowPoints(0);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(0);
     }
 
     public void NewInstructions ()
@@ -199,6 +199,24 @@ public class MessageHandler_noJson : MonoBehaviour
         if(level_up == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
+        }
+        if (recipe_finished == "True")
+        {
+            if(time_performance < 0.8f)
+            {
+                Debug.Log("Time performance < 80%");
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayFinishedRun();
+            }
+            else if (time_performance < 0.95f)
+            {
+                Debug.Log("Time performance < 95%");
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayNiceRun();
+            }
+            else if (time_performance > 0.95f)
+            {
+                Debug.Log("Time performance > 95%");
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
+            }
         }
         if(perfect_run == "True")
         {
@@ -523,25 +541,6 @@ public class MessageHandler_noJson : MonoBehaviour
         else
         {
             Debug.Log("No holder for miniature found");
-        }
-    }
-
-    public void ShowPoints(int current_points)
-    {
-        current_point_display.GetComponent<Text>().text = current_points.ToString();
-        float ratio = current_points / max_points;
-
-        if (ratio > 0.8f)
-        {
-            current_point_display.GetComponent<Text>().color = Color.green;
-        }
-        else if (ratio > 0.4f)
-        {
-            current_point_display.GetComponent<Text>().color = Color.cyan;
-        }
-        else
-        {
-            current_point_display.GetComponent<Text>().color = Color.yellow;
         }
     }
 

@@ -25,7 +25,12 @@ public class MessageHandler_noJson : MonoBehaviour
     private List<GameObject> assembly_items = new List<GameObject>();
     private List<GameObject> active_items = new List<GameObject>();
     private List<GameObject> disabled_items = new List<GameObject>();
-    
+
+    // Variables to create random success messages
+    private int random_success_number_time;
+    private int performance_time_counter = 0;
+    private int performance_quality_counter = 0;
+
     // Materials
     private Material assembly_info_material_1;
     private Material assembly_info_material_2;
@@ -49,10 +54,6 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject assembly_miniature;
     private GameObject assembly_miniature_holder;
     private List<GameObject> optically_changed_parts = new List<GameObject>();
-
-    // Gamification
-    private int performance_time_counter = 0;
-    private int performance_quality_counter = 0;
 
 
     void Start()
@@ -167,6 +168,11 @@ public class MessageHandler_noJson : MonoBehaviour
         Debug.Log("InitializeSteps: " + number_steps.ToString());
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNumberSteps();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps);
+
+        // Create random number to display success messages during work
+        performance_time_counter = 0;
+        random_success_number_time = Random.Range(3, number_steps - 3);
+        Debug.Log("Random success number time: " + random_success_number_time);
     }
 
     public void InitializePoints (int number_points)
@@ -191,6 +197,8 @@ public class MessageHandler_noJson : MonoBehaviour
     public void ParsePerformanceMessage(int new_points, int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string recipe_finished, string level_up, string perfect_run, 
         string message_text, int message_color_r, int message_color_g, int message_color_b)
     {
+        bool show_message = true;
+
         // Todo: Neue Punkte schicken
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(total_points);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(quality_performance);
@@ -200,6 +208,22 @@ public class MessageHandler_noJson : MonoBehaviour
         if (node_finished == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
+
+            // Check for success messages
+            if (time_performance > 0.9f)
+            {
+                performance_time_counter +=  1;
+                Debug.LogWarning("Count: " + performance_time_counter);
+                Debug.LogWarning("Waiting for: " + random_success_number_time);
+
+                if (performance_time_counter == random_success_number_time)
+                {
+                    feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
+                    show_message = false;  // do not show general message as success message is already displayed
+                    performance_time_counter = 0;
+                    Debug.LogWarning("Reset");
+                }
+            }
         }
         if(level_up == "True")
         {
@@ -223,11 +247,8 @@ public class MessageHandler_noJson : MonoBehaviour
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
             }
         }
-        if(time_performance > 0.9f)
-        {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
-        }
-        if(message_text != "")
+
+        if(message_text != "" && show_message == false)
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(message_text, message_color_r, message_color_g, message_color_b);
         }
@@ -645,7 +666,6 @@ public class MessageHandler_noJson : MonoBehaviour
         annotation.GetComponent<Text>().text = "";
         annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
         current_action_display.GetComponent<Text>().text = "";
-        performance_time_counter = 0;
         performance_quality_counter = 0;
     }
 

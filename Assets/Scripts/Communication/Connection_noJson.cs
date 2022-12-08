@@ -280,7 +280,7 @@ public class Connection_noJson : MonoBehaviour
         {
             this.GetComponent<MessageHandler_noJson>().FinishJob();
         }
-        else if (message.Contains("performance"))
+        else if (message.Contains("points"))
         {
             Regex rx = new Regex(@"new_points<(.*?)>");
             string new_points = rx.Match(message).Groups[1].Value;

@@ -33,7 +33,10 @@ public class UI_Confetti : MonoBehaviour {
 		}
 		particles.Stop();
 		particles.Play();
-		this.GetComponent<AudioSource>().Play();
+		if(this.GetComponent<AudioSource>() != null)
+        {
+			this.GetComponent<AudioSource>().Play();
+		}		
 	}
 
 	public void OnParticleSystemStopped()

@@ -50,6 +50,7 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject assembly_miniature_holder;
     private List<GameObject> optically_changed_parts = new List<GameObject>();
 
+
     void Start()
     {
         assembly_info_material_1 = (Material)Resources.Load("Materials/InformationMaterial1", typeof(Material));
@@ -194,7 +195,6 @@ public class MessageHandler_noJson : MonoBehaviour
         if (node_finished == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
-            // Todo: Ton kurz
         }
         if(level_up == "True")
         {
@@ -543,12 +543,6 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             current_point_display.GetComponent<Text>().color = Color.yellow;
         }
-    }
-
-    public void FinishStep()
-    {
-        uncompleted_steps[0].GetComponent<Image>().color = Color.green;
-        uncompleted_steps.RemoveAt(0);
     }
 
     public void FinishJob()

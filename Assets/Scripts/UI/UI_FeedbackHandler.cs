@@ -42,6 +42,9 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject current_points;
     private GameObject levelname;
     private GameObject levelimage;
+    
+    // Audio elements in scene
+    private GameObject audio_finish_step;
 
 
     void Awake()
@@ -70,6 +73,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         current_points = point_display.transform.Find("CurrentPoints").gameObject;
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
+        audio_finish_step = feedback_canvas.transform.Find("Gamification/Audio_FinishStep").gameObject;
 
         // UI messages after finishing a recipe
         levelup = GameObject.Find("LevelUp");
@@ -174,6 +178,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         {
             uncompleted_steps[0].GetComponent<Image>().color = Color.green;
             uncompleted_steps.RemoveAt(0);
+            audio_finish_step.GetComponent<AudioSource>().Play();
         }
     }
 
@@ -231,7 +236,7 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void DisplayFinishedRun()
     {
-        finished_run.GetComponent<AudioSource>().Play();
+        finished_run.GetComponent<UI_Confetti>().ShowConfetti();
     }
 
     public void DisplayThankYou()

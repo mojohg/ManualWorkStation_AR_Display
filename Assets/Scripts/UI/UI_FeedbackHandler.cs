@@ -226,7 +226,7 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void DisplayNiceRun()
     {
-        nice_run.GetComponent<AudioSource>().Play();
+        nice_run.GetComponent<UI_Confetti>().ShowConfetti();
     }
 
     public void DisplayFinishedRun()

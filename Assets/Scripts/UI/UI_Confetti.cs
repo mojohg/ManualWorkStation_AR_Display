@@ -22,10 +22,9 @@ public class UI_Confetti : MonoBehaviour {
 
 	public void ShowConfetti()
     {
-		Debug.Log("Confetti");
 		if(particles == null)
         {
-			Debug.Log("Particles not found");
+			Debug.LogWarning("Particles not found");
 			particles = this.GetComponent<ParticleSystem>();
 		}
 		if (confetti_text != null)

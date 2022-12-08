@@ -42,6 +42,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject current_points;
     private GameObject levelname;
     private GameObject levelimage;
+    private GameObject finish_step_explosion;
     
     // Audio elements in scene
     private GameObject audio_finish_step;
@@ -73,6 +74,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         current_points = point_display.transform.Find("CurrentPoints").gameObject;
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
+        finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
         
         // Audio elements
         audio_finish_step = GameObject.Find("Audio_FinishStep").gameObject;
@@ -181,6 +183,8 @@ public class UI_FeedbackHandler : MonoBehaviour
             uncompleted_steps[0].GetComponent<Image>().color = Color.green;
             uncompleted_steps.RemoveAt(0);
             audio_finish_step.GetComponent<AudioSource>().Play();
+            finish_step_explosion.transform.position = uncompleted_steps[0].transform.position;
+            finish_step_explosion.GetComponent<UI_Confetti>().ShowEffect();
         }
     }
 
@@ -223,32 +227,32 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void DisplayLevelup()
     {
-        levelup.GetComponent<UI_Confetti>().ShowConfetti();
+        levelup.GetComponent<UI_Confetti>().ShowEffect();
     }
 
     public void DisplayPerfectRun()  // big confetti shower with big applause
     {
-        perfect_run.GetComponent<UI_Confetti>().ShowConfetti();
+        perfect_run.GetComponent<UI_Confetti>().ShowEffect();
     }
 
     public void DisplayNiceRun()
     {
-        nice_run.GetComponent<UI_Confetti>().ShowConfetti();
+        nice_run.GetComponent<UI_Confetti>().ShowEffect();
     }
 
     public void DisplayFinishedRun()
     {
-        finished_run.GetComponent<UI_Confetti>().ShowConfetti();
+        finished_run.GetComponent<UI_Confetti>().ShowEffect();
     }
 
     public void DisplayThankYou()
     {
-        thank_you.GetComponent<UI_Confetti>().ShowConfetti();
+        thank_you.GetComponent<UI_Confetti>().ShowEffect();
     }
 
     public void DisplayTrainingFinished()
     {
-        training_finished.GetComponent<UI_Confetti>().ShowConfetti();
+        training_finished.GetComponent<UI_Confetti>().ShowEffect();
         
         GameObject.Find("Assemblies").SetActive(false);
     }

@@ -20,7 +20,7 @@ public class UI_Confetti : MonoBehaviour {
 		main.stopAction = ParticleSystemStopAction.Callback;
 	}
 
-	public void ShowConfetti()
+	public void ShowEffect()
     {
 		if(particles == null)
         {
@@ -36,7 +36,8 @@ public class UI_Confetti : MonoBehaviour {
 		if(this.GetComponent<AudioSource>() != null)
         {
 			this.GetComponent<AudioSource>().Play();
-		}		
+		}
+		
 	}
 
 	public void OnParticleSystemStopped()

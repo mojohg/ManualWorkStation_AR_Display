@@ -114,14 +114,14 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup("Yeah +2", 0, 255, 0);
             }
             i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Good Time"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
+            }
+            i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Training finished"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayTrainingFinished();
-            }
-            i++;
-            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Correct action"))
-            {
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyCorrectAction();
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Wrong action"))

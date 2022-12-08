@@ -50,6 +50,10 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject assembly_miniature_holder;
     private List<GameObject> optically_changed_parts = new List<GameObject>();
 
+    // Gamification
+    private int performance_time_counter = 0;
+    private int performance_quality_counter = 0;
+
 
     void Start()
     {
@@ -192,6 +196,7 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(quality_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(total_level);
+        
         if (node_finished == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
@@ -218,9 +223,9 @@ public class MessageHandler_noJson : MonoBehaviour
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
             }
         }
-        if(perfect_run == "True")
+        if(time_performance > 0.9f)
         {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
         }
         if(message_text != "")
         {
@@ -640,6 +645,8 @@ public class MessageHandler_noJson : MonoBehaviour
         annotation.GetComponent<Text>().text = "";
         annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
         current_action_display.GetComponent<Text>().text = "";
+        performance_time_counter = 0;
+        performance_quality_counter = 0;
     }
 
     public GameObject FindGameobject(string name, List<GameObject> gameobject_list)

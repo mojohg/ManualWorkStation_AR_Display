@@ -43,7 +43,8 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject levelname;
     private GameObject levelimage;
     private GameObject finish_step_explosion;
-    
+    private GameObject good_time_explosion;
+
     // Game element collections
     private GameObject special_effects;
     private GameObject gamification_messages;
@@ -78,7 +79,11 @@ public class UI_FeedbackHandler : MonoBehaviour
         current_points = point_display.transform.Find("CurrentPoints").gameObject;
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
+
+        // appearing elements
         finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
+        good_time_explosion = GameObject.Find("GoodTime_Explosion");
+
 
         // Game element collections
         special_effects = GameObject.Find("SpecialEffects");
@@ -253,6 +258,11 @@ public class UI_FeedbackHandler : MonoBehaviour
         finished_run.GetComponent<UI_Confetti>().ShowEffect();
     }
 
+    public void DisplayGoodTime()
+    {
+        good_time_explosion.GetComponent<UI_Confetti>().ShowEffect();
+    }
+
     public void DisplayThankYou()
     {
         thank_you.GetComponent<UI_Confetti>().ShowEffect();
@@ -263,11 +273,6 @@ public class UI_FeedbackHandler : MonoBehaviour
         training_finished.GetComponent<UI_Confetti>().ShowEffect();
         
         GameObject.Find("Assemblies").SetActive(false);
-    }
-
-    public void NotifyCorrectAction()
-    {
-        correct_action.GetComponent<AudioSource>().Play();        
     }
 
     public void NotifyWrongAction()

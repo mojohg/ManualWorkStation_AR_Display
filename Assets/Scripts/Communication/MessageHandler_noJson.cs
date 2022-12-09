@@ -27,6 +27,7 @@ public class MessageHandler_noJson : MonoBehaviour
     private List<GameObject> disabled_items = new List<GameObject>();
 
     // Variables to create random success messages
+    private int number_steps_recipe = 0;
     private int random_success_number_time;
     private int performance_time_counter = 0;
     private int performance_quality_counter = 0;
@@ -171,8 +172,8 @@ public class MessageHandler_noJson : MonoBehaviour
 
         // Create random number to display success messages during work
         performance_time_counter = 0;
-        random_success_number_time = Random.Range(3, number_steps - 3);
-        Debug.Log("Random success number time: " + random_success_number_time);
+        number_steps_recipe = number_steps;
+        GenerateSuccessCounter();
     }
 
     public void InitializePoints (int number_points)
@@ -213,15 +214,13 @@ public class MessageHandler_noJson : MonoBehaviour
             if (time_performance > 0.9f)
             {
                 performance_time_counter +=  1;
-                Debug.LogWarning("Count: " + performance_time_counter);
-                Debug.LogWarning("Waiting for: " + random_success_number_time);
 
                 if (performance_time_counter == random_success_number_time)
                 {
                     feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
                     show_message = false;  // do not show general message as success message is already displayed
                     performance_time_counter = 0;
-                    Debug.LogWarning("Reset");
+                    GenerateSuccessCounter();
                 }
             }
         }
@@ -727,5 +726,10 @@ public class MessageHandler_noJson : MonoBehaviour
             Debug.LogWarning("Prefab not found:" + prefab_name);
         }
         return prefab;
+    }
+
+    private void GenerateSuccessCounter()
+    {
+        random_success_number_time = Random.Range(3, Mathf.RoundToInt(number_steps_recipe * 0.5f));
     }
 }

@@ -259,8 +259,9 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void DisplayGoodTime()
     {
-        int random_selection = Random.Range(0, good_time_collection.transform.childCount - 1);
+        int random_selection = Random.Range(0, good_time_collection.transform.childCount);
         good_time_collection.transform.GetChild(random_selection).GetComponent<UI_Confetti>().ShowEffect();
+        Debug.Log(good_time_collection.transform.GetChild(random_selection).name);
     }
 
     public void DisplayThankYou()

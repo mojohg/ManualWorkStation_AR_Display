@@ -43,7 +43,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject levelname;
     private GameObject levelimage;
     private GameObject finish_step_explosion;
-    private GameObject good_time_explosion;
+    private GameObject good_time_collection;
 
     // Game element collections
     private GameObject special_effects;
@@ -82,8 +82,7 @@ public class UI_FeedbackHandler : MonoBehaviour
 
         // appearing elements
         finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
-        good_time_explosion = GameObject.Find("GoodTime_Explosion");
-
+        good_time_collection = GameObject.Find("GoodTime");
 
         // Game element collections
         special_effects = GameObject.Find("SpecialEffects");
@@ -260,7 +259,8 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void DisplayGoodTime()
     {
-        good_time_explosion.GetComponent<UI_Confetti>().ShowEffect();
+        int random_selection = Random.Range(0, good_time_collection.transform.childCount - 1);
+        good_time_collection.transform.GetChild(random_selection).GetComponent<UI_Confetti>().ShowEffect();
     }
 
     public void DisplayThankYou()

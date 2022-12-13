@@ -200,11 +200,11 @@ public class UI_FeedbackHandler : MonoBehaviour
         }
     }
 
-    public void StartTimer(int duration_seconds)
+    public void StartTimer(double duration_seconds)
     {
         if(timer != null)
         {
-            timer.GetComponent<UI_Timer>().StartTimer(duration_seconds);
+            timer.GetComponent<UI_Timer>().StartTimer((float)duration_seconds);
         }
     }
 

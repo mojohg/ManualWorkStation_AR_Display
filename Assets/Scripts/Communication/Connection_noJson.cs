@@ -128,7 +128,7 @@ public class Connection_noJson : MonoBehaviour
 
                 rx = new Regex(@"default_time<(.*?)>");
                 string default_time_string = rx.Match(message).Groups[1].Value;
-                int default_time = Convert.ToInt32(default_time_string);
+                double default_time = Convert.ToDouble(default_time_string);
 
                 if (action_type == "pickItem")
                 {

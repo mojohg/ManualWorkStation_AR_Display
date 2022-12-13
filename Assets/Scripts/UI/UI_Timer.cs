@@ -9,14 +9,14 @@ public class UI_Timer : MonoBehaviour
     public Image uiFill;
     public Text uiText;
 
-    private int remaining_duration;  // in milliseconds
-    private int max_duration;
+    private float remaining_duration;  // in milliseconds
+    private float max_duration;
 
     private void Start()
     {
     }
 
-    public void StartTimer(int duration_sec)
+    public void StartTimer(float duration_sec)
     {
         /*remainingDuration = duration_sec * 1000;
         Debug.Log("Set timer to : " + remainingDuration.ToString() + " milliseconds");

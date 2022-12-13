@@ -253,7 +253,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }
     }
 
-    public void PickObject(string item_name, string led_color, int knowledge_level, int default_time)
+    public void PickObject(string item_name, string led_color, int knowledge_level, double default_time)
     {
         // Demo application for events
         if(item_name == "thank_you")
@@ -296,7 +296,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }        
     }
 
-    public void StoreObject(string item_name, int knowledge_level, int default_time)
+    public void StoreObject(string item_name, int knowledge_level, double default_time)
     {
         Debug.Log("Show store instruction for " + item_name);
         current_action_display.GetComponent<Text>().text = "Store " + item_name;
@@ -311,7 +311,7 @@ public class MessageHandler_noJson : MonoBehaviour
         current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list = new List<GameObject>();
     }
 
-    public void PickTool(string tool_name, string led_color, int knowledge_level, int default_time)
+    public void PickTool(string tool_name, string led_color, int knowledge_level, double default_time)
     {
         // Find prefab
         GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
@@ -348,7 +348,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }
     }
 
-    public void ReturnTool(string tool_name, string led_color, int knowledge_level, int default_time)
+    public void ReturnTool(string tool_name, string led_color, int knowledge_level, double default_time)
     {
         // Find prefab
         GameObject tool_prefab = FindPrefab("Prefabs/Tools/" + tool_name, tool_name);
@@ -374,7 +374,7 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
     }
 
-    public void ShowAssemblyInfos(string item_name, int knowledge_level, int default_time, string text_annotation)
+    public void ShowAssemblyInfos(string item_name, int knowledge_level, double default_time, string text_annotation)
     {
         if (item_name == "thank_you")
         {
@@ -418,7 +418,7 @@ public class MessageHandler_noJson : MonoBehaviour
         current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list.Add(current_go);
     }
 
-    public void ShowMoveInstruction(string action_name, int knowledge_level, int default_time, string text_annotation)
+    public void ShowMoveInstruction(string action_name, int knowledge_level, double default_time, string text_annotation)
     {
         Debug.Log("Show move instruction for " + action_name);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);
@@ -490,7 +490,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }
     }
 
-    public void ShowToolUsage(string action_name, int knowledge_level, int default_time, string text_annotation)
+    public void ShowToolUsage(string action_name, int knowledge_level, double default_time, string text_annotation)
     {
         Debug.Log("Show tool usage instruction for " + action_name);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().StartTimer(default_time);

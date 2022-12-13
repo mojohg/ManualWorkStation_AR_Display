@@ -30,7 +30,10 @@ public class UI_SpecialEffects : MonoBehaviour
         {
             text.SetActive(true);
         }
-        this.GetComponent<AudioSource>().Play();
+        if(this.gameObject.activeInHierarchy)
+        {
+            this.GetComponent<AudioSource>().Play();
+        }        
     }
 
     public void OnParticleSystemStopped()

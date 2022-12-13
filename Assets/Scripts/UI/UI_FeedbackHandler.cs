@@ -47,6 +47,8 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject levelimage;
     private GameObject finish_step_explosion;
     private GameObject good_time_collection;
+    private GameObject time_success_explosion;
+    private GameObject repeated_time_success_explosion;
 
     // Game element collections
     private GameObject special_effects;
@@ -86,6 +88,8 @@ public class UI_FeedbackHandler : MonoBehaviour
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
         username_go = GameObject.Find("Username");
+        time_success_explosion = GameObject.Find("TimeSuccess_Mini_Explosion");
+        repeated_time_success_explosion = GameObject.Find("RepeatedTimeSuccess");
 
         // appearing elements
         finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
@@ -222,9 +226,13 @@ public class UI_FeedbackHandler : MonoBehaviour
         {
             uncompleted_steps[0].GetComponent<Image>().color = Color.green;
             uncompleted_steps.RemoveAt(0);
-            audio_finish_step.GetComponent<AudioSource>().Play();
             finish_step_explosion.transform.position = uncompleted_steps[0].transform.position;
             finish_step_explosion.GetComponent<UI_Confetti>().ShowEffect();
+
+            if(audio_finish_step.activeInHierarchy)
+            {
+                audio_finish_step.GetComponent<AudioSource>().Play();
+            }
         }
     }
 
@@ -290,6 +298,16 @@ public class UI_FeedbackHandler : MonoBehaviour
         int random_selection = Random.Range(0, good_time_collection.transform.childCount);
         good_time_collection.transform.GetChild(random_selection).GetComponent<UI_Confetti>().ShowEffect();
         Debug.Log(good_time_collection.transform.GetChild(random_selection).name);
+    }
+
+    public void DisplayTimeSuccess()
+    {
+        time_success_explosion.GetComponent<UI_Confetti>().ShowEffect();
+    }
+
+    public void DisplayRepeatedTimeSuccess()
+    {
+        repeated_time_success_explosion.GetComponent<UI_Confetti>().ShowEffect();
     }
 
     public void DisplayThankYou()

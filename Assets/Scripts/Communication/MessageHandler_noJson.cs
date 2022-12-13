@@ -50,6 +50,7 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject assembly_presentation;
     private GameObject annotation;
     private float pick_prefab_scale;
+    private GameObject time_success_number;
 
     // UI: Miniature assembly
     private GameObject assembly_miniature;
@@ -73,6 +74,7 @@ public class MessageHandler_noJson : MonoBehaviour
         object_presentation = GameObject.Find("NextObjects");
         assembly_presentation = GameObject.Find("TotalAssembly");
         camera = GameObject.Find("MainCamera");
+        time_success_number = GameObject.Find("TimeSuccess_Number");
 
         // Find Elements of Feedback Canvas
         feedback_canvas = GameObject.Find("FeedbackCanvas");
@@ -168,7 +170,7 @@ public class MessageHandler_noJson : MonoBehaviour
     {
         Debug.Log("InitializeSteps: " + number_steps.ToString());
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNumberSteps();
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps + 1);
 
         // Create random number to display success messages during work
         performance_time_counter = 0;
@@ -205,23 +207,33 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(quality_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(total_level);
-        
+
+        if (new_points == 2)  // Planned time and quality
+        {
+            performance_time_counter += 1;
+            time_success_number.GetComponent<Text>().text = (random_success_number_time - performance_time_counter).ToString();
+
+            if (performance_time_counter == random_success_number_time)
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayRepeatedTimeSuccess();
+                show_message = false;  // do not show general message as success message is already displayed
+                performance_time_counter = 0;
+                GenerateSuccessCounter();
+            }
+            else
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayTimeSuccess();
+            }
+        }
+
         if (node_finished == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
 
-            // Check for success messages
             if (time_performance > 0.9f)
             {
-                performance_time_counter +=  1;
-
-                if (performance_time_counter == random_success_number_time)
-                {
-                    feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
-                    show_message = false;  // do not show general message as success message is already displayed
-                    performance_time_counter = 0;
-                    GenerateSuccessCounter();
-                }
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
+                show_message = false;  // do not show general message as success message is already displayed
             }
         }
         if(level_up == "True")
@@ -731,6 +743,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private void GenerateSuccessCounter()
     {
-        random_success_number_time = Random.Range(3, Mathf.RoundToInt(number_steps_recipe * 0.5f));
+        random_success_number_time = Random.Range(3, Mathf.RoundToInt(number_steps_recipe * 0.4f));
+        time_success_number.GetComponent<Text>().text = random_success_number_time.ToString();
     }
 }

@@ -22,7 +22,7 @@ public class UI_Confetti : MonoBehaviour {
 
 	public void ShowEffect()
     {
-		if(this.gameObject.active)
+		if(this.gameObject.activeInHierarchy)
         {
 			if (particles == null)
 			{

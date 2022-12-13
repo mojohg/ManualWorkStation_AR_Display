@@ -119,6 +119,16 @@ public class Test_Functionalities : MonoBehaviour {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
             }
             i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Time Success"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayTimeSuccess();
+            }
+            i++;
+            if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Repeated Time Success"))
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayRepeatedTimeSuccess();
+            }
+            i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Training finished"))
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayTrainingFinished();

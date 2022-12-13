@@ -248,7 +248,7 @@ public class MessageHandler_noJson : MonoBehaviour
             feedback_canvas.GetComponent<UI_FeedbackHandler>().AddRun();
         }
 
-        if(message_text != "" && show_message == false)
+        if(message_text != "" && show_message == true)
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(message_text, message_color_r, message_color_g, message_color_b);
         }

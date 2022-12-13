@@ -211,6 +211,8 @@ public class MessageHandler_noJson : MonoBehaviour
 
         if (new_points == 2)  // Planned time and quality
         {
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisableGamificationTexts();  // Bugfix as some texts randomly remain in scene
+
             performance_time_counter += 1;
             time_success_number.GetComponent<Text>().text = (random_success_number_time - performance_time_counter).ToString();
             play_node_sound = false;
@@ -256,11 +258,6 @@ public class MessageHandler_noJson : MonoBehaviour
             feedback_canvas.GetComponent<UI_FeedbackHandler>().AddRun();
         }
 
-        if(message_text != "" && show_message == true)
-        {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(message_text, message_color_r, message_color_g, message_color_b);
-        }
-
         // Indicate finished work step
         if (node_finished == "True")
         {
@@ -271,6 +268,11 @@ public class MessageHandler_noJson : MonoBehaviour
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
                 show_message = false;  // do not show general message as success message is already displayed
             }
+        }
+
+        if (message_text != "" && show_message == true)
+        {
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(message_text, message_color_r, message_color_g, message_color_b);
         }
     }
 

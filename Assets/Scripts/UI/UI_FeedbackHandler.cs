@@ -49,6 +49,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     private GameObject good_time_collection;
     private GameObject time_success_explosion;
     private GameObject repeated_time_success_explosion;
+    private GameObject gamification_texts;
 
     // Game element collections
     private GameObject special_effects;
@@ -90,6 +91,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         username_go = GameObject.Find("Username");
         time_success_explosion = GameObject.Find("TimeSuccess_Mini_Explosion");
         repeated_time_success_explosion = GameObject.Find("RepeatedTimeSuccess");
+        gamification_texts = GameObject.Find("GamificationTexts");
 
         // appearing elements
         finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
@@ -333,6 +335,14 @@ public class UI_FeedbackHandler : MonoBehaviour
         foreach(GameObject notification in ui_notifications)
         {
             notification.SetActive(false);
+        }
+    }
+
+    public void DisableGamificationTexts()
+    {
+        foreach(Transform text in gamification_texts.transform)
+        {
+            text.gameObject.SetActive(false);
         }
     }
 

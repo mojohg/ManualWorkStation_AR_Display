@@ -209,10 +209,8 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(total_level);
 
-        if (new_points == 2)  // Planned time and quality
+        if(quartile < 3)  //Special time
         {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisableGamificationTexts();  // Bugfix as some texts randomly remain in scene
-
             performance_time_counter += 1;
             time_success_number.GetComponent<Text>().text = (random_success_number_time - performance_time_counter).ToString();
             play_node_sound = false;
@@ -229,6 +227,11 @@ public class MessageHandler_noJson : MonoBehaviour
             {
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayTimeSuccess();
             }
+        }
+
+        if (new_points == 2)  // Planned time and quality
+        {
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().DisableGamificationTexts();  // Bugfix as some texts randomly remain in scene
         }
 
         if(level_up == "True")
@@ -753,7 +756,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private void GenerateSuccessCounter()
     {
-        random_success_number_time = Random.Range(3, Mathf.RoundToInt(number_steps_recipe * 0.4f));
+        random_success_number_time = Random.Range(3, Mathf.RoundToInt(number_steps_recipe * 0.6f));
         time_success_number.GetComponent<Text>().text = random_success_number_time.ToString();
     }
 }

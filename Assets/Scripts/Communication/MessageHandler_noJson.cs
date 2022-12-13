@@ -196,11 +196,11 @@ public class MessageHandler_noJson : MonoBehaviour
     }
 
     public void ParsePerformanceMessage(int new_points, int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string recipe_finished, string level_up, string perfect_run, 
-        string message_text, int message_color_r, int message_color_g, int message_color_b)
+        string message_text, int message_color_r, int message_color_g, int message_color_b, int quartile)
     {
         bool show_message = true;
 
-        // Todo: Neue Punkte schicken
+        // Todo: Neue Punkte Aktionen einfügen
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(total_points);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowQualityRate(quality_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
@@ -232,17 +232,17 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             if(time_performance < 0.8f)
             {
-                Debug.Log("Time performance < 80%");
+                Debug.Log("Time performance < 75%");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayFinishedRun();
             }
             else if (time_performance < 0.95f)
             {
-                Debug.Log("Time performance < 95%");
+                Debug.Log("Time performance < 90%");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayNiceRun();
             }
-            else if (time_performance > 0.95f)
+            else
             {
-                Debug.Log("Time performance > 95%");
+                Debug.Log("Time performance >= 90%");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
             }
         }

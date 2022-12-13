@@ -230,7 +230,7 @@ public class MessageHandler_noJson : MonoBehaviour
         }
         if (recipe_finished == "True")
         {
-            if(time_performance < 0.8f)
+            if (time_performance < 0.8f)
             {
                 Debug.Log("Time performance < 75%");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayFinishedRun();
@@ -245,6 +245,7 @@ public class MessageHandler_noJson : MonoBehaviour
                 Debug.Log("Time performance >= 90%");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
             }
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().AddRun();
         }
 
         if(message_text != "" && show_message == false)

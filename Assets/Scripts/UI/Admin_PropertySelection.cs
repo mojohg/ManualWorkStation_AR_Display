@@ -26,9 +26,6 @@ public class Admin_PropertySelection : MonoBehaviour {
     [HideInInspector] public bool gamification = true;
     [HideInInspector] public string user_name = "No-User";
 
-    private GameObject username_go;
-
-
     private bool setup_mode = false;
     private bool prev_setup_mode = false;
     private GameObject assemblies;
@@ -50,7 +47,6 @@ public class Admin_PropertySelection : MonoBehaviour {
     {
         client = GameObject.Find("Client");
         feedback_canvas = GameObject.Find("FeedbackCanvas");
-        username_go = GameObject.Find("Username");
     }
 
     void Update()
@@ -97,7 +93,7 @@ public class Admin_PropertySelection : MonoBehaviour {
                 {
                     user_name = tmp_username;
                     client.GetComponent<Connection_noJson>().SendInformation("username[" + user_name + "]");
-                    username_go.GetComponent<Text>().text = user_name;
+                    feedback_canvas.GetComponent<UI_FeedbackHandler>().ChangeUser(user_name);
                 }
 
                 if (tmp_gamification != gamification)  // Activate or deactivate game elements

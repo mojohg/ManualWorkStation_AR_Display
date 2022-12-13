@@ -16,6 +16,9 @@ public class UI_FeedbackHandler : MonoBehaviour
     public List<GameObject> uncompleted_steps;
     
     private float max_number_points;
+    private GameObject username_go;
+
+    public string current_username = "No User";
 
     // Prefabs
     private GameObject prefab_popup;
@@ -52,6 +55,9 @@ public class UI_FeedbackHandler : MonoBehaviour
     // Audio elements in scene
     private GameObject audio_finish_step;
 
+    // Disable gamification for first two runs
+    private int user_runs = 1;
+
 
     void Awake()
     {
@@ -79,6 +85,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         current_points = point_display.transform.Find("CurrentPoints").gameObject;
         levelname = current_level.transform.Find("LevelName").gameObject;
         levelimage = current_level.transform.Find("LevelImage").gameObject;
+        username_go = GameObject.Find("Username");
 
         // appearing elements
         finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
@@ -102,6 +109,27 @@ public class UI_FeedbackHandler : MonoBehaviour
         // Disable unnecessary elements
         ui_notifications.Add(error_plane);
         error_plane.SetActive(false);
+    }
+
+    public void ChangeUser(string username)
+    {
+        if(current_username != username)
+        {
+            username_go.GetComponent<Text>().text = username;
+            user_runs = 1;
+            DisableGamification();
+        }        
+    }
+
+    public void AddRun()
+    {
+        Debug.Log("-----------------USER RUNS:" + user_runs);
+        user_runs += 1;
+
+        if(user_runs > 1)
+        {
+            EnableGamification();
+        }
     }
 
     public void SetMaxPoints(int points)
@@ -295,10 +323,12 @@ public class UI_FeedbackHandler : MonoBehaviour
         gamified_feedback_canvas.SetActive(true);
         levelup.SetActive(true);
         gamification_messages.SetActive(true);
+        special_effects.SetActive(true);
     }
 
     public void DisableGamification()
     {
+        levelup.SetActive(false);
         gamified_feedback_canvas.SetActive(false); 
         special_effects.SetActive(false);
         gamification_messages.SetActive(false);

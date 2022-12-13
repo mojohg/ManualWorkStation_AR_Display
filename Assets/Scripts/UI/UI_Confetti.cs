@@ -22,22 +22,24 @@ public class UI_Confetti : MonoBehaviour {
 
 	public void ShowEffect()
     {
-		if(particles == null)
+		if(this.gameObject.active)
         {
-			Debug.LogWarning("Particles not found");
-			particles = this.GetComponent<ParticleSystem>();
-		}
-		if (confetti_text != null)
-		{
-			confetti_text.SetActive(true);
-		}
-		particles.Stop();
-		particles.Play();
-		if(this.GetComponent<AudioSource>() != null)
-        {
-			this.GetComponent<AudioSource>().Play();
-		}
-		
+			if (particles == null)
+			{
+				Debug.LogWarning("Particles not found");
+				particles = this.GetComponent<ParticleSystem>();
+			}
+			if (confetti_text != null)
+			{
+				confetti_text.SetActive(true);
+			}
+			particles.Stop();
+			particles.Play();
+			if (this.GetComponent<AudioSource>() != null)
+			{
+				this.GetComponent<AudioSource>().Play();
+			}
+		}		
 	}
 
 	public void OnParticleSystemStopped()

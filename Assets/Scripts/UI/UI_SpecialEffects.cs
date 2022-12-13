@@ -33,7 +33,7 @@ public class UI_SpecialEffects : MonoBehaviour
         this.GetComponent<AudioSource>().Play();
     }
 
-    public void OnParticleSystemStopped()  // TODO for special effect
+    public void OnParticleSystemStopped()
     {
         if (text != null && keep_text == false)
         {

@@ -216,7 +216,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         }
     }
 
-    public void FinishStep()
+    public void FinishStep(bool play_audio)
     {
         if(uncompleted_steps.Count == 0)
         {
@@ -229,7 +229,7 @@ public class UI_FeedbackHandler : MonoBehaviour
             finish_step_explosion.transform.position = uncompleted_steps[0].transform.position;
             finish_step_explosion.GetComponent<UI_Confetti>().ShowEffect();
 
-            if(audio_finish_step.activeInHierarchy)
+            if(audio_finish_step.activeInHierarchy && play_audio)
             {
                 audio_finish_step.GetComponent<AudioSource>().Play();
             }

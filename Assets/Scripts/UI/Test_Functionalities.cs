@@ -86,7 +86,7 @@ public class Test_Functionalities : MonoBehaviour {
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "Finish step"))
             {
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep(true);
             }
             i++;
             if (GUI.Button(new Rect(box_x0 + margins, 60 + 25 * i, box_width - 2 * margins, 20), "LevelUp"))

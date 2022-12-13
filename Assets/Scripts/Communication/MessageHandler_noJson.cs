@@ -201,6 +201,7 @@ public class MessageHandler_noJson : MonoBehaviour
         string message_text, int message_color_r, int message_color_g, int message_color_b, int quartile)
     {
         bool show_message = true;
+        bool play_node_sound = true;
 
         // Todo: Neue Punkte Aktionen einfügen
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(total_points);
@@ -212,6 +213,7 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             performance_time_counter += 1;
             time_success_number.GetComponent<Text>().text = (random_success_number_time - performance_time_counter).ToString();
+            play_node_sound = false;
 
             if (performance_time_counter == random_success_number_time)
             {
@@ -219,6 +221,7 @@ public class MessageHandler_noJson : MonoBehaviour
                 show_message = false;  // do not show general message as success message is already displayed
                 performance_time_counter = 0;
                 GenerateSuccessCounter();
+                play_node_sound = false;
             }
             else
             {
@@ -226,22 +229,15 @@ public class MessageHandler_noJson : MonoBehaviour
             }
         }
 
-        if (node_finished == "True")
-        {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep();
-
-            if (time_performance > 0.9f)
-            {
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
-                show_message = false;  // do not show general message as success message is already displayed
-            }
-        }
         if(level_up == "True")
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
         }
+
         if (recipe_finished == "True")
         {
+            play_node_sound = false;
+
             if (time_performance < 0.8f)
             {
                 Debug.Log("Time performance < 75%");
@@ -263,6 +259,18 @@ public class MessageHandler_noJson : MonoBehaviour
         if(message_text != "" && show_message == true)
         {
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPopup(message_text, message_color_r, message_color_g, message_color_b);
+        }
+
+        // Indicate finished work step
+        if (node_finished == "True")
+        {
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep(play_node_sound);
+
+            if (time_performance > 0.9f)
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
+                show_message = false;  // do not show general message as success message is already displayed
+            }
         }
     }
 

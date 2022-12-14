@@ -31,6 +31,7 @@ public class MessageHandler_noJson : MonoBehaviour
     private int random_success_number_time;
     private int performance_time_counter = 0;
     private bool good_time_displayed = false;
+    private int time_success_counter = 0;
 
     // Materials
     private Material assembly_info_material_1;
@@ -266,16 +267,18 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             if (time_performance > 0.9f)
             {
-                if(good_time_displayed == false)  // Only show success message for every second node in case of repeated actions above 90%
+                if(time_success_counter == 4)  // Only show success message for every second node in case of repeated actions above 90% -> nur bei jedem 4. Mal
                 {
                     feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
                     show_message = false;  // do not show general message as success message is already displayed
                     play_node_sound = false;  // do not play success sound as good time sound is already displayed
                     good_time_displayed = true;
+                    time_success_counter = 0;
                 }
                 else
                 {
                     good_time_displayed = false;
+                    time_success_counter += 1;
                 }
             }
             else

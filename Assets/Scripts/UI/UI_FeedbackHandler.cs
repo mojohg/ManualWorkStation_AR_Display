@@ -54,9 +54,6 @@ public class UI_FeedbackHandler : MonoBehaviour
     // Game element collections
     private GameObject special_effects;
     private GameObject gamification_messages;
-    
-    // Audio elements in scene
-    private GameObject audio_finish_step;
 
     // Disable gamification for first two runs
     private int user_runs = 1;
@@ -100,9 +97,6 @@ public class UI_FeedbackHandler : MonoBehaviour
         // Game element collections
         special_effects = GameObject.Find("SpecialEffects");
         gamification_messages = GameObject.Find("Gamification_Messages");
-        
-        // Audio elements
-        audio_finish_step = GameObject.Find("Audio_FinishStep").gameObject;
 
         // UI messages after finishing a recipe
         levelup = GameObject.Find("LevelUp");
@@ -230,11 +224,6 @@ public class UI_FeedbackHandler : MonoBehaviour
             uncompleted_steps.RemoveAt(0);
             finish_step_explosion.transform.position = uncompleted_steps[0].transform.position;
             finish_step_explosion.GetComponent<UI_Confetti>().ShowEffect();
-
-            if(audio_finish_step.activeInHierarchy && play_audio)
-            {
-                audio_finish_step.GetComponent<AudioSource>().Play();
-            }
         }
     }
 
@@ -342,6 +331,7 @@ public class UI_FeedbackHandler : MonoBehaviour
     {
         foreach(Transform text in gamification_texts.transform)
         {
+            text.gameObject.SetActive(false);
             text.gameObject.SetActive(false);
         }
     }

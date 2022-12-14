@@ -26,11 +26,11 @@ public class MessageHandler_noJson : MonoBehaviour
     private List<GameObject> active_items = new List<GameObject>();
     private List<GameObject> disabled_items = new List<GameObject>();
 
-    // Variables to create random success messages
+    // Variables to create success messages
     private int number_steps_recipe = 0;
     private int random_success_number_time;
     private int performance_time_counter = 0;
-    private int performance_quality_counter = 0;
+    private bool good_time_displayed = false;
 
     // Materials
     private Material assembly_info_material_1;
@@ -264,13 +264,25 @@ public class MessageHandler_noJson : MonoBehaviour
         // Indicate finished work step
         if (node_finished == "True")
         {
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep(play_node_sound);
-
             if (time_performance > 0.9f)
             {
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
-                show_message = false;  // do not show general message as success message is already displayed
+                if(good_time_displayed == false)  // Only show success message for every second node in case of repeated actions above 90%
+                {
+                    feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
+                    show_message = false;  // do not show general message as success message is already displayed
+                    play_node_sound = false;  // do not play success sound as good time sound is already displayed
+                    good_time_displayed = true;
+                }
+                else
+                {
+                    good_time_displayed = false;
+                }
             }
+            else
+            {
+                good_time_displayed = false;
+            }
+            feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep(play_node_sound);
         }
 
         if (message_text != "" && show_message == true)
@@ -691,7 +703,6 @@ public class MessageHandler_noJson : MonoBehaviour
         annotation.GetComponent<Text>().text = "";
         annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
         current_action_display.GetComponent<Text>().text = "";
-        performance_quality_counter = 0;
     }
 
     public GameObject FindGameobject(string name, List<GameObject> gameobject_list)

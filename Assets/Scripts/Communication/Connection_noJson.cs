@@ -324,6 +324,9 @@ public class Connection_noJson : MonoBehaviour
             rx = new Regex(@"quartile<(.*?)>");
             string quartile = rx.Match(message).Groups[1].Value;
 
+            rx = new Regex(@"main_correct_step<(.*?)>");
+            string main_correct_step = rx.Match(message).Groups[1].Value;
+
 
             this.GetComponent<MessageHandler_noJson>().ParsePerformanceMessage(
                 new_points: Convert.ToInt32(new_points),
@@ -339,7 +342,8 @@ public class Connection_noJson : MonoBehaviour
                 message_color_r: Convert.ToInt32(message_color_r),
                 message_color_g: Convert.ToInt32(message_color_g),
                 message_color_b: Convert.ToInt32(message_color_b),
-                quartile: Convert.ToInt32(quartile));
+                quartile: Convert.ToInt32(quartile),
+                main_correct_step: main_correct_step);
         }
         else if (message.Contains("camera"))
         {

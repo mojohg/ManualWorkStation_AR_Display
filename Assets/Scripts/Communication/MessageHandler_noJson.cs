@@ -199,7 +199,7 @@ public class MessageHandler_noJson : MonoBehaviour
     }
 
     public void ParsePerformanceMessage(int new_points, int total_points, float quality_performance, float time_performance, int total_level, string node_finished, string recipe_finished, string level_up, string perfect_run, 
-        string message_text, int message_color_r, int message_color_g, int message_color_b, int quartile)
+        string message_text, int message_color_r, int message_color_g, int message_color_b, int quartile, string main_correct_step)
     {
         bool show_message = true;
         bool play_node_sound = true;
@@ -210,7 +210,7 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowTimeRate(time_performance);
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowLevel(total_level);
 
-        if(quartile < 3)  //Special time
+        if(quartile < 3 && main_correct_step == "True")  //Special time -> only for correct actions!
         {
             performance_time_counter += 1;
             time_success_number.GetComponent<Text>().text = (random_success_number_time - performance_time_counter).ToString();
@@ -267,7 +267,7 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             if (time_performance > 0.9f)
             {
-                if(time_success_counter == 4)  // Only show success message for every second node in case of repeated actions above 90% -> nur bei jedem 4. Mal
+                if(time_success_counter == 4)  // Only show success message for every 4th node in case of repeated actions above 90%
                 {
                     feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
                     show_message = false;  // do not show general message as success message is already displayed

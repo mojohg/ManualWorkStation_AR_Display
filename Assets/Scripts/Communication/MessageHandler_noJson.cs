@@ -244,12 +244,12 @@ public class MessageHandler_noJson : MonoBehaviour
         {
             play_node_sound = false;
 
-            if (time_performance < 0.8f)
+            if (time_performance < 0.75f)
             {
                 Debug.Log("Time performance < 75%");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayFinishedRun();
             }
-            else if (time_performance < 0.95f)
+            else if (time_performance < 0.9f)
             {
                 Debug.Log("Time performance < 90%");
                 feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayNiceRun();

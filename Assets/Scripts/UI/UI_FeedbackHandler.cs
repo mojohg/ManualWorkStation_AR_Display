@@ -57,6 +57,7 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     // Disable gamification for first two runs
     private int user_runs = 1;
+    private GameObject admin_ui_go;
 
 
     void Awake()
@@ -89,6 +90,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         time_success_explosion = GameObject.Find("TimeSuccess_Mini_Explosion");
         repeated_time_success_explosion = GameObject.Find("RepeatedTimeSuccess");
         gamification_texts = GameObject.Find("GamificationTexts");
+        admin_ui_go = GameObject.Find("Setup_Test");
 
         // appearing elements
         finish_step_explosion = GameObject.Find("FinishStep_Mini_Explosion");
@@ -126,7 +128,7 @@ public class UI_FeedbackHandler : MonoBehaviour
         Debug.Log("-----------------USER RUNS:" + user_runs);
         user_runs += 1;
 
-        if(user_runs > 1)
+        if(user_runs > 1 && admin_ui_go.GetComponent<Admin_PropertySelection>().gamification)
         {
             EnableGamification();
         }

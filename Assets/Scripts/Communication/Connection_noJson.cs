@@ -388,11 +388,6 @@ public class Connection_noJson : MonoBehaviour
         }
     }
 
-    private void SendHeartbeat()
-    {
-        SendWebSocketMessage("Ping");
-    }
-
     public void SendInformation(string message)
     {
         Debug.Log("Send information to server: " + message);

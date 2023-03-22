@@ -21,6 +21,7 @@ public class GameElements_Selection : MonoBehaviour {
     private bool tmp_quality = true;
     private bool tmp_level = true;
     private bool tmp_popup = true;
+    private bool tmp_time_success = true;
 
     // Variables for selection process
     [HideInInspector] public bool points = true;
@@ -28,6 +29,7 @@ public class GameElements_Selection : MonoBehaviour {
     [HideInInspector] public bool quality = true;
     [HideInInspector] public bool level = true;
     [HideInInspector] public bool popup = true;
+    [HideInInspector] public bool time_success = true;
 
     // GameObjects in scene
     public GameObject go_quality;
@@ -35,6 +37,7 @@ public class GameElements_Selection : MonoBehaviour {
     public GameObject go_points;
     public GameObject go_popup;
     public GameObject go_level;
+    public GameObject go_time_success;
 
     // Collection of elements
     private List<GameObject> gameobjects = new List<GameObject>();
@@ -65,6 +68,7 @@ public class GameElements_Selection : MonoBehaviour {
         gameobjects.Add(go_points);
         gameobjects.Add(go_popup);
         gameobjects.Add(go_level);
+        gameobjects.Add(go_time_success);
     }
 
     void Update()
@@ -85,15 +89,17 @@ public class GameElements_Selection : MonoBehaviour {
             GUI.Box(new Rect(box_x0, margins, box_width, box_height), "Gamification Cockpit");
 
             // Add element selection
-            tmp_points = GUI.Toggle(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), tmp_points, "Show Points");
+            tmp_points = GUI.Toggle(new Rect(box_x0 + margins, 35, box_width - 2 * margins, 20), tmp_points, "Points");
             int i = 0;
-            tmp_time = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_time, "Show Timer");
+            tmp_time = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_time, "Time");
             i++;
-            tmp_quality = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_quality, "Show Quality");
+            tmp_quality = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_quality, "Quality");
             i++;
-            tmp_level = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_level, "Show Level");
+            tmp_level = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_level, "Level");
             i++; 
-            tmp_popup = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_popup, "Show Popup");
+            tmp_popup = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_popup, "Popup");
+            i++;
+            tmp_time_success = GUI.Toggle(new Rect(box_x0 + margins, 60 + 20 * i, box_width - 2 * margins, 20), tmp_time_success, "Time Success");
             i++;
 
             // Apply changes if save button is pressed -> Activate or deactivate game elements
@@ -127,6 +133,12 @@ public class GameElements_Selection : MonoBehaviour {
                 {
                     popup = tmp_popup;
                     go_popup.SetActive(popup);
+                }
+
+                if (tmp_time_success != time_success)
+                {
+                    time_success = tmp_time_success;
+                    go_time_success.SetActive(time_success);
                 }
             }
 

@@ -125,13 +125,13 @@ public class UI_FeedbackHandler : MonoBehaviour
 
     public void AddRun()
     {
-        Debug.Log("-----------------USER RUNS:" + user_runs);
-        user_runs += 1;
-
+        // Deactivate gamification elements in the first user run
+        /*Debug.Log("-----------------USER RUNS:" + user_runs);
+        user_runs += 1;        
         if(user_runs > 1 && admin_ui_go.GetComponent<Admin_PropertySelection>().gamification)
         {
             EnableGamification();
-        }
+        }*/
     }
 
     public void SetMaxPoints(int points)

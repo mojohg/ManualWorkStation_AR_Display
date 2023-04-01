@@ -311,14 +311,16 @@ public class MessageHandler_noJson : MonoBehaviour
 
         // Find and show prefab
         GameObject item_prefab = FindPrefab("Prefabs/Parts/" + current_producttype + "/" + item_name, item_name);
-        if (item_prefab == null)
-        {
-            Debug.LogWarning("Prefab for " + item_name + " not found");
-            return;
-        }
 
         if (led_color == "green")  // Correct pick -> show information according to level
         {
+            // Return if prefab does not exist
+            if (item_prefab == null)
+            {
+                Debug.LogWarning("Prefab for planned " + item_name + " not found");
+                return;
+            }
+
             Debug.Log("Show pick instruction for " + item_name);
             if (knowledge_level < 4)  // Show 3D image
             {
@@ -336,10 +338,20 @@ public class MessageHandler_noJson : MonoBehaviour
         else if (led_color == "red")  // Wrong pick -> show error information independently from level
         {
             Debug.Log("Show error pick instruction for " + item_name);
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
-            ResetWorkplace();
-            GameObject item = ShowPickPrefab(item_prefab, "Wrong pick");
-            item.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
+
+            if (item_prefab == null)
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
+                ResetWorkplace();
+                current_action_display.GetComponent<Text>().text = "Wrong pick";
+            }
+            else
+            {
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().NotifyWrongAction();
+                ResetWorkplace();
+                GameObject item = ShowPickPrefab(item_prefab, "Wrong pick");
+                item.GetComponent<ObjectInteractions>().ChangeMaterial(error_info_material);
+            }
         }        
     }
 

@@ -1,22 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using NativeWebSocket;
 using System.Text.RegularExpressions;
 using System;
 using System.Globalization;
 
+public enum MachineState
+{
+    waiting_connection,
+    waiting_order,
+    working,
+}
+
 public class Connection_noJson : MonoBehaviour
 {
     WebSocket websocket;
-    private bool connected = false;
     private bool retry = true;
     private bool init_received = false;
     private IEnumerator coroutine;
+    private MachineState state;
+
+    public GameObject machine_state_go;
 
     // Start is called before the first frame update
     void Start()
     {
+        state = MachineState.waiting_connection;
         DontDestroyOnLoad(this.gameObject);
         websocket = new WebSocket("ws://localhost:8080");
 
@@ -27,8 +38,8 @@ public class Connection_noJson : MonoBehaviour
             {
                 StopCoroutine(coroutine);
                 retry = true;  // reset variable for next connection loss
-            }            
-            connected = true;
+            }
+            state = MachineState.waiting_order;
         };
 
         websocket.OnMessage += (bytes) =>
@@ -39,6 +50,22 @@ public class Connection_noJson : MonoBehaviour
             {
                 ExecuteCommand(message);
                 message = "";
+
+                // Adjust UI depending on state
+                switch (state)
+                {
+                    case MachineState.waiting_connection:
+                        machine_state_go.SetActive(true);
+                        machine_state_go.GetComponent<Text>().text = "Waiting for connection ...";
+                        break;
+                    case MachineState.waiting_order:
+                        machine_state_go.SetActive(true);
+                        machine_state_go.GetComponent<Text>().text = "Waiting for an order ...";
+                        break;
+                    case MachineState.working:
+                        machine_state_go.SetActive(false);
+                        break;
+                }
             }
         };
 
@@ -50,7 +77,7 @@ public class Connection_noJson : MonoBehaviour
         websocket.OnClose += (e) =>
         {
             Debug.Log("Connection closed - " + e);
-            connected = false;
+            state = MachineState.waiting_connection;
         };
 
         // InvokeRepeating("SendHeartbeat", 0.0f, 0.3f);  // Heartbeat at every 0.3s
@@ -63,7 +90,7 @@ public class Connection_noJson : MonoBehaviour
                 websocket.DispatchMessageQueue();
         #endif
 
-        if (connected != true)
+        if (state == MachineState.waiting_connection)
         {
             if (retry == true)
             {
@@ -84,18 +111,19 @@ public class Connection_noJson : MonoBehaviour
 
     void ExecuteCommand(string message)
     {
-        if ( message == "Connected") 
+        Debug.Log("New msg: " + message);
+        if (message == "Connected") 
         {
-            SendWebSocketMessage("ACK-Connected");
+            Debug.Log("Connection established -> first msg from hardware control received");
         }
         else if (message.Contains("new_instructions"))  //Reset support for next work step
         {
             this.GetComponent<MessageHandler_noJson>().NewInstructions();
             init_received = true;
-            SendWebSocketMessage("ACK-new_instructions");
         }
         else if (message.Contains("version"))  //Set product version {"version": "V3.3"}
         {
+            state = MachineState.working;
             Regex rx = new Regex(@"version<(.*?)>");
             string result = rx.Match(message).Groups[1].Value;
             this.GetComponent<MessageHandler_noJson>().InitializeVersion(result);
@@ -279,6 +307,7 @@ public class Connection_noJson : MonoBehaviour
         else if (message.Contains("order_finished"))
         {
             this.GetComponent<MessageHandler_noJson>().FinishJob();
+            state = MachineState.waiting_order;
         }
         else if (message.Contains("points"))
         {

@@ -177,8 +177,6 @@ public class MessageHandler_noJson : MonoBehaviour
         performance_time_counter = 0;
         number_steps_recipe = number_steps;
         GenerateSuccessCounter();
-
-        client.GetComponent<Connection_noJson>().SendInformation("test_msg_steps");
     }
 
     public void InitializePoints (int number_points)
@@ -187,16 +185,12 @@ public class MessageHandler_noJson : MonoBehaviour
         Debug.Log("InitializePoints: " + max_points.ToString());
         max_point_display.GetComponent<Text>().text = max_points.ToString();
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowPoints(0);
-
-        client.GetComponent<Connection_noJson>().SendInformation("test_msg_points");
     }
 
     public void NewInstructions ()
     {
         // Debug.Log("New work step -> reset support");
         ResetWorkplace();
-
-        client.GetComponent<Connection_noJson>().SendInformation("test_msg_instructions");
     }
 
     public void InitializeCamera(float x, float y, float z, float ortho)

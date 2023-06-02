@@ -118,8 +118,8 @@ public class UI_FeedbackHandler : MonoBehaviour
         if(current_username != username)
         {
             username_go.GetComponent<Text>().text = username;
-            user_runs = 1;
-            DisableGamification();
+            // user_runs = 1;
+            // DisableGamification();
         }        
     }
 

@@ -636,7 +636,7 @@ public class MessageHandler_noJson : MonoBehaviour
         final_assembly_green.GetComponent<ObjectInteractions>().RemoveUnnecessaryInformation();
 
         final_assembly_green.GetComponent<ObjectInteractions>().ChangeMaterial(finished_info_material);
-        current_action_display.GetComponent<Text>().text = "Task finished: Answer Questionnaire";
+        // current_action_display.GetComponent<Text>().text = "Task finished";
 
         // client.GetComponent<Connection_noJson>().SendInformation("{finished}");
     }

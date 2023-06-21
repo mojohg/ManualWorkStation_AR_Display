@@ -127,21 +127,18 @@ public class Connection_noJson : MonoBehaviour
             Regex rx = new Regex(@"version<(.*?)>");
             string result = rx.Match(message).Groups[1].Value;
             this.GetComponent<MessageHandler_noJson>().InitializeVersion(result);
-            SendWebSocketMessage("ACK-version");
         }
         else if (message.Contains("number_steps"))  //Set number of steps
         {
             Regex rx = new Regex(@"number_steps<(.*?)>");
             string result = rx.Match(message).Groups[1].Value;
             this.GetComponent<MessageHandler_noJson>().InitializeSteps(Convert.ToInt32(result));
-            SendWebSocketMessage("ACK-number_steps");
         }
         else if (message.Contains("number_points"))  //Set number of points
         {
             Regex rx = new Regex(@"number_points<(.*?)>");
             string result = rx.Match(message).Groups[1].Value;
             this.GetComponent<MessageHandler_noJson>().InitializePoints(Convert.ToInt32(result));
-            SendWebSocketMessage("ACK-number_points");
         }
         else if (message.Contains("action_type"))  //Show instruction
         {

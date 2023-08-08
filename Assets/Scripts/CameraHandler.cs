@@ -23,9 +23,9 @@ public class CameraHandler : MonoBehaviour
 
     public void ChangeCameraSettings(float camera_pos_x, float camera_pos_y, float camera_pos_z, float orthographic_size)
     {
-        Debug.Log("Initial camera position: " + this.transform.position);
+        // Debug.Log("Initial camera position: " + this.transform.position);
         this.transform.position = new Vector3(camera_pos_x, camera_pos_y, camera_pos_z);
         this.GetComponent<Camera>().orthographicSize = orthographic_size;
-        Debug.Log("New camera position: " + this.transform.position);
+        // Debug.Log("New camera position: " + this.transform.position);
     }
 }

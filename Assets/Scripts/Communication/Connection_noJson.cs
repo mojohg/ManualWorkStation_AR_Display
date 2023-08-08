@@ -116,6 +116,13 @@ public class Connection_noJson : MonoBehaviour
         {
             Debug.Log("Connection established -> first msg from hardware control received");
         }
+        else if (message.Contains("waiting_order"))
+        {
+            state = MachineState.waiting_order;
+            machine_state_go.SetActive(true);
+            machine_state_go.GetComponent<Text>().text = "Waiting for an order ...";
+            Debug.Log("Waiting order");
+        }
         else if (message.Contains("new_instructions"))  //Reset support for next work step
         {
             this.GetComponent<MessageHandler_noJson>().NewInstructions();
@@ -304,7 +311,6 @@ public class Connection_noJson : MonoBehaviour
         else if (message.Contains("order_finished"))
         {
             this.GetComponent<MessageHandler_noJson>().FinishJob();
-            state = MachineState.waiting_order;
         }
         else if (message.Contains("points"))
         {

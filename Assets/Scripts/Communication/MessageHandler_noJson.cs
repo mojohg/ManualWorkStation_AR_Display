@@ -22,7 +22,6 @@ public class MessageHandler_noJson : MonoBehaviour
     private GameObject current_assembly_GO;
 
     private List<GameObject> product_versions = new List<GameObject>();
-    private List<GameObject> assembly_items = new List<GameObject>();
     private List<GameObject> active_items = new List<GameObject>();
     private List<GameObject> disabled_items = new List<GameObject>();
 
@@ -30,7 +29,6 @@ public class MessageHandler_noJson : MonoBehaviour
     private int number_steps_recipe = 0;
     private int random_success_number_time;
     private int performance_time_counter = 0;
-    private bool good_time_displayed = false;
     private int time_success_counter = 0;
 
     // Materials
@@ -42,11 +40,9 @@ public class MessageHandler_noJson : MonoBehaviour
 
     // UI
     private GameObject setup_test;
-    private GameObject current_point_display;
     private GameObject current_action_display;
     private GameObject max_point_display;
     private int max_points;
-    private List<GameObject> uncompleted_steps = new List<GameObject>();
     private GameObject object_presentation;
     private GameObject assembly_presentation;
     private GameObject annotation;
@@ -81,7 +77,6 @@ public class MessageHandler_noJson : MonoBehaviour
         feedback_canvas = GameObject.Find("FeedbackCanvas");
         current_action_display = feedback_canvas.transform.Find("General/ActionInfo").gameObject;
         annotation = feedback_canvas.transform.Find("General/Annotation").gameObject;
-        current_point_display = feedback_canvas.transform.Find("Gamification/PointDisplay/CurrentPoints").gameObject;
         max_point_display = feedback_canvas.transform.Find("Gamification/PointDisplay/MaxPoints").gameObject;
     }
 
@@ -237,29 +232,32 @@ public class MessageHandler_noJson : MonoBehaviour
 
         if(level_up == "True")
         {
+            play_node_sound = false;
             feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayLevelup();
         }
-
-        if (recipe_finished == "True")
+        else
         {
-            play_node_sound = false;
+            if (recipe_finished == "True")
+            {
+                play_node_sound = false;
 
-            if (time_performance < 0.75f)
-            {
-                Debug.Log("Time performance < 75%");
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayFinishedRun();
+                if (time_performance < 0.75f)
+                {
+                    Debug.Log("Time performance < 75%");
+                    feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayFinishedRun();
+                }
+                else if (time_performance < 0.9f)
+                {
+                    Debug.Log("Time performance < 90%");
+                    feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayNiceRun();
+                }
+                else
+                {
+                    Debug.Log("Time performance >= 90%");
+                    feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
+                }
+                feedback_canvas.GetComponent<UI_FeedbackHandler>().AddRun();
             }
-            else if (time_performance < 0.9f)
-            {
-                Debug.Log("Time performance < 90%");
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayNiceRun();
-            }
-            else
-            {
-                Debug.Log("Time performance >= 90%");
-                feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayPerfectRun();
-            }
-            feedback_canvas.GetComponent<UI_FeedbackHandler>().AddRun();
         }
 
         // Indicate finished work step
@@ -272,18 +270,12 @@ public class MessageHandler_noJson : MonoBehaviour
                     feedback_canvas.GetComponent<UI_FeedbackHandler>().DisplayGoodTime();
                     show_message = false;  // do not show general message as success message is already displayed
                     play_node_sound = false;  // do not play success sound as good time sound is already displayed
-                    good_time_displayed = true;
                     time_success_counter = 0;
                 }
                 else
                 {
-                    good_time_displayed = false;
                     time_success_counter += 1;
                 }
-            }
-            else
-            {
-                good_time_displayed = false;
             }
             feedback_canvas.GetComponent<UI_FeedbackHandler>().FinishStep(play_node_sound);
         }

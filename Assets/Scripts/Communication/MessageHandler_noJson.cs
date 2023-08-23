@@ -482,10 +482,10 @@ public class MessageHandler_noJson : MonoBehaviour
         if(move_pos == null)
         {
             Debug.LogError(action_name + " not found in assembly items -> move instruction cannot be shown");
+            return;
         }
 
         // Group all finished GO and move them to the new position
-        // GameObject existing_assembly  = new GameObject("ExistingAssembly");
         GameObject first_object = current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list[0];
         first_object.SetActive(true);
         current_assembly_GO.GetComponent<AssemblyOrganisation>().finished_items_list.Remove(first_object);
@@ -505,8 +505,13 @@ public class MessageHandler_noJson : MonoBehaviour
         // Reload the miniature to include the changes
         GenerateMiniature(current_assembly_GO);
 
+        // Disable elements for level system
+        move_pos.SetActive(false);
+        assembly_miniature.SetActive(false);
+
         if (knowledge_level == 1)
         {
+            Debug.Log("Move in Level 1");
             current_action_display.GetComponent<Text>().text = "Move";
             annotation.GetComponent<Text>().text = text_annotation;
             annotation.GetComponent<UI_BackgroundImage>().annotation_change = true;
@@ -515,19 +520,22 @@ public class MessageHandler_noJson : MonoBehaviour
         }
         else if (knowledge_level == 2)
         {
+            Debug.Log("Move in Level 2");
             current_action_display.GetComponent<Text>().text = "Move";
             GameObject action_go = ShowAssemblyPosition(assembly_info_material_2, action_name, disable_afterwards: true, change_material: true);
             RemoveAssemblyHints(action_go);
-            ShowPositionMiniature(action_name);
+            ShowPositionMiniature(move_pos.name);
         }
         else if (knowledge_level == 3)
         {
+            Debug.Log("Move in Level 3");
             current_action_display.GetComponent<Text>().text = "Move";
-            ShowPositionMiniature(action_name);
+            ShowPositionMiniature(move_pos.name);
         }
         else if (knowledge_level == 4)
         {
 
+            Debug.Log("Move in Level 4");
         }
         else
         {
@@ -572,6 +580,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private GameObject ShowAssemblyPosition(Material material, string item_name, bool disable_afterwards, bool change_material)
     {
+        Debug.Log("HERE");
         GameObject current_go = FindGameobject(item_name, current_assembly_GO.GetComponent<AssemblyOrganisation>().main_items_list);
         current_go.gameObject.SetActive(true);
         active_items.Add(current_go.gameObject);

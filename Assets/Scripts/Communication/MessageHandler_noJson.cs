@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 /// <summary>
 /// The class MessageHandler contains methods for parsing the messages coming from the IoT adapter and the MES.
@@ -609,11 +610,28 @@ public class MessageHandler_noJson : MonoBehaviour
     {
         assembly_miniature.SetActive(true);
         Debug.Log("Show part in miniature: " + item_name);
-        GameObject current_mini_part = assembly_miniature.transform.Find(item_name).gameObject;
+
+        // Ignore toolpoints as they are not part of the miniature
+        if (item_name.Contains("Toolpoint"))
+        {
+            return;
+        }
+
+        GameObject current_mini_part = null;
+        try
+        {
+            current_mini_part = assembly_miniature.transform.Find(item_name).gameObject;
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogWarning("Item could not be found in miniature: " + item_name);
+            return;
+        }
         ShowObjectPosition(current_mini_part, assembly_info_material_1, disable_afterwards: false, change_material: true);
 
+
         // Activate holder if existing
-        if(assembly_miniature_holder != null)
+        if (assembly_miniature_holder != null)
         {
             assembly_miniature_holder.SetActive(true);
         }
@@ -783,7 +801,7 @@ public class MessageHandler_noJson : MonoBehaviour
 
     private void GenerateSuccessCounter()
     {
-        random_success_number_time = Random.Range(3, Mathf.RoundToInt(number_steps_recipe * 0.6f));
+        random_success_number_time = UnityEngine.Random.Range(3, Mathf.RoundToInt(number_steps_recipe * 0.6f));
         time_success_number.GetComponent<Text>().text = random_success_number_time.ToString();
     }
 }

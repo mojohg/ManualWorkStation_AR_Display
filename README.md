@@ -15,6 +15,8 @@ Build Unity project in a separate folder. Then, copy the content of the "Build" 
 
 The CAD files must fulfill the following properties to ensure the programmed functionalities:
 
+- The coordinate system must be in the center of all parts which are mounted separately
+
 - Holders which are used to assemble the product must be named "AssemblyHolder" in order to be recognized.
 
 

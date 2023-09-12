@@ -85,11 +85,11 @@ public class MessageHandler_noJson : MonoBehaviour
     {
         Debug.Log("Waiting order");
         // Disable all assemblies during waiting
-        product_versions = assemblies.GetComponent<AssemblyOrganisation>().main_items_list;
+        /*product_versions = assemblies.GetComponent<AssemblyOrganisation>().main_items_list;
         foreach (GameObject product in product_versions)
         {
             product.SetActive(false);
-        }
+        }*/
     }
 
     public void InitializeVersion(string version_name)
@@ -179,7 +179,7 @@ public class MessageHandler_noJson : MonoBehaviour
     {
         Debug.Log("InitializeSteps: " + number_steps.ToString());
         feedback_canvas.GetComponent<UI_FeedbackHandler>().ResetNumberSteps();
-        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps + 1);
+        feedback_canvas.GetComponent<UI_FeedbackHandler>().ShowNumberSteps(number_steps);
 
         // Create random number to display success messages during work
         performance_time_counter = 0;

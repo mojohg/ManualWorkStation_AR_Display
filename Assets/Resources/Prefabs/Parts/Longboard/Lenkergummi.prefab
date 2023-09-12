@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8172041647601782992}
   m_Layer: 0
-  m_Name: Lenkergummi_1
+  m_Name: Lenkergummi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 8172041647601782993}
   m_LocalRotation: {x: 0.6963644, y: 0.12278779, z: -0.00000002235174, w: 0.7071067}
   m_LocalPosition: {x: 0.503602, y: -0.05680754, z: 0.0010353401}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 8172041648238506539}
   m_Father: {fileID: 0}

@@ -90,7 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5288337836193183888}
   m_Layer: 0
-  m_Name: Pivotkappe_1
+  m_Name: Pivotkappe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105,7 +105,7 @@ Transform:
   m_GameObject: {fileID: 5288337836193183895}
   m_LocalRotation: {x: 0.687565, y: -0.16508912, z: -0.25913796, w: 0.6579115}
   m_LocalPosition: {x: 0.54436314, y: -0.042714715, z: 0.0010353401}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 5288337835506817631}
   m_Father: {fileID: 0}

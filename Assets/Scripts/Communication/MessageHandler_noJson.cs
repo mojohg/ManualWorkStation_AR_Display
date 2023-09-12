@@ -81,6 +81,17 @@ public class MessageHandler_noJson : MonoBehaviour
         max_point_display = feedback_canvas.transform.Find("Gamification/PointDisplay/MaxPoints").gameObject;
     }
 
+    public void WaitForOrder()
+    {
+        Debug.Log("Waiting order");
+        // Disable all assemblies during waiting
+        product_versions = assemblies.GetComponent<AssemblyOrganisation>().main_items_list;
+        foreach (GameObject product in product_versions)
+        {
+            product.SetActive(false);
+        }
+    }
+
     public void InitializeVersion(string version_name)
     {
         // Reset everything
@@ -110,6 +121,7 @@ public class MessageHandler_noJson : MonoBehaviour
             if (product.name == current_version)
             {
                 Debug.Log("Instantiate new assembly for " + product.name);
+                product.SetActive(true);
                 
                 // Check if assembly contains all required scripts
                 if (product.GetComponent<AssemblyOrganisation>() == null)

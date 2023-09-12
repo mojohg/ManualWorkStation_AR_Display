@@ -121,7 +121,7 @@ public class Connection_noJson : MonoBehaviour
             state = MachineState.waiting_order;
             machine_state_go.SetActive(true);
             machine_state_go.GetComponent<Text>().text = "Waiting for an order ...";
-            Debug.Log("Waiting order");
+            this.GetComponent<MessageHandler_noJson>().WaitForOrder();
         }
         else if (message.Contains("new_instructions"))  //Reset support for next work step
         {

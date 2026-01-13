@@ -1,61 +1,51 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
-  <title>Unity WebGL Player | AR</title>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
 
-  <link rel="shortcut icon" href="TemplateData/favicon.ico" />
-  <link rel="stylesheet" href="TemplateData/style.css" />
-  <script src="TemplateData/UnityProgress.js"></script>
-  <script src="Build/UnityLoader.js"></script>
+    <title>Unity WebGL Player | AR</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
 
-  <style>
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      overflow: hidden;
-      background: #000;
-    }
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000;
+      }
 
-    /* Ganz wichtig für Unity: keine Table-Layouts, keine komischen Margins */
-    #unityContainer {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
-      overflow: hidden;
-    }
+      /* Wie weit soll es "runter"? */
+      :root {
+        --top-offset: 60px; /* <- anpassen */
+      }
 
-    /* Quarter-view Fix: Canvas nicht “absolute verschieben”, sondern normal 0,0 */
-    #unityContainer canvas {
-      display: block !important;
-      width: 100% !important;
-      height: 100% !important;
-      position: absolute !important;
-      left: 0 !important;
-      top: 0 !important;
-    }
-  </style>
-</head>
+      #unityContainer {
+        position: absolute;
+        left: 0;
+        top: var(--top-offset);
+        width: 100vw;
+        height: calc(100vh - var(--top-offset));
+      }
+    </style>
 
-<body>
-  <!-- Debug-Stempel: MUSS sichtbar sein, sonst wird falsche Datei geladen -->
-  <div style="position:fixed;z-index:99999;top:0;left:0;color:#fff;background:red;padding:6px;font:14px monospace;">
-    INDEX VERSION: 2026-01-13-1
-  </div>
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+  </head>
 
-  <div id="unityContainer"></div>
+  <body>
+    <div id="unityContainer"></div>
 
-  <script>
-    var unityInstance = UnityLoader.instantiate(
-      "unityContainer",
-      "Build/Build_AR.json",   // <- ggf. anpassen
-      { onProgress: UnityProgress }
-    );
-  </script>
-</body>
+    <script>
+      var unityInstance = UnityLoader.instantiate(
+        "unityContainer",
+        "Build/Build_AR.json",
+        { onProgress: UnityProgress }
+      );
+    </script>
+  </body>
 </html>
